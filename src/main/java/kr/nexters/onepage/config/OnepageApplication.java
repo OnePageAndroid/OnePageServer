@@ -1,12 +1,13 @@
 package kr.nexters.onepage.config;
 
 import kr.nexters.onepage.api.OnePageApis;
+import kr.nexters.onepage.domain.Domains;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
-@ComponentScan(basePackageClasses = { OnePageApis.class })
+@ComponentScan(basePackageClasses = { OnePageApis.class, Domains.class })
 @SpringBootApplication
 public class OnepageApplication {
 

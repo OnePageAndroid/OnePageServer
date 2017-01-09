@@ -12,4 +12,9 @@ public class HelloController {
     public String index(){
         return "hello";
     }
+
+    @RequestMapping("/exception")
+    public void exception() {
+        throw new RuntimeException("test");
+    }
 }
