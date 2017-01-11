@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/v1/api")
+@RequestMapping("/v1/api/hello")
 public class HelloController {
-    @RequestMapping("/hello")
+    @RequestMapping("")
     public String index(){
         return "hello";
     }
