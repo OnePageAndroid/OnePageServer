@@ -22,5 +22,5 @@ public class User {
 	@Column
 	private String createdBy;
 	@Column
-	private Boolean deleted;
+	private boolean deleted;
 }

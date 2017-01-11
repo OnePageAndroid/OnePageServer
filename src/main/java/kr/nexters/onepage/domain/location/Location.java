@@ -28,5 +28,5 @@ public class Location {
 	@Column
 	private DateTime createdBy;
 	@Column
-	private Boolean deleted;
+	private boolean deleted;
 }

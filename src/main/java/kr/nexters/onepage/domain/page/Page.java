@@ -15,13 +15,13 @@ import java.sql.Blob;
 @Table
 public class Page {
     @Column
-    private long pageId;
+    private Long pageId;
 
     @Column
-    private long locationId;
+    private Long locationId;
 
     @Column
-    private long userId;
+    private Long userId;
 
     @Column
     private Blob content;
