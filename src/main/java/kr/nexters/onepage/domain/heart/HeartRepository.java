@@ -1,8 +1,8 @@
-package kr.nexters.onepage.domain.like;
+package kr.nexters.onepage.domain.heart;
 
 import kr.nexters.onepage.domain.common.OnePageRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface LikeRepository extends OnePageRepository<Like, Long> {
+public interface HeartRepository extends OnePageRepository<Heart, Long> {
 }

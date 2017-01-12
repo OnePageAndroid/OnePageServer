@@ -1,22 +1,20 @@
 package kr.nexters.onepage.domain.location;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import kr.nexters.onepage.domain.support.Created;
+import lombok.*;
 import org.hibernate.annotations.Where;
-import org.joda.time.DateTime;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(catalog = "onepage", name = "location")
 @Where(clause = "delete = 0")
-public class Location {
+public class Location extends Created {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "locationId")
@@ -24,15 +22,19 @@ public class Location {
 	@Column
 	private Double latitude;
 	@Column
-	private Double longtitude;
+	private Double longitude;
 	@Column
 	private String name;
 	@Column
 	private String address;
 	@Column
-	private DateTime createdAt;
-	@Column
-	private DateTime createdBy;
-	@Column
 	private boolean deleted;
+
+	public static Location of(LocationDto locationDto) {
+		return Location.builder()
+			.latitude(locationDto.getLatitude())
+			.longitude(locationDto.getLongitude())
+			.name(locationDto.getName())
+			.address(locationDto.getAddress()).build();
+	}
 }

@@ -1,11 +1,11 @@
 package kr.nexters.onepage.domain.pageImage;
 
+import kr.nexters.onepage.domain.support.Modified;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Where;
-import org.joda.time.DateTime;
 
 import javax.persistence.*;
 
@@ -16,7 +16,7 @@ import javax.persistence.*;
 @Entity
 @Table(catalog = "onepage", name = "page_image")
 @Where(clause = "delete = 0")
-public class PageImage {
+public class PageImage extends Modified {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pageImageId")
@@ -29,14 +29,6 @@ public class PageImage {
     private String objectKey;
     @Column
     private String name;
-    @Column
-    private DateTime createdAt;
-    @Column
-    private String createdBy;
-    @Column
-    private DateTime modifiedAt;
-    @Column
-    private String modifiedBy;
     @Column
     private boolean deleted;
 }

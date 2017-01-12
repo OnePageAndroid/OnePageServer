@@ -14,4 +14,8 @@ public class LocationService {
 	public void saveLocation() {
 
 	}
+
+	public void saveLocation(LocationDto locationDto) {
+		locationRepository.save(Location.of(locationDto));
+	}
 }
