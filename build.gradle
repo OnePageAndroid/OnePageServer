@@ -13,8 +13,8 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
-apply plugin: 'org.springframework.boot'
 apply plugin: 'idea'
+apply plugin: 'spring-boot'
 apply plugin: 'war'
 
 jar {
@@ -47,8 +47,61 @@ dependencies {
 	compile 'mysql:mysql-connector-java:5.1.6'
 	compile('commons-dbcp:commons-dbcp:1.2.2')
 
-	compileOnly "org.projectlombok:lombok:1.16.12"
+	compile "org.projectlombok:lombok:1.16.4"
 	compile 'joda-time:joda-time:2.8.2'
 
+	compile "com.mysema.querydsl:querydsl-jpa:3.7.2"
+	compile "com.mysema.querydsl:querydsl-apt:3.7.2"
+
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+sourceSets {
+	generated {
+		java {
+			srcDirs = ['src/main/generated']
+		}
+	}
+}
+
+task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates the QueryDSL query types') {
+	source = sourceSets.main.java
+	classpath = configurations.compile // + configurations.provided
+	options.compilerArgs = [
+			"-proc:only",
+			"-processor", "com.mysema.query.apt.jpa.JPAAnnotationProcessor"
+	]
+	destinationDir = sourceSets.generated.java.srcDirs.iterator().next()
+}
+
+compileJava {
+	dependsOn generateQueryDSL
+	source generateQueryDSL.destinationDir
+}
+
+compileGeneratedJava {
+	dependsOn generateQueryDSL
+	options.warnings = false
+//	Classpath += sourceSets.main.runtimeClasspath
+}
+
+clean {
+	delete sourceSets.generated.java.srcDirs
+}
+
+idea {
+	module {
+		sourceDirs += file('src/main/generated')
+	}
+}
+
+//eclipse {
+//	Classpath {
+//		containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
+//		containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
+//	}
+//}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '2.7'
 }
