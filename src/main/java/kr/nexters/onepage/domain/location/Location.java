@@ -1,20 +1,26 @@
 package kr.nexters.onepage.domain.location;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 import org.joda.time.DateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table
+@Table(catalog = "onepage", name = "location")
+@Where(clause = "delete = 0")
 public class Location {
-	@Column
-	private Long locationId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "locationId")
+	private Long id;
 	@Column
 	private Double latitude;
 	@Column

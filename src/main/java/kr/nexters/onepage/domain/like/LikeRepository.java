@@ -1,6 +1,8 @@
 package kr.nexters.onepage.domain.like;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import kr.nexters.onepage.domain.common.OnePageRepository;
+import org.springframework.stereotype.Repository;
 
-public interface LikeRepository extends JpaRepository<Like, Long> {
+@Repository
+public interface LikeRepository extends OnePageRepository<Like, Long> {
 }

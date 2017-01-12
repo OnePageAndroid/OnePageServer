@@ -1,20 +1,26 @@
 package kr.nexters.onepage.domain.user;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 import org.joda.time.DateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table
+@Table(catalog = "onepage", name = "user")
+@Where(clause = "delete = 0")
 public class User {
-	@Column
-	private Long userId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "userId")
+	private Long id;
 	@Column
 	private String email;
 	@Column

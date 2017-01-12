@@ -1,7 +1,9 @@
 package kr.nexters.onepage.domain.location;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import kr.nexters.onepage.domain.common.OnePageRepository;
+import org.springframework.stereotype.Repository;
 
-public interface LocationRepository extends JpaRepository<Location, Long>, LocationRepositoryCustom {
+@Repository
+public interface LocationRepository extends OnePageRepository<Location, Long>, LocationRepositoryCustom {
 
 }

@@ -1,7 +1,11 @@
 package kr.nexters.onepage.domain.common;
 
-/**
- * Created by BoBinLee on 2017. 1. 12..
- */
-public class OnePageRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.querydsl.QueryDslPredicateExecutor;
+
+import java.io.Serializable;
+
+public interface OnePageRepository<T, ID extends Serializable> extends JpaRepository<T, ID>, QueryDslPredicateExecutor<T>,
+	JpaSpecificationExecutor<T> {
 }

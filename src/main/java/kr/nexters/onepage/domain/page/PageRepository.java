@@ -1,6 +1,8 @@
 package kr.nexters.onepage.domain.page;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import kr.nexters.onepage.domain.common.OnePageRepository;
+import org.springframework.stereotype.Repository;
 
-public interface PageRepository extends JpaRepository<Page, Long> {
+@Repository
+public interface PageRepository extends OnePageRepository<Page, Long> {
 }

@@ -1,6 +1,8 @@
 package kr.nexters.onepage.domain.pageImage;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import kr.nexters.onepage.domain.common.OnePageRepository;
+import org.springframework.stereotype.Repository;
 
-public interface PageImageRepository extends JpaRepository<PageImage, Long> {
+@Repository
+public interface PageImageRepository extends OnePageRepository<PageImage, Long> {
 }
