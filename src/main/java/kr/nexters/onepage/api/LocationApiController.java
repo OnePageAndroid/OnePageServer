@@ -1,5 +1,7 @@
 package kr.nexters.onepage.api;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import kr.nexters.onepage.api.common.ResponseDto;
 import kr.nexters.onepage.domain.location.LocationDto;
 import kr.nexters.onepage.domain.location.LocationService;
@@ -9,12 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
+@Api(value = "LocationApiController", description = "location api", basePath = "/api/v1/location")
 @RestController
-@RequestMapping("/v1/api/location")
+@RequestMapping("/api/v1/location")
 public class LocationApiController {
 	@Autowired
 	private LocationService locationService;
 
+	@ApiOperation(value = "save location", notes = "save location")
 	@RequestMapping("/save")
 	public ResponseDto save(LocationDto locationDto) {
 		try {

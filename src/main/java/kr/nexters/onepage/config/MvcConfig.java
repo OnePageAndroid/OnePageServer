@@ -14,6 +14,11 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // resourceHandler 서버 url, resourceLocations 현재 파일 위치
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(10000);
+
+        registry.addResourceHandler("swagger-ui.html")
+            .addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**")
+            .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
     @Bean
