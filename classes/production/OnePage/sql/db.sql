@@ -66,9 +66,11 @@ DROP TABLE IF EXISTS onepage.heart;
 CREATE TABLE onepage.heart (
   `heartId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'pk',
   `pageId` bigint(20) NOT NULL COMMENT 'pageId',
+  `userId` bigint(20) NOT NULL COMMENT 'userId',
   `createdAt` datetime NOT NULL COMMENT 'created datetime',
   `createdBy` varchar(50) NOT NULL COMMENT 'creator',
   `deleted` tinyint(1) NOT NULL COMMENT '1:deleted',
   PRIMARY KEY (`heartId`),
-  KEY `onepage_heart_idx01` (`pageId`)
+  KEY `onepage_heart_idx01` (`pageId`),
+  KEY `onepage_heart_idx02` (`pageId`, `userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='heart';
