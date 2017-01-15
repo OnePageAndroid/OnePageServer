@@ -1,16 +1,14 @@
 package kr.nexters.onepage.domain.user;
 
 import kr.nexters.onepage.domain.support.Created;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -25,4 +23,10 @@ public class User extends Created {
 	private String email;
 	@Column
 	private boolean deleted;
+
+	public static User of(String email) {
+		return User.builder()
+			.email(email)
+			.build();
+	}
 }

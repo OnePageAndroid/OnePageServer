@@ -15,6 +15,10 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
+	public void saveUser(String email) {
+		userRepository.save(User.of(email));
+	}
+
 	public User findByEmail(String email) {
 		if(StringUtils.isEmpty(email)) {
 			throw new OnePageServiceException("계정 정보가 없습니다.");
