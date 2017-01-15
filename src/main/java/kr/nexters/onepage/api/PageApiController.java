@@ -36,8 +36,8 @@ public class PageApiController {
 	@ApiOperation(value = "장소 기반 페이지 조회", notes = "장소 기반 페이지 조회")
 	@RequestMapping(value = "/location", method = RequestMethod.GET)
 	public PagesResponseDto findByLocation(@RequestParam Long locationId,
-		@ApiParam(name = "현재 페이지 넘버버0부터시작)") @RequestParam Integer pageNumber,
-		@ApiParam(name = "가져올 페이지 사이즈") @RequestParam Integer perPageSize) {
+		@ApiParam(value = "현재 페이지 넘버버0부터시작)") @RequestParam Integer pageNumber,
+		@ApiParam(value = "가져올 페이지 사이즈") @RequestParam Integer perPageSize) {
 		// TODO 논의후 적용.
 		try {
 			return pageService.findByLocationId(locationId, pageNumber, perPageSize);
@@ -50,8 +50,8 @@ public class PageApiController {
 	@ApiOperation(value = "유저 기반 페이지 조회", notes = "유저 기반 페이지 조회")
 	@RequestMapping(value = "/user", method = RequestMethod.GET)
 	public PagesResponseDto findByUser(@RequestParam String email,
-		@ApiParam(name = "현재 페이지 넘버버0부터시작)") @RequestParam Integer pageNumber,
-		@ApiParam(name = "가져올 페이지 사이즈") @RequestParam Integer perPageSize) {
+		@ApiParam(value = "현재 페이지 넘버버0부터시작)") @RequestParam Integer pageNumber,
+		@ApiParam(value = "가져올 페이지 사이즈") @RequestParam Integer perPageSize) {
 		// TODO 논의후 적용.
 		try {
 			return pageService.findByEmail(email, pageNumber, perPageSize);
