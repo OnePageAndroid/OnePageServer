@@ -1,17 +1,17 @@
 package kr.nexters.onepage.domain.page;
 
+import kr.nexters.onepage.domain.location.Location;
 import kr.nexters.onepage.domain.support.Modified;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import kr.nexters.onepage.domain.user.User;
+import lombok.*;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import java.sql.Blob;
+import java.sql.SQLException;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -22,12 +22,22 @@ public class Page extends Modified {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pageId")
     private Long id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "locationId")
+    private Location location;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    private User user;
     @Column
-    private Long locationId;
-    @Column
-    private Long userId;
-    @Column
-    private Blob content;
+    private String content;
     @Column
     private boolean deleted;
+
+    public static Page of(Location location, User user, String content) throws SQLException {
+        return Page.builder()
+            .location(location)
+            .user(user)
+            .content(content)
+            .build();
+    }
 }

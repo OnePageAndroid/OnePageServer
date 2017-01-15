@@ -34,12 +34,14 @@ targetCompatibility = 1.8
 
 
 sourceSets {
-	intTest
 	generated {
-		java { srcDirs = ['src/main/generated']}
+		java { srcDirs = ['src/main/generated/java']}
 	}
 	main {
-		java { srcDir 'src/main/java' }
+		java {
+			srcDirs 'src/main/java'
+			srcDirs 'src/main/generated/java'
+		}
 		resources { srcDir 'src/main/resources' }
 	}
 	test {
@@ -71,46 +73,48 @@ dependencies {
 	compile 'joda-time:joda-time:2.9.7'
 	compile 'org.hibernate:hibernate-java8:5.2.6.Final'
 
-	def queryDSL = '3.7.4'  //nexus에 4.1.2가 있으나 4.1.2로 하면 디펜던시 안걸린다.
-	//query dsl
-	compile("com.mysema.querydsl:querydsl-core:$queryDSL")
-	compile("com.mysema.querydsl:querydsl-jpa:$queryDSL")
-	compile("com.mysema.querydsl:querydsl-sql:$queryDSL")
-	compile("com.mysema.querydsl:querydsl-codegen:$queryDSL")
-	compile("com.mysema.querydsl:querydsl-apt:$queryDSL")
+	def querydslVersion = "4.1.4"
+	/**
+	 * querydsl dependency
+	 */
+	compile ("com.querydsl:querydsl-core:$querydslVersion")
+	compile ("com.querydsl:querydsl-apt:$querydslVersion")
+	compile ("com.querydsl:querydsl-jpa:$querydslVersion")
 
 	// swagger
 	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.5.0'
 	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.5.0'
 
+	compile group: 'com.cloudinary', name: 'cloudinary', version: '1.0.13'
+
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
-task generateQueryDSL(type: JavaCompile, group: 'build', description: 'generate queryDSL') {
+def queryDslOutput = file("src/main/generated/java")
+
+task generateQueryDSL(type: JavaCompile, group: 'build') {
+	doFirst {
+		if (!queryDslOutput.exists()) {
+			logger.info("Creating `$queryDslOutput` directory")
+
+			if (!queryDslOutput.mkdirs()) {
+				throw new InvalidUserDataException("Unable to create `$queryDslOutput` directory")
+			}
+		}
+	}
+
 	source = sourceSets.main.java
 	classpath = configurations.compile
 	options.compilerArgs = [
 			"-proc:only",
 			"-processor",
-			"com.mysema.query.apt.jpa.JPAAnnotationProcessor"
+			"com.querydsl.apt.jpa.JPAAnnotationProcessor"
 	]
-	destinationDir = sourceSets.generated.java.srcDirs.iterator().next()
-}
-
-
-compileJava {
-	dependsOn generateQueryDSL
-	source sourceSets.generated.java.srcDirs.iterator().next()
-}
-
-compileGeneratedJava {
-	dependsOn generateQueryDSL
-	options.warnings = true
-	classpath += sourceSets.main.runtimeClasspath
+	destinationDir = queryDslOutput
 }
 
 clean {
-	delete sourceSets.generated.java.srcDirs
+	delete queryDslOutput
 }
 
-task wrapper(type: Wrapper) { gradleVersion = '2.1' }
+compileTestJava.dependsOn(generateQueryDSL)

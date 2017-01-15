@@ -1,16 +1,17 @@
 package kr.nexters.onepage.domain.pageImage;
 
+import kr.nexters.onepage.domain.location.Location;
+import kr.nexters.onepage.domain.page.Page;
 import kr.nexters.onepage.domain.support.Modified;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.util.Map;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -21,14 +22,28 @@ public class PageImage extends Modified {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pageImageId")
     private Long id;
-    @Column
-    private Long pageId;
-    @Column
-    private Long locationId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pageId")
+    private Page page;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "locationId")
+    private Location location;
     @Column
     private String objectKey;
+    @Column
+    private String url;
     @Column
     private String name;
     @Column
     private boolean deleted;
+
+    public static PageImage of(Page page, Map<String, String> uploadInfo) {
+        return PageImage.builder()
+            .page(page)
+            .location(page.getLocation())
+            .objectKey(uploadInfo.get("public_id"))
+            .url(uploadInfo.get("url"))
+            .name(uploadInfo.get("name"))
+            .build();
+    }
 }

@@ -25,4 +25,8 @@ public class UserService {
 		}
 		return byEmail;
 	}
+
+	public UserDto findDtoByEmail(String email) {
+		return UserDto.of(findByEmail(email));
+	}
 }
