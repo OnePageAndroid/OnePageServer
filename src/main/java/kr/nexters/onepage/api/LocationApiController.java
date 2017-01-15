@@ -3,7 +3,6 @@ package kr.nexters.onepage.api;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import kr.nexters.onepage.api.common.ResponseDto;
-import kr.nexters.onepage.domain.location.LocationDto;
 import kr.nexters.onepage.domain.location.LocationService;
 import kr.nexters.onepage.domain.location.LocationsResponseDto;
 import lombok.extern.slf4j.Slf4j;
@@ -23,9 +22,10 @@ public class LocationApiController {
 
 	@ApiOperation(value = "장소 저장하기", notes = "특정 장소 저장.")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public ResponseDto save(@RequestParam LocationDto locationDto) {
+	public ResponseDto save(@RequestParam Double latitude, @RequestParam Double longitude,
+		@RequestParam String name, @RequestParam String address) {
 		try {
-			locationService.saveLocation(locationDto);
+			locationService.saveLocation(latitude, longitude, name, address);
 		} catch (Exception e) {
 			log.error("location save : " + e.getMessage(), e);
 			return ResponseDto.ofFail(e.getMessage());

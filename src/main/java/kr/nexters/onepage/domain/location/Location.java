@@ -37,4 +37,12 @@ public class Location extends Created {
 			.name(locationDto.getName())
 			.address(locationDto.getAddress()).build();
 	}
+
+	public static Location of(Double latitude, Double longitude, String name, String address) {
+		return Location.builder()
+			.latitude(latitude)
+			.longitude(longitude)
+			.name(name)
+			.address(address).build();
+	}
 }

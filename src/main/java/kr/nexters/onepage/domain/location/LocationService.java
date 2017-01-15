@@ -18,8 +18,8 @@ public class LocationService {
 	private LocationRepository locationRepository;
 
 	@Transactional(readOnly = false)
-	public void saveLocation(LocationDto locationDto) {
-		locationRepository.save(Location.of(locationDto));
+	public void saveLocation(Double latitude, Double longitude, String name, String address) {
+		locationRepository.save(Location.of(latitude, longitude, name, address));
 	}
 
 	public Location findById(Long locationId) {
