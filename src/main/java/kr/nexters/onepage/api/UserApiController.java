@@ -21,7 +21,7 @@ public class UserApiController {
 	private UserService userService;
 
 	@ApiOperation(value = "유저 저장", notes = "유저 저장")
-	@RequestMapping(value = "/save", method = RequestMethod.GET)
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public ResponseDto save(@RequestParam String email) {
 		try {
 			userService.saveUser(email);

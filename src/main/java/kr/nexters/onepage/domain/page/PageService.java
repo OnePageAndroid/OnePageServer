@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -52,10 +51,6 @@ public class PageService {
 	public PagesResponseDto findByLocationId(Long locationId, Integer pageNumber, Integer perPageSize) {
 		// TODO 첫번째 -> 마지막 -> 첫페이지 순환페이지 적용할것.
 		List<Page> pages = pageRepository.findByLocationIdAndPageable(locationId, pageNumber, perPageSize);
-
-		if(CollectionUtils.isEmpty(pages)) {
-			return PagesResponseDto.empty();
-		}
 		return PagesResponseDto.of(PageDtoBuilder.transformPagesToDtos(pages, pageNumber, (id) -> pageImageService.findByPageId(id)), pageNumber,
 			perPageSize, totalCountByLocationId(locationId));
 	}
@@ -67,9 +62,6 @@ public class PageService {
 	public PagesResponseDto findByEmail(String email, Integer pageNumber, Integer perPageSize) {
 		// TODO 첫번째 -> 마지막 -> 첫페이지 순환페이지 적용할것.
 		List<Page> pages = pageRepository.findByEmailAndPageable(email, pageNumber, perPageSize);
-		if(CollectionUtils.isEmpty(pages)) {
-			return PagesResponseDto.empty();
-		}
 		return PagesResponseDto.of(PageDtoBuilder.transformPagesToDtos(pages, pageNumber, (id) -> pageImageService.findByPageId(id)), pageNumber,
 			perPageSize, totalCountByEmail(email));
 	}

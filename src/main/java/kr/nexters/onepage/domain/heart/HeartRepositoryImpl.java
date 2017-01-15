@@ -16,7 +16,7 @@ public class HeartRepositoryImpl extends QueryDslRepositorySupport implements He
 	}
 
 	@Override public Heart findByPageIdAndEmail(Long pageId, String email) {
-		JPQLQuery<Heart> query = from(qHeart).innerJoin(qUser).innerJoin(qPage).fetchJoin();
+		JPQLQuery<Heart> query = from(qHeart).innerJoin(qHeart.user, qUser).innerJoin(qHeart.page, qPage).fetchJoin();
 
 		BooleanBuilder whereClause = new BooleanBuilder();
 		whereClause.and(qHeart.page.id.eq(pageId));

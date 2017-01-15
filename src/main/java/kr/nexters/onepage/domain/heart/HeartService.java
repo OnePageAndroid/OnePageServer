@@ -1,5 +1,6 @@
 package kr.nexters.onepage.domain.heart;
 
+import kr.nexters.onepage.domain.common.OnePageServiceException;
 import kr.nexters.onepage.domain.page.PageService;
 import kr.nexters.onepage.domain.user.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,8 +33,12 @@ public class HeartService {
 		return Objects.nonNull(heartRepository.findByPageIdAndEmail(pageId, email));
 	}
 
+	@Transactional(readOnly = false)
 	public void removeHeart(Long pageId, String email) {
 		Heart heart = heartRepository.findByPageIdAndEmail(pageId, email);
+		if (Objects.nonNull(heart)) {
+			throw new OnePageServiceException("좋아요가 존재하지 않습니다.");
+		}
 		heart.deleted();
 	}
 

@@ -18,7 +18,7 @@ DROP TABLE IF EXISTS onepage.user;
 
 CREATE TABLE onepage.user (
   `userId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'pk',
-  `email` double NOT NULL COMMENT 'email',
+  `email` varchar(200) NOT NULL COMMENT 'email',
   `createdAt` datetime NOT NULL COMMENT 'created datetime',
   `createdBy` varchar(50) NOT NULL COMMENT 'creator',
   `deleted` tinyint(1) NOT NULL COMMENT '1:deleted',
@@ -50,6 +50,7 @@ CREATE TABLE onepage.page_image (
   `pageId` bigint(20) NOT NULL COMMENT 'pageId',
   `locationId` bigint(20) NOT NULL COMMENT 'locationId',
   `objectkey` varchar(1024) NOT NULL COMMENT 'objectkey',
+  `url` varchar(2000) NOT NULL COMMENT 'objectkey',
   `name` varchar(1000) NOT NULL COMMENT 'name',
   `createdAt` datetime NOT NULL COMMENT 'created datetime',
   `createdBy` varchar(50) NOT NULL COMMENT 'creator',
