@@ -13,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(catalog = "onepage", name = "location")
-@Where(clause = "delete = 0")
+@Where(clause = "deleted = 0")
 public class Location extends Created {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

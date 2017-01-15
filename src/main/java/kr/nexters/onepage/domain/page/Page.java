@@ -16,7 +16,7 @@ import java.sql.SQLException;
 @AllArgsConstructor
 @Entity
 @Table(catalog = "onepage", name = "page")
-@Where(clause = "delete = 0")
+@Where(clause = "deleted = 0")
 public class Page extends Modified {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

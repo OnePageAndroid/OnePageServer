@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -21,7 +22,7 @@ public class PageApiController {
 
 	@ApiOperation(value = "페이지 저장", notes = "페이지 저장")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public ResponseDto save(Long locationId, String email, String content) {
+	public ResponseDto save(@RequestParam Long locationId, @RequestParam String email, @RequestParam String content) {
 		try {
 			pageService.savePage(locationId, email, content);
 		} catch (Exception e) {
@@ -33,7 +34,7 @@ public class PageApiController {
 
 	@ApiOperation(value = "장소 기반 페이지 조회", notes = "장소 기반 페이지 조회")
 	@RequestMapping(value = "/location", method = RequestMethod.GET)
-	public PagesResponseDto findByLocation(Long locationId, Integer pageNumber, Integer perPageSize) {
+	public PagesResponseDto findByLocation(@RequestParam Long locationId, @RequestParam Integer pageNumber, @RequestParam Integer perPageSize) {
 		// TODO 논의후 적용.
 		try {
 			return pageService.findByLocationId(locationId, pageNumber, perPageSize);
@@ -45,7 +46,7 @@ public class PageApiController {
 
 	@ApiOperation(value = "유저 기반 페이지 조회", notes = "유저 기반 페이지 조회")
 	@RequestMapping(value = "/user", method = RequestMethod.GET)
-	public PagesResponseDto findByUser(String email, Integer pageNumber, Integer perPageSize) {
+	public PagesResponseDto findByUser(@RequestParam String email, @RequestParam Integer pageNumber, @RequestParam Integer perPageSize) {
 		// TODO 논의후 적용.
 		try {
 			return pageService.findByEmail(email, pageNumber, perPageSize);

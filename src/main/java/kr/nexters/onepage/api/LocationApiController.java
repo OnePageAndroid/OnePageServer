@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -22,7 +23,7 @@ public class LocationApiController {
 
 	@ApiOperation(value = "장소 저장하기", notes = "특정 장소 저장.")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public ResponseDto save(LocationDto locationDto) {
+	public ResponseDto save(@RequestParam LocationDto locationDto) {
 		try {
 			locationService.saveLocation(locationDto);
 		} catch (Exception e) {
@@ -34,7 +35,7 @@ public class LocationApiController {
 
 	@ApiOperation(value = "장소이름으로 장소정보 얻어오기", notes = "장소이름으로 장소정보 얻어오기")
 	@RequestMapping(value = "/search/name", method = RequestMethod.GET)
-	public LocationsResponseDto searchName(String locationName) {
+	public LocationsResponseDto searchName(@RequestParam String locationName) {
 		try {
 			return LocationsResponseDto.of(locationService.findByLocationName(locationName));
 		} catch (Exception e) {

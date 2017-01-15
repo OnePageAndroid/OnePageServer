@@ -2,15 +2,11 @@ package kr.nexters.onepage.api;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import kr.nexters.onepage.api.common.ResponseDto;
 import kr.nexters.onepage.domain.heart.HeartService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Api(value = "좋아요 API", description = "좋아요 API", basePath = "/api/v1/heart")
@@ -22,7 +18,7 @@ public class HeartApiController {
 
 	@ApiOperation(value = "좋아요 저장", notes = "좋아요 저장")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public ResponseDto save(@ApiParam(value = "페이지 id") Long pageId, @ApiParam(value = "이메일") String email) {
+	public ResponseDto save(@RequestParam Long pageId, @RequestParam String email) {
 		try {
 			heartService.saveHeart(pageId, email);
 		} catch (Exception e) {
@@ -34,7 +30,7 @@ public class HeartApiController {
 
 	@ApiOperation(value = "좋아요 삭제", notes = "좋아요 삭제")
 	@RequestMapping(value = "/remove", method = RequestMethod.GET)
-	public ResponseDto remove(Long pageId, String email) {
+	public ResponseDto remove(@RequestParam Long pageId, @RequestParam String email) {
 		try {
 			heartService.removeHeart(pageId, email);
 		} catch (Exception e) {

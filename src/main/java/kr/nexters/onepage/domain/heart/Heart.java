@@ -15,7 +15,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(catalog = "onepage", name = "heart")
-@Where(clause = "delete = 0")
+@Where(clause = "deleted = 0")
 public class Heart extends Created {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
