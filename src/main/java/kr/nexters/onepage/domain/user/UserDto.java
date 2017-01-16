@@ -3,7 +3,6 @@ package kr.nexters.onepage.domain.user;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.dom4j.util.UserDataDocumentFactory;
 
 @Getter
 @Setter
