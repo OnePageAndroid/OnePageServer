@@ -56,6 +56,7 @@ public class PageImageService {
 		return byPageImages.stream().map(image -> PageImageDto.of(image)).collect(Collectors.toList());
 	}
 
+	@Transactional
 	public void removeByPageId(Long pageId){
 		pageImageRepository.delete(pageId);
 	}
