@@ -16,5 +16,12 @@ public class UserValidator implements Validator{
 	public void validate(Object target, Errors errors){
 		UserDto userDto = (UserDto)target;
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "이메일을 입력하세요.");
+
+		if(userDto.getEmail().length()>40){
+			errors.rejectValue("email", "메일길이 초과");
+		}
+		String[] email = userDto.getEmail().split("@");
+		if(!email[1].equals("@gamil.com"))
+			errors.rejectValue("email", "구글이메일을 입력하세요.");
 	}
 }

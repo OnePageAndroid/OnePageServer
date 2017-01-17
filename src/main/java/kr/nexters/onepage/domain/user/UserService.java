@@ -20,8 +20,10 @@ public class UserService {
 	@Autowired
 	private UserValidator userValidator;
 
-	public void saveUser(String email,BindingResult bindingResult) {
+	@SuppressWarnings("null")
+	public void saveUser(String email) {
 		User user = User.of(email);
+		BindingResult bindingResult = null;
 		userValidator.validate(user,bindingResult);
 		if(!bindingResult.hasErrors())
 			userRepository.save(user);
