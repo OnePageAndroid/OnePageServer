@@ -1,5 +1,13 @@
 package kr.nexters.onepage.domain.page;
 
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Objects;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import kr.nexters.onepage.domain.common.OnePageServiceException;
 import kr.nexters.onepage.domain.location.Location;
 import kr.nexters.onepage.domain.location.LocationService;
@@ -7,13 +15,6 @@ import kr.nexters.onepage.domain.pageImage.PageImageService;
 import kr.nexters.onepage.domain.user.User;
 import kr.nexters.onepage.domain.user.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @Service
@@ -69,5 +70,12 @@ public class PageService {
 	public int totalCountByEmail(String email) {
 		User user = userService.findByEmail(email);
 		return pageRepository.countByUserId(user.getId());
+	}
+
+	@Transactional
+	public void remove(Long pageId){
+		Page page = pageRepository.findOne(pageId);
+		pageRepository.delete(page);
+		pageImageService.removeByPageId(pageId);
 	}
 }
