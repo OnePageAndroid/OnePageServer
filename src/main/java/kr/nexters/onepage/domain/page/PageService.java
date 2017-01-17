@@ -51,6 +51,10 @@ public class PageService {
 	public PagesResponseDto findByLocationId(Long locationId, Integer pageNumber, Integer perPageSize) {
 		// TODO 첫번째 -> 마지막 -> 첫페이지 순환페이지 적용할것.
 		List<Page> pages = pageRepository.findByLocationIdAndPageable(locationId, pageNumber, perPageSize);
+//		if(pages.size() < perPageSize) {
+//			List<Page> pages = pageRepository.findByLocationIdAndPageable(locationId, pageNumber, perPageSize)
+//		}
+
 		return PagesResponseDto.of(PageDtoBuilder.transformPagesToDtos(pages, pageNumber, (id) -> pageImageService.findByPageId(id)), pageNumber,
 			perPageSize, totalCountByLocationId(locationId));
 	}

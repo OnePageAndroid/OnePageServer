@@ -1,6 +1,7 @@
 package kr.nexters.onepage.domain.pageImage;
 
 import com.cloudinary.Cloudinary;
+import com.google.common.collect.Lists;
 import kr.nexters.onepage.domain.common.OnePageServiceException;
 import kr.nexters.onepage.domain.location.LocationService;
 import kr.nexters.onepage.domain.page.Page;
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -51,6 +53,9 @@ public class PageImageService {
 
 	public List<PageImageDto> findByPageId(Long pageId) {
 		List<PageImage> byPageImages = pageImageRepository.findByPageId(pageId);
+		if (CollectionUtils.isEmpty(byPageImages)) {
+			return Lists.newArrayList();
+		}
 		return byPageImages.stream().map(image -> PageImageDto.of(image)).collect(Collectors.toList());
 	}
 }

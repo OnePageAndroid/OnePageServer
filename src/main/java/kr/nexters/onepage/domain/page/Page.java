@@ -24,9 +24,11 @@ public class Page extends Modified {
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "locationId")
+    @Where(clause = "deleted = 0")
     private Location location;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
+    @Where(clause = "deleted = 0")
     private User user;
     @Column
     private String content;

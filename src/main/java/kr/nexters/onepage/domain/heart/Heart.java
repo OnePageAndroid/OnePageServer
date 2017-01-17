@@ -23,9 +23,11 @@ public class Heart extends Created {
 	private Long id;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "pageId")
+	@Where(clause = "deleted = 0")
 	private Page page;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "userId")
+	@Where(clause = "deleted = 0")
 	private User user;
 	@Column
 	private boolean deleted;

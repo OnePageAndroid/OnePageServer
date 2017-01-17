@@ -24,9 +24,11 @@ public class PageImage extends Modified {
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pageId")
+    @Where(clause = "deleted = 0")
     private Page page;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "locationId")
+    @Where(clause = "deleted = 0")
     private Location location;
     @Column
     private String objectKey;
