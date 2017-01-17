@@ -1,5 +1,11 @@
 package kr.nexters.onepage.api;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -7,11 +13,6 @@ import kr.nexters.onepage.api.common.ResponseDto;
 import kr.nexters.onepage.domain.page.PageService;
 import kr.nexters.onepage.domain.page.PagesResponseDto;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @Api(value = "페이지 API", description = "페이지 API", basePath = "/api/v1/page")
@@ -59,5 +60,17 @@ public class PageApiController {
 			log.error("findByPageId : " + e.getMessage());
 			return PagesResponseDto.empty();
 		}
+	}
+
+	@ApiOperation(value = "페이지 삭제", notes = "페이지 삭제")
+	@RequestMapping(value="/remove", method=RequestMethod.GET)
+	public ResponseDto remove(@RequestParam Long pageId){
+		try{
+
+		} catch(Exception e){
+			log.error("page image remove : " + e.getMessage());
+			return ResponseDto.ofFail(e.getMessage());
+		}
+		return ResponseDto.ofSuccess("page 삭제 성공");
 	}
 }

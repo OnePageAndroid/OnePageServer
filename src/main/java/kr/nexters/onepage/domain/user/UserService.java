@@ -1,12 +1,14 @@
 package kr.nexters.onepage.domain.user;
 
-import kr.nexters.onepage.domain.common.OnePageServiceException;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 
-import java.util.Objects;
+import kr.nexters.onepage.domain.common.OnePageServiceException;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -15,8 +17,18 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private UserValidator userValidator;
+
+	@SuppressWarnings("null")
 	public void saveUser(String email) {
-		userRepository.save(User.of(email));
+		User user = User.of(email);
+		BindingResult bindingResult = null;
+		userValidator.validate(user,bindingResult);
+		if(!bindingResult.hasErrors())
+			userRepository.save(user);
+		else
+			return;
 	}
 
 	public User findByEmail(String email) {

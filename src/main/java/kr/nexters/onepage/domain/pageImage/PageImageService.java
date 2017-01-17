@@ -1,23 +1,25 @@
 package kr.nexters.onepage.domain.pageImage;
 
-import com.cloudinary.Cloudinary;
-import com.google.common.collect.Lists;
-import kr.nexters.onepage.domain.common.OnePageServiceException;
-import kr.nexters.onepage.domain.location.LocationService;
-import kr.nexters.onepage.domain.page.Page;
-import kr.nexters.onepage.domain.page.PageService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.cloudinary.Cloudinary;
+import com.google.common.collect.Lists;
+
+import kr.nexters.onepage.domain.common.OnePageServiceException;
+import kr.nexters.onepage.domain.location.LocationService;
+import kr.nexters.onepage.domain.page.Page;
+import kr.nexters.onepage.domain.page.PageService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.CollectionUtils;
 
 @Slf4j
 @Service
@@ -57,5 +59,10 @@ public class PageImageService {
 			return Lists.newArrayList();
 		}
 		return byPageImages.stream().map(image -> PageImageDto.of(image)).collect(Collectors.toList());
+	}
+
+	@Transactional
+	public void removeByPageId(Long pageId){
+		pageImageRepository.delete(pageId);
 	}
 }
