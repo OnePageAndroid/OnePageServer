@@ -8,4 +8,5 @@ import java.util.List;
 @Repository
 public interface LocationRepository extends OnePageRepository<Location, Long>, LocationRepositoryCustom {
 	List<Location> findByName(String name);
+	List<Location> findByNameContaining(String name);
 }

@@ -27,10 +27,15 @@ public class LocationService {
 	}
 
 	public List<LocationDto> findByLocationName(String locationName) {
-		List<Location> byName = locationRepository.findByName(locationName);
+		List<Location> byName = locationRepository.findByNameContaining(locationName);
 		if (CollectionUtils.isEmpty(byName)) {
 			return Lists.newArrayList();
 		}
 		return byName.stream().map(location -> LocationDto.of(location)).collect(Collectors.toList());
+	}
+
+	public List<LocationDto> findByLatAndLng(Double latitude, Double longitude) {
+		// TODO
+		return Lists.newArrayList();
 	}
 }

@@ -43,4 +43,16 @@ public class LocationApiController {
 			return LocationsResponseDto.empty();
 		}
 	}
+
+	// TODO 좌표 기준 조회 하나
+	@ApiOperation(value = "좌표로 장소정보 얻어오기", notes = "좌표로 장소정보 얻어오기")
+	@RequestMapping(value = "/search/name", method = RequestMethod.GET)
+	public LocationsResponseDto searchLatLng(@RequestParam Double latitude, @RequestParam Double longitude) {
+		try {
+			return LocationsResponseDto.of(locationService.findByLatAndLng(latitude, longitude));
+		} catch (Exception e) {
+			log.error("location search name : " + e.getMessage(), e);
+			return LocationsResponseDto.empty();
+		}
+	}
 }
