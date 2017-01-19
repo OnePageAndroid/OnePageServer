@@ -1,11 +1,5 @@
 package kr.nexters.onepage.api;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -13,6 +7,11 @@ import kr.nexters.onepage.api.common.ResponseDto;
 import kr.nexters.onepage.domain.page.PageService;
 import kr.nexters.onepage.domain.page.PagesResponseDto;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @Api(value = "페이지 API", description = "페이지 API", basePath = "/api/v1/page")
@@ -39,11 +38,10 @@ public class PageApiController {
 	public PagesResponseDto findByLocation(@RequestParam Long locationId,
 		@ApiParam(value = "현재 페이지 넘버버0부터시작)") @RequestParam Integer pageNumber,
 		@ApiParam(value = "가져올 페이지 사이즈") @RequestParam Integer perPageSize) {
-		// TODO 논의후 적용.
 		try {
-			return pageService.findByLocationId(locationId, pageNumber, perPageSize);
+			return pageService.findCircleByLocationId(locationId, pageNumber, perPageSize);
 		} catch (Exception e) {
-			log.error("findByPageId : " + e.getMessage());
+			log.error("findByLocation : " + e.getMessage());
 			return PagesResponseDto.empty();
 		}
 	}
@@ -53,11 +51,10 @@ public class PageApiController {
 	public PagesResponseDto findByUser(@RequestParam String email,
 		@ApiParam(value = "현재 페이지 넘버버0부터시작)") @RequestParam Integer pageNumber,
 		@ApiParam(value = "가져올 페이지 사이즈") @RequestParam Integer perPageSize) {
-		// TODO 논의후 적용.
 		try {
-			return pageService.findByEmail(email, pageNumber, perPageSize);
+			return pageService.findCircleByEmail(email, pageNumber, perPageSize);
 		} catch (Exception e) {
-			log.error("findByPageId : " + e.getMessage());
+			log.error("findByUser : " + e.getMessage());
 			return PagesResponseDto.empty();
 		}
 	}
@@ -66,7 +63,7 @@ public class PageApiController {
 	@RequestMapping(value="/remove", method=RequestMethod.GET)
 	public ResponseDto remove(@RequestParam Long pageId){
 		try{
-
+			// TODO
 		} catch(Exception e){
 			log.error("page image remove : " + e.getMessage());
 			return ResponseDto.ofFail(e.getMessage());

@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @Slf4j
-@Api(value = "페이지별 이미지 API", description = "페이지별 이미지 조회", basePath = "/api/v1/page/image")
+@Api(value = "페이지별 이미지 API", description = "페이지별 이미지 API", basePath = "/api/v1/page/image")
 @RestController
 @RequestMapping("/api/v1/page/image")
 public class PageImageApiController {

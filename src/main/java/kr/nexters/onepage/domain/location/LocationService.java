@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static kr.nexters.onepage.domain.common.NumericConstant.HUNDRED;
+import static kr.nexters.onepage.domain.common.NumericConstant.TEN;
 
 @Slf4j
 @Service
@@ -44,6 +45,7 @@ public class LocationService {
 			.sorted((loc1, loc2) -> (int) Math.round( // 가장 가까운 장소 순으로 오름차순
 				LatLngCalculator.meterDistance(latitude, longitude, loc1.getLatitude(), loc1.getLongitude()) - LatLngCalculator.meterDistance(
 					latitude, longitude, loc2.getLatitude(), loc2.getLongitude())))
+			.limit(TEN)
 			.collect(Collectors.toList());
 	}
 }

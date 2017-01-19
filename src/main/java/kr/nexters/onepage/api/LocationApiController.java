@@ -44,9 +44,8 @@ public class LocationApiController {
 		}
 	}
 
-	// TODO 좌표 기준 조회 하나
 	@ApiOperation(value = "좌표로 장소정보 얻어오기", notes = "좌표로 장소정보 얻어오기")
-	@RequestMapping(value = "/search/name", method = RequestMethod.GET)
+	@RequestMapping(value = "/search/coordinates", method = RequestMethod.GET)
 	public LocationsResponseDto searchLatLng(@RequestParam Double latitude, @RequestParam Double longitude) {
 		try {
 			return LocationsResponseDto.of(locationService.findByLatAndLng(latitude, longitude));
