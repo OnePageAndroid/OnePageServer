@@ -1,13 +1,6 @@
 package kr.nexters.onepage.domain.page;
 
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Objects;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import com.google.common.collect.Lists;
 import kr.nexters.onepage.domain.common.OnePageServiceException;
 import kr.nexters.onepage.domain.location.Location;
 import kr.nexters.onepage.domain.location.LocationService;
@@ -15,6 +8,17 @@ import kr.nexters.onepage.domain.pageImage.PageImageService;
 import kr.nexters.onepage.domain.user.User;
 import kr.nexters.onepage.domain.user.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import static kr.nexters.onepage.domain.common.NumericConstant.ZERO;
 
 @Slf4j
 @Service
@@ -50,14 +54,15 @@ public class PageService {
 	}
 
 	public PagesResponseDto findByLocationId(Long locationId, Integer pageNumber, Integer perPageSize) {
-		// TODO 첫번째 -> 마지막 -> 첫페이지 순환페이지 적용할것.
 		List<Page> pages = pageRepository.findByLocationIdAndPageable(locationId, pageNumber, perPageSize);
-//		if(pages.size() < perPageSize) {
-//			List<Page> pages = pageRepository.findByLocationIdAndPageable(locationId, pageNumber, perPageSize)
-//		}
-
-		return PagesResponseDto.of(PageDtoBuilder.transformPagesToDtos(pages, pageNumber, (id) -> pageImageService.findByPageId(id)), pageNumber,
-			perPageSize, totalCountByLocationId(locationId));
+		if (CollectionUtils.isNotEmpty(pages) && pages.size() < perPageSize) {
+			pages.addAll(pageRepository.findByLocationIdAndPageable(locationId, ZERO, perPageSize - pages.size()));
+		}
+		return PagesResponseDto.of(
+			PageDtoBuilder.transformPagesToDtos(Lists.newArrayList(pages.stream().collect(Collectors.toSet())), pageNumber, (id) -> pageImageService.findByPageId(id)),
+			pageNumber,
+			perPageSize,
+			totalCountByLocationId(locationId));
 	}
 
 	public int totalCountByLocationId(Long locationId) {
@@ -65,10 +70,15 @@ public class PageService {
 	}
 
 	public PagesResponseDto findByEmail(String email, Integer pageNumber, Integer perPageSize) {
-		// TODO 첫번째 -> 마지막 -> 첫페이지 순환페이지 적용할것.
 		List<Page> pages = pageRepository.findByEmailAndPageable(email, pageNumber, perPageSize);
-		return PagesResponseDto.of(PageDtoBuilder.transformPagesToDtos(pages, pageNumber, (id) -> pageImageService.findByPageId(id)), pageNumber,
-			perPageSize, totalCountByEmail(email));
+		if (CollectionUtils.isNotEmpty(pages) && pages.size() < perPageSize) {
+			pages.addAll(pageRepository.findByEmailAndPageable(email, ZERO, perPageSize - pages.size()));
+		}
+		return PagesResponseDto.of(
+			PageDtoBuilder.transformPagesToDtos(Lists.newArrayList(pages.stream().collect(Collectors.toSet())), pageNumber, (id) -> pageImageService.findByPageId(id)),
+			pageNumber,
+			perPageSize,
+			totalCountByEmail(email));
 	}
 
 	public int totalCountByEmail(String email) {
