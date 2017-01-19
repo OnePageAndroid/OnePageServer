@@ -16,9 +16,9 @@ public class HeartApiController {
 	@Autowired
 	private HeartService heartService;
 
-	@ApiOperation(value = "좋아요 저장 or 삭제", notes = "좋아요 저장")
+	@ApiOperation(value = "좋아요 저장 or 삭제", notes = "좋아요 저장 or 삭제")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public ResponseDto save(@RequestParam Long pageId, @RequestParam String email) {
+	public ResponseDto saveOrRemove(@RequestParam Long pageId, @RequestParam String email) {
 		try {
 			heartService.saveOrRemoveHeart(pageId, email);
 		} catch (Exception e) {
