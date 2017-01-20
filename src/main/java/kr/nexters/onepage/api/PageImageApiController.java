@@ -21,7 +21,7 @@ import kr.nexters.onepage.domain.pageImage.PageImageService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Api(value = "페이지별 이미지 API", description = "페이지별 이미지 조회", basePath = "/api/v1/page/image")
+@Api(value = "페이지별 이미지 API", description = "페이지별 이미지 API", basePath = "/api/v1/page/image")
 @RestController
 @RequestMapping("/api/v1/page/image")
 public class PageImageApiController {

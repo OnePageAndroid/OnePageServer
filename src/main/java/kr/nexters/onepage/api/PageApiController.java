@@ -1,5 +1,6 @@
 package kr.nexters.onepage.api;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -47,11 +48,10 @@ public class PageApiController {
 		Preconditions.checkNotNull(locationId, "locationId parameter가 존재하지 않음");
 		Preconditions.checkNotNull(pageNumber, "pageNumber parameter가 존재하지 않음");
 		Preconditions.checkNotNull(perPageSize, "perPageSize parameter가 존재하지 않음");
-		// TODO 논의후 적용.
 		try {
-			return pageService.findByLocationId(locationId, pageNumber, perPageSize);
+			return pageService.findCircleByLocationId(locationId, pageNumber, perPageSize);
 		} catch (Exception e) {
-			log.error("findByPageId : " + e.getMessage());
+			log.error("findByLocation : " + e.getMessage());
 			return PagesResponseDto.empty();
 		}
 	}
@@ -64,11 +64,11 @@ public class PageApiController {
 		Preconditions.checkNotNull(email, "email paramter가 존재하지 않음");
 		Preconditions.checkNotNull(pageNumber, "pageNumber parameter가 존재하지 않음");
 		Preconditions.checkNotNull(perPageSize, "perPageSize parameter가 존재하지 않음");
-		// TODO 논의후 적용.
+
 		try {
-			return pageService.findByEmail(email, pageNumber, perPageSize);
+			return pageService.findCircleByEmail(email, pageNumber, perPageSize);
 		} catch (Exception e) {
-			log.error("findByPageId : " + e.getMessage());
+			log.error("findByUser : " + e.getMessage());
 			return PagesResponseDto.empty();
 		}
 	}

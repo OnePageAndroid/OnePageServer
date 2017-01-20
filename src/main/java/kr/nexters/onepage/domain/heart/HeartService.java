@@ -21,25 +21,17 @@ public class HeartService {
 	private PageService pageService;
 
 	@Transactional(readOnly = false)
-	public void saveHeart(Long pageId, String email) {
+	public void saveOrRemoveHeart(Long pageId, String email) {
 		Heart heart = Heart.of(pageService.findById(pageId), userService.findByEmail(email));
 		if(existsByPageIdAndEmail(pageId, email)) {
+			heart.deleted();
 			return;
 		}
 		heartRepository.save(heart);
 	}
 
-	private boolean existsByPageIdAndEmail(Long pageId, String email) {
+	public boolean existsByPageIdAndEmail(Long pageId, String email) {
 		return Objects.nonNull(heartRepository.findByPageIdAndEmail(pageId, email));
-	}
-
-	@Transactional(readOnly = false)
-	public void removeHeart(Long pageId, String email) {
-		Heart heart = heartRepository.findByPageIdAndEmail(pageId, email);
-		if (Objects.nonNull(heart)) {
-			throw new OnePageServiceException("좋아요가 존재하지 않습니다.");
-		}
-		heart.deleted();
 	}
 
 	public Long countByPageId(Long pageId) {

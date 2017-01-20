@@ -23,13 +23,14 @@ public class HeartApiController {
 	@Autowired
 	private HeartService heartService;
 
-	@ApiOperation(value = "좋아요 저장", notes = "좋아요 저장")
+	@ApiOperation(value = "좋아요 저장 or 삭제", notes = "좋아요 저장 or 삭제")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public ResponseDto save(@RequestParam Long pageId, @RequestParam String email) {
-		Preconditions.checkNotNull(pageId, "pageId parameter가 존재하지 않음");
-		Preconditions.checkNotNull(email , "email parameter가 존재하지 않음");
+	public ResponseDto saveOrRemove(@RequestParam Long pageId, @RequestParam String email) {
+	Preconditions.checkNotNull(pageId, "pageId parameter가 존재하지 않음");
+	Preconditions.checkNotNull(email , "email parameter가 존재하지 않음");
+
 		try {
-			heartService.saveHeart(pageId, email);
+			heartService.saveOrRemoveHeart(pageId, email);
 		} catch (Exception e) {
 			log.error("heart save : " + e.getMessage(), e);
 			return ResponseDto.ofFail(e.getMessage());
@@ -37,18 +38,17 @@ public class HeartApiController {
 		return ResponseDto.ofSuccess("하트 저장 성공");
 	}
 
-	@ApiOperation(value = "좋아요 삭제", notes = "좋아요 삭제")
-	@RequestMapping(value = "/remove", method = RequestMethod.GET)
-	public ResponseDto remove(@RequestParam Long pageId, @RequestParam String email) {
+	@ApiOperation(value = "좋아요 상태", notes = "좋아요 상태")
+	@RequestMapping(value = "/save", method = RequestMethod.GET)
+	public boolean status(@RequestParam Long pageId, @RequestParam String email) {
 		Preconditions.checkNotNull(pageId, "pageId parameter가 존재하지 않음");
 		Preconditions.checkNotNull(email, "email paramter가 존재하지 않음");
 		try {
-			heartService.removeHeart(pageId, email);
+			return heartService.existsByPageIdAndEmail(pageId, email);
 		} catch (Exception e) {
-			log.error("heart remove : " + e.getMessage(), e);
-			return ResponseDto.ofFail(e.getMessage());
+			log.error("heart save : " + e.getMessage(), e);
+			return false;
 		}
-		return ResponseDto.ofSuccess("하트 삭제 성공");
 	}
 
 	@ApiOperation(value = "좋아요 갯수 조회", notes = "좋아요 갯수 조회")
