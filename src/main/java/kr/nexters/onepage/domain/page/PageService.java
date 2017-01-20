@@ -32,7 +32,6 @@ public class PageService {
 	public void savePage(Long locationId, String email, String content) {
 		Location location = locationService.findById(locationId);
 		User user = userService.findByEmail(email);
-
 		try {
 			pageRepository.save(Page.of(location, user, content));
 		} catch (SQLException e) {
@@ -76,10 +75,10 @@ public class PageService {
 		return pageRepository.countByUserId(user.getId());
 	}
 
-	@Transactional
+	@Transactional(readOnly = false)
 	public void remove(Long pageId){
 		Page page = pageRepository.findOne(pageId);
-		pageRepository.delete(page);
-		pageImageService.removeByPageId(pageId);
+		page.deleted();
+		pageImageService.deleted(pageId);
 	}
 }

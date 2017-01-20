@@ -1,10 +1,21 @@
 package kr.nexters.onepage.domain.location;
 
-import kr.nexters.onepage.domain.support.Created;
-import lombok.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.annotations.Where;
 
-import javax.persistence.*;
+import kr.nexters.onepage.domain.support.Created;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -20,12 +31,16 @@ public class Location extends Created {
 	@Column(name = "locationId")
 	private Long id;
 	@Column
+	@NotNull
 	private Double latitude;
 	@Column
+	@NotNull
 	private Double longitude;
 	@Column
+	@NotNull
 	private String name;
 	@Column
+	@NotNull
 	private String address;
 	@Column
 	private boolean deleted;

@@ -1,10 +1,23 @@
 package kr.nexters.onepage.domain.user;
 
-import kr.nexters.onepage.domain.support.Created;
-import lombok.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 import org.hibernate.annotations.Where;
 
-import javax.persistence.*;
+import kr.nexters.onepage.domain.support.Created;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -20,6 +33,9 @@ public class User extends Created {
 	@Column(name = "userId")
 	private Long id;
 	@Column
+	@NotNull
+	@Size(min=1,message="이메일을 입력하세요.")
+	@Pattern(regexp="^(\\w+)(((\\.?)(\\w+))*)[@](((\\w+)[.])+)(\\w{2,3})$",message="이메일 형식만 가능합니다.")
 	private String email;
 	@Column
 	private boolean deleted;

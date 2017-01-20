@@ -1,16 +1,31 @@
 package kr.nexters.onepage.domain.pageImage;
 
+import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.Where;
+
 import kr.nexters.onepage.domain.location.Location;
 import kr.nexters.onepage.domain.page.Page;
 import kr.nexters.onepage.domain.support.Modified;
-import lombok.*;
-import org.hibernate.annotations.Where;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.*;
-import java.util.Map;
-
-@Getter
 @Setter
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,16 +40,21 @@ public class PageImage extends Modified {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pageId")
     @Where(clause = "deleted = 0")
+    @NotNull
     private Page page;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "locationId")
     @Where(clause = "deleted = 0")
+    @NotNull
     private Location location;
     @Column
+    @NotNull
     private String objectKey;
     @Column
+    @NotNull
     private String url;
     @Column
+    @NotNull
     private String name;
     @Column
     private boolean deleted;
@@ -48,4 +68,8 @@ public class PageImage extends Modified {
             .name(uploadInfo.get("name"))
             .build();
     }
+
+    public void deleted() {
+		this.deleted = true;
+	}
 }

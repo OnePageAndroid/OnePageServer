@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.common.base.Preconditions;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -25,6 +27,9 @@ public class PageApiController {
 	@ApiOperation(value = "페이지 저장", notes = "페이지 저장")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public ResponseDto save(@RequestParam Long locationId, @RequestParam String email, @RequestParam String content) {
+		Preconditions.checkNotNull(locationId, "locationId parameter가 존재하지않음");
+		Preconditions.checkNotNull(email, "email paramter가 존재하지않음");
+		Preconditions.checkNotNull(content, "content parameter가 존재하지않음");
 		try {
 			pageService.savePage(locationId, email, content);
 		} catch (Exception e) {
@@ -39,6 +44,9 @@ public class PageApiController {
 	public PagesResponseDto findByLocation(@RequestParam Long locationId,
 		@ApiParam(value = "현재 페이지 넘버버0부터시작)") @RequestParam Integer pageNumber,
 		@ApiParam(value = "가져올 페이지 사이즈") @RequestParam Integer perPageSize) {
+		Preconditions.checkNotNull(locationId, "locationId parameter가 존재하지 않음");
+		Preconditions.checkNotNull(pageNumber, "pageNumber parameter가 존재하지 않음");
+		Preconditions.checkNotNull(perPageSize, "perPageSize parameter가 존재하지 않음");
 		// TODO 논의후 적용.
 		try {
 			return pageService.findByLocationId(locationId, pageNumber, perPageSize);
@@ -53,6 +61,9 @@ public class PageApiController {
 	public PagesResponseDto findByUser(@RequestParam String email,
 		@ApiParam(value = "현재 페이지 넘버버0부터시작)") @RequestParam Integer pageNumber,
 		@ApiParam(value = "가져올 페이지 사이즈") @RequestParam Integer perPageSize) {
+		Preconditions.checkNotNull(email, "email paramter가 존재하지 않음");
+		Preconditions.checkNotNull(pageNumber, "pageNumber parameter가 존재하지 않음");
+		Preconditions.checkNotNull(perPageSize, "perPageSize parameter가 존재하지 않음");
 		// TODO 논의후 적용.
 		try {
 			return pageService.findByEmail(email, pageNumber, perPageSize);
@@ -65,8 +76,9 @@ public class PageApiController {
 	@ApiOperation(value = "페이지 삭제", notes = "페이지 삭제")
 	@RequestMapping(value="/remove", method=RequestMethod.GET)
 	public ResponseDto remove(@RequestParam Long pageId){
+		Preconditions.checkNotNull(pageId, "pageId paramter가 존재하지 않음");
 		try{
-
+			pageService.remove(pageId);
 		} catch(Exception e){
 			log.error("page image remove : " + e.getMessage());
 			return ResponseDto.ofFail(e.getMessage());

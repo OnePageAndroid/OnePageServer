@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cloudinary.Cloudinary;
@@ -19,7 +20,6 @@ import kr.nexters.onepage.domain.location.LocationService;
 import kr.nexters.onepage.domain.page.Page;
 import kr.nexters.onepage.domain.page.PageService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.CollectionUtils;
 
 @Slf4j
 @Service
@@ -42,9 +42,11 @@ public class PageImageService {
 
 	private Map<String, String> upload(MultipartFile multipartFile) {
 		try {
-			Map<String, String> uploadInfo = cloudinary.uploader().upload(multipartFile.getBytes(), new HashMap() {{
-				put("resource_type", "auto");
-			}});
+			Map<String, String> uploadInfo = cloudinary.uploader().upload(multipartFile.getBytes(), new HashMap() {
+				{
+					put("resource_type", "auto");
+				}
+			});
 			uploadInfo.put("name", multipartFile.getName());
 			return uploadInfo;
 		} catch (IOException e) {
@@ -61,8 +63,23 @@ public class PageImageService {
 		return byPageImages.stream().map(image -> PageImageDto.of(image)).collect(Collectors.toList());
 	}
 
-	@Transactional
-	public void removeByPageId(Long pageId){
-		pageImageRepository.delete(pageId);
+	@Transactional(readOnly = false)
+	public void removeByPageId(Long pageId) {
+		try {
+			pageImageRepository.delete(pageId);
+			List<PageImage> pageImages = pageImageRepository.findByPageId(pageId);
+			for (PageImage p : pageImages)
+				cloudinary.uploader().destroy(p.getObjectKey(), new HashMap());
+		} catch (Exception e) {
+			log.error("savePageImage : " + e.getMessage());
+			throw new OnePageServiceException(e);
+		}
 	}
+
+	@Transactional(readOnly = false)
+	public void deleted(Long pageId) {
+		PageImage pageImage = pageImageRepository.findOne(pageId);
+		pageImage.deleted();
+	}
+
 }

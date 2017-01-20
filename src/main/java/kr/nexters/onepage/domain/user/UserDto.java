@@ -20,4 +20,10 @@ public class UserDto {
 		return UserDto.builder()
 			.build();
 	}
+
+	public static UserDto err(String err){
+		return UserDto.builder()
+				.email(err)
+				.build();
+	}
 }
