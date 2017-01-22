@@ -1,21 +1,23 @@
 package kr.nexters.onepage.api;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.google.common.base.Preconditions;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import kr.nexters.onepage.api.common.ResponseDto;
 import kr.nexters.onepage.domain.page.PageService;
 import kr.nexters.onepage.domain.page.PagesResponseDto;
+import kr.nexters.onepage.domain.util.LocalDateRange;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDate;
+
+import static kr.nexters.onepage.domain.common.NumericConstant.ZERO;
 
 @Slf4j
 @Api(value = "페이지 API", description = "페이지 API", basePath = "/api/v1/page")
@@ -70,6 +72,28 @@ public class PageApiController {
 		} catch (Exception e) {
 			log.error("findByUser : " + e.getMessage());
 			return PagesResponseDto.empty();
+		}
+	}
+
+	@ApiOperation(value = "장소별 페이지 총 갯수", notes = "장소별 페이지 총 갯수")
+	@RequestMapping(value="/count/total", method=RequestMethod.GET)
+	public Integer countTotal(@RequestParam Long locationId){
+		try{
+			return pageService.totalCountByLocationId(locationId);
+		} catch(Exception e){
+			log.error("page image remove : " + e.getMessage());
+			return ZERO;
+		}
+	}
+
+	@ApiOperation(value = "장소, 날짜 기간별 페이지 갯수", notes = "장소, 날짜 기간별 페이지 갯")
+	@RequestMapping(value="/count", method=RequestMethod.GET)
+	public Integer count(@RequestParam Long locationId, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate){
+		try{
+			return pageService.countByLocationIdAndRange(locationId, LocalDateRange.of(startDate, endDate));
+		} catch(Exception e){
+			log.error("page image remove : " + e.getMessage());
+			return ZERO;
 		}
 	}
 

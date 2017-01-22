@@ -52,6 +52,18 @@ public class LocationApiController {
 		}
 	}
 
+	@ApiOperation(value = "모든 장소 리스트 가져오기", notes = "모든 장소 리스트 가져오기")
+	@RequestMapping(value = "/search/name", method = RequestMethod.GET)
+	public LocationsResponseDto locationAll(@RequestParam String locationName) {
+		Preconditions.checkNotNull(locationName,"locationName parameter가 존재하지 않음");
+		try {
+			return LocationsResponseDto.of(locationService.findAll());
+		} catch (Exception e) {
+			log.error("location search name : " + e.getMessage(), e);
+			return LocationsResponseDto.empty();
+		}
+	}
+
 	@ApiOperation(value = "좌표로 장소정보 얻어오기", notes = "좌표로 장소정보 얻어오기")
 	@RequestMapping(value = "/search/coordinates", method = RequestMethod.GET)
 	public LocationsResponseDto searchLatLng(@RequestParam Double latitude, @RequestParam Double longitude) {

@@ -1,10 +1,12 @@
 package kr.nexters.onepage.domain.page;
 
 import com.google.common.collect.Lists;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;
 import kr.nexters.onepage.domain.heart.QHeart;
 import kr.nexters.onepage.domain.location.QLocation;
 import kr.nexters.onepage.domain.user.QUser;
+import kr.nexters.onepage.domain.util.LocalDateRange;
 import org.springframework.data.jpa.repository.support.QueryDslRepositorySupport;
 
 import java.util.List;
@@ -48,5 +50,12 @@ public class PageRepositoryImpl extends QueryDslRepositorySupport implements Pag
 		return Lists.newArrayList();
 	}
 
+	@Override public long countByLocationIdAndRange(Long locationId, LocalDateRange range) {
+		JPQLQuery<Page> query = from(qPage).innerJoin(qPage.location, qLocation);
+		BooleanBuilder whereClause = new BooleanBuilder();
+		whereClause.and(qPage.location.id.eq(locationId));
+		whereClause.and(qPage.createdAt.between(range.getStartDateTime(), range.getEndDateTime()));
+		return query.where(whereClause).fetchCount();
+	}
 
 }

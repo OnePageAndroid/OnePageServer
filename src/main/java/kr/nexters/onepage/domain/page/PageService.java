@@ -7,6 +7,7 @@ import kr.nexters.onepage.domain.location.LocationService;
 import kr.nexters.onepage.domain.pageImage.PageImageService;
 import kr.nexters.onepage.domain.user.User;
 import kr.nexters.onepage.domain.user.UserService;
+import kr.nexters.onepage.domain.util.LocalDateRange;
 import kr.nexters.onepage.domain.util.functional.F2;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -100,5 +101,9 @@ public class PageService {
 		Page page = pageRepository.findOne(pageId);
 		page.deleted();
 		pageImageService.deleted(pageId);
+	}
+
+	public int countByLocationIdAndRange(Long locationId, LocalDateRange range) {
+		return (int) pageRepository.countByLocationIdAndRange(locationId, range);
 	}
 }
