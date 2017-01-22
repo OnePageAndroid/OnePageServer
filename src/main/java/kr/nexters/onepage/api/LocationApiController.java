@@ -53,7 +53,7 @@ public class LocationApiController {
 	}
 
 	@ApiOperation(value = "모든 장소 리스트 가져오기", notes = "모든 장소 리스트 가져오기")
-	@RequestMapping(value = "/search/name", method = RequestMethod.GET)
+	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public LocationsResponseDto locationAll(@RequestParam String locationName) {
 		Preconditions.checkNotNull(locationName,"locationName parameter가 존재하지 않음");
 		try {
