@@ -88,10 +88,12 @@ public class PageApiController {
 
 	@ApiOperation(value = "장소, 날짜 기간별 페이지 갯수", notes = "장소, 날짜 기간별 페이지 갯")
 	@RequestMapping(value="/count", method=RequestMethod.GET)
-	public Integer count(@RequestParam Long locationId, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate){
-		try{
+	public Integer count(@RequestParam Long locationId,
+		@ApiParam(value = "시작날짜(yyyy-MM-dd)") @RequestParam LocalDate startDate,
+		@ApiParam(value = "마지막날짜(yyyy-MM-dd)") @RequestParam LocalDate endDate){
+		try {
 			return pageService.countByLocationIdAndRange(locationId, LocalDateRange.of(startDate, endDate));
-		} catch(Exception e){
+		} catch (Exception e) {
 			log.error("page image remove : " + e.getMessage());
 			return ZERO;
 		}

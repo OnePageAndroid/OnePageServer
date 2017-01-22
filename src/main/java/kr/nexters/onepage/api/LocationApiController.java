@@ -43,7 +43,7 @@ public class LocationApiController {
 	@ApiOperation(value = "장소이름으로 장소정보 얻어오기", notes = "장소이름으로 장소정보 얻어오기")
 	@RequestMapping(value = "/search/name", method = RequestMethod.GET)
 	public LocationsResponseDto searchName(@RequestParam String locationName) {
-		Preconditions.checkNotNull(locationName,"locationName parameter가 존재하지 않음");
+		Preconditions.checkNotNull(locationName, "locationName parameter가 존재하지 않음");
 		try {
 			return LocationsResponseDto.of(locationService.findByLocationName(locationName));
 		} catch (Exception e) {
@@ -54,8 +54,7 @@ public class LocationApiController {
 
 	@ApiOperation(value = "모든 장소 리스트 가져오기", notes = "모든 장소 리스트 가져오기")
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
-	public LocationsResponseDto locationAll(@RequestParam String locationName) {
-		Preconditions.checkNotNull(locationName,"locationName parameter가 존재하지 않음");
+	public LocationsResponseDto locationAll() {
 		try {
 			return LocationsResponseDto.of(locationService.findAll());
 		} catch (Exception e) {
