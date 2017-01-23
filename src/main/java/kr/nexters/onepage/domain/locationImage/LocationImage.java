@@ -5,11 +5,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Where;
 
+import kr.nexters.onepage.domain.location.Location;
+import kr.nexters.onepage.domain.support.Modified;
+import kr.nexters.onepage.domain.support.Weather;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,15 +29,16 @@ import lombok.Setter;
 @Entity
 @Table(catalog = "onepage", name = "locationImage")
 @Where(clause = "deleted = 0")
-public class LocationImage {
+public class LocationImage extends Modified{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "locationImageId")
 	private Long id;
 
-	@Column(name = "locationId")
+	@JoinColumn(name = "locationId")
 	@NotNull
-	private Long locationId;
+	@ManyToOne
+	private Location location;
 
 	@Column(name = "objectkey")
 	@NotNull
@@ -46,22 +52,17 @@ public class LocationImage {
 	@NotNull
 	private String name;
 
-	enum Weather{
-		맑음,
-		흐림
-	}
-
-	@Column(name = "weather")
+	@Column(name = "weatherType")
 	@NotNull
 	private Weather weather;
 
 	@Column(name = "deleted")
 	private boolean deleted;
 
-	public static LocationImage of(Long id, Long locationId, String objectkey, String url, Weather weather){
+	public static LocationImage of(Long id, Location location, String objectkey, String url, Weather weather){
 		return LocationImage.builder()
 				.id(id)
-				.locationId(locationId)
+				.location(location)
 				.objectkey(objectkey)
 				.url(url)
 				.weather(weather).build();

@@ -1,27 +1,26 @@
 package kr.nexters.onepage.domain.page;
 
-import static kr.nexters.onepage.domain.common.NumericConstant.ZERO;
-
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.google.common.collect.Lists;
-
 import kr.nexters.onepage.domain.common.OnePageServiceException;
 import kr.nexters.onepage.domain.location.Location;
 import kr.nexters.onepage.domain.location.LocationService;
 import kr.nexters.onepage.domain.pageImage.PageImageService;
 import kr.nexters.onepage.domain.user.User;
 import kr.nexters.onepage.domain.user.UserService;
+import kr.nexters.onepage.domain.util.LocalDateRange;
 import kr.nexters.onepage.domain.util.functional.F2;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import static kr.nexters.onepage.domain.common.NumericConstant.ZERO;
 
 @Slf4j
 @Service
@@ -60,21 +59,11 @@ public class PageService {
 		return findCommonCircleBy(pageNumber, perPageSize, totalCountByLocationId(locationId), callback);
 	}
 
-	public int totalCountByLocationId(Long locationId) {
-		return pageRepository.countByLocationId(locationId);
-	}
-
 	public PagesResponseDto findCircleByEmail(String email, Integer pageNumber, Integer perPageSize) {
 		F2<Integer, Integer, List<Page>> callback = (num, size) -> pageRepository.findByEmailAndPageable(email, num, size);
 		return findCommonCircleBy(pageNumber, perPageSize, totalCountByEmail(email), callback);
 	}
 
-	public int totalCountByEmail(String email) {
-		User user = userService.findByEmail(email);
-		return pageRepository.countByUserId(user.getId());
-	}
-
-	@Transactional(readOnly = false)
 	/**
 	 * example
 	 * @param pageNumber
@@ -98,10 +87,23 @@ public class PageService {
 			totalSize);
 	}
 
-	@Transactional
+	public int totalCountByLocationId(Long locationId) {
+		return pageRepository.countByLocationId(locationId);
+	}
+
+	public int totalCountByEmail(String email) {
+		User user = userService.findByEmail(email);
+		return pageRepository.countByUserId(user.getId());
+	}
+
+	@Transactional(readOnly = false)
 	public void remove(Long pageId){
 		Page page = pageRepository.findOne(pageId);
 		page.deleted();
 		pageImageService.deleted(pageId);
+	}
+
+	public int countByLocationIdAndRange(Long locationId, LocalDateRange range) {
+		return (int) pageRepository.countByLocationIdAndRange(locationId, range);
 	}
 }

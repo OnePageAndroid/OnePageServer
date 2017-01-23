@@ -1,20 +1,18 @@
 package kr.nexters.onepage.domain.location;
 
-import static kr.nexters.onepage.domain.common.NumericConstant.HUNDRED;
-import static kr.nexters.onepage.domain.common.NumericConstant.TEN;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.google.common.collect.Lists;
+import kr.nexters.onepage.domain.calculate.LatLngCalculator;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import com.google.common.collect.Lists;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import kr.nexters.onepage.domain.calculate.LatLngCalculator;
-import lombok.extern.slf4j.Slf4j;
+import static kr.nexters.onepage.domain.common.NumericConstant.HUNDRED;
+import static kr.nexters.onepage.domain.common.NumericConstant.TEN;
 
 @Slf4j
 @Service
@@ -51,5 +49,13 @@ public class LocationService {
 					latitude, longitude, loc2.getLatitude(), loc2.getLongitude())))
 			.limit(TEN)
 			.collect(Collectors.toList());
+	}
+
+	public List<LocationDto> findAll() {
+		List<Location> locations = locationRepository.findAll();
+		if (CollectionUtils.isEmpty(locations)) {
+			return Lists.newArrayList();
+		}
+		return locations.stream().map(location -> LocationDto.of(location)).collect(Collectors.toList());
 	}
 }

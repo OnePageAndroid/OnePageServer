@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends OnePageRepository<User, Long> {
-	User findByEmail(String email);
+	User findFirstByEmail(String email);
 }

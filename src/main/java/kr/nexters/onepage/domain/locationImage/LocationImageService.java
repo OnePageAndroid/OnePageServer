@@ -3,7 +3,7 @@ package kr.nexters.onepage.domain.locationImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import kr.nexters.onepage.domain.locationImage.LocationImage.Weather;
+import kr.nexters.onepage.domain.support.Weather;
 
 @Service
 public class LocationImageService {
@@ -11,8 +11,7 @@ public class LocationImageService {
 	@Autowired
 	private LocationImageRepository locationImageRepository;
 
-	public LocationImageDto findByLocationIdAndWeather(Long locationId, String weather){
-		Weather weathers=Weather.valueOf(weather);
-		return locationImageRepository.findByLocationIdAndWeather(locationId, weathers);
+	public LocationImageResponseDto findByLocationIdAndWeather(Long locationId, Weather weather){
+		return LocationImageResponseDto.of(locationImageRepository.findByLocationIdAndWeather(locationId, weather));
 	}
 }

@@ -1,6 +1,6 @@
 package kr.nexters.onepage.domain.locationImage;
 
-import kr.nexters.onepage.domain.locationImage.LocationImage.Weather;
+import kr.nexters.onepage.domain.support.Weather;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +17,7 @@ public class LocationImageDto {
 
 	public static LocationImageDto of(LocationImage locationImage){
 		return LocationImageDto.builder()
-				.locationId(locationImage.getLocationId())
+				.locationId(locationImage.getLocation().getId())
 				.objectkey(locationImage.getObjectkey())
 				.url(locationImage.getUrl())
 				.name(locationImage.getName())

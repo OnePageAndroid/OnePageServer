@@ -84,7 +84,7 @@ CREATE TABLE onepage.locationImage (
     `objectkey` varchar(1024) NOT NULL COMMENT 'objecyKey',
     `url` varchar(2000) NOT NULL COMMENT 'url',
     `name` varchar(1000) NOT NULL COMMENT 'name',
-    `weather` varchar(1000) NOT NULL COMMENT 'weather',
+    `weatherType` varchar(50) NOT NULL COMMENT 'weatherType',
     `createdAt` datetime NOT NULL COMMENT 'created datetime',
     `createdBy` varchar(50) NOT NULL COMMENT 'createor',
 	`modifiedAt` datetime NOT NULL COMMENT 'modified datetime',
@@ -92,5 +92,5 @@ CREATE TABLE onepage.locationImage (
 	`deleted` tinyint(1) NOT NULL COMMENT '1:deleted',
     PRIMARY KEY(`locationImageId`),
     KEY `onepage_locationImage_idx01` (`locationId`),
-    KEY `onepage_locationImage_idx02` (`locationId`,`weather`)
+    KEY `onepage_locationImage_idx02` (`locationId`,`weatherType`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='locationImage';
