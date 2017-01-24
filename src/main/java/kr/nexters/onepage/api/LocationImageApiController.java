@@ -32,7 +32,7 @@ public class LocationImageApiController {
 		try{
 			return locationImageService.findByLocationIdAndWeather(locationId, weather);
 		}catch(Exception e){
-			System.out.println("error");
+			log.error("findByLocationIdAndWeather : " + e.getMessage(), e);
 			return LocationImageResponseDto.empty();
 		}
 	}
