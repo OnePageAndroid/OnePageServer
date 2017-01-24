@@ -14,7 +14,6 @@ import org.hibernate.annotations.Where;
 
 import kr.nexters.onepage.domain.location.Location;
 import kr.nexters.onepage.domain.support.Modified;
-import kr.nexters.onepage.domain.support.Weather;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -48,23 +47,27 @@ public class LocationImage extends Modified{
 	@NotNull
 	private String url;
 
-	@Column(name = "이름")
+	@Column(name = "name")
 	@NotNull
 	private String name;
 
 	@Column(name = "weatherType")
 	@NotNull
-	private Weather weather;
+	private WeatherType weatherType;
 
 	@Column(name = "deleted")
 	private boolean deleted;
 
-	public static LocationImage of(Long id, Location location, String objectkey, String url, Weather weather){
+	public static LocationImage of(Long id, Location location, String objectkey, String url, WeatherType weatherType){
 		return LocationImage.builder()
 				.id(id)
 				.location(location)
 				.objectkey(objectkey)
 				.url(url)
-				.weather(weather).build();
+				.weatherType(weatherType).build();
+	}
+
+	public void deleted(){
+		this.deleted=true;
 	}
 }
