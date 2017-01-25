@@ -8,4 +8,5 @@ import kr.nexters.onepage.domain.common.OnePageRepository;
 public interface PageRepository extends OnePageRepository<Page, Long>, PageRepositoryCustom {
 	int countByLocationId(Long locationId);
 	int countByUserId(Long userId);
+	int countByLocationIdAndId(Long locationId, Long pageId);
 }
