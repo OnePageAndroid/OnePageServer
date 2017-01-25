@@ -1,8 +1,5 @@
 package kr.nexters.onepage.domain.page;
 
-import java.util.List;
-
-import kr.nexters.onepage.domain.pageImage.PageImageDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,20 +8,20 @@ import lombok.Setter;
 @Setter
 @Builder
 public class PageResponseDto {
-	private String content;
-	private List<PageImageDto> images;
+	private Long id;
+	private String message;
 
 	public static PageResponseDto empty(){
 		return PageResponseDto.builder()
-				.content(null)
-				.images(null)
+				.id(null)
+				.message("실패")
 				.build();
 	}
 
 	public static PageResponseDto of(PageDto pageDto){
 		return PageResponseDto.builder()
-				.content(pageDto.getContent())
-				.images(pageDto.getImages())
+				.id(pageDto.getPageId())
+				.message("성공")
 				.build();
 	}
 }
