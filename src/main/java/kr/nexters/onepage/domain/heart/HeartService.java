@@ -1,6 +1,5 @@
 package kr.nexters.onepage.domain.heart;
 
-import kr.nexters.onepage.domain.common.OnePageServiceException;
 import kr.nexters.onepage.domain.page.PageService;
 import kr.nexters.onepage.domain.user.UserService;
 import lombok.extern.slf4j.Slf4j;

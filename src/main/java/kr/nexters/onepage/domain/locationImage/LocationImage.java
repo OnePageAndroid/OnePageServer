@@ -1,24 +1,12 @@
 package kr.nexters.onepage.domain.locationImage;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.Where;
-
 import kr.nexters.onepage.domain.location.Location;
 import kr.nexters.onepage.domain.support.Modified;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.Where;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -26,9 +14,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(catalog = "onepage", name = "locationImage")
+@Table(catalog = "onepage", name = "location_image")
 @Where(clause = "deleted = 0")
-public class LocationImage extends Modified{
+public class LocationImage extends Modified {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "locationImageId")

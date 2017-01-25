@@ -49,7 +49,7 @@ public class PageService {
 			throw new OnePageServiceException(e);
 		}
 		List<PageImageDto> pageImageDto = pageImageService.findByPageId(page.getId());
-		int pageNum = pageRepository.findByLocationIdAndId(locationId, page.getId());
+		int pageNum = pageRepository.countByLocationIdAndId(locationId, page.getId());
 		return PageDto.of(page, pageImageDto, pageNum);
 	}
 

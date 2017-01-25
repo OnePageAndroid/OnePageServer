@@ -76,17 +76,17 @@ CREATE TABLE onepage.heart (
   KEY `onepage_heart_idx02` (`pageId`, `userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='heart';
 
-DROP TABLE IF EXISTS onepage.locationImage;
+DROP TABLE IF EXISTS onepage.location_image;
 
-CREATE TABLE onepage.locationImage (
-	`locationImageId` bigInt(20) NOT NULL AUTO_INCREMENT COMMENT 'pk',
-    `locationId` bigint(20) NOT NULL COMMENT 'locationId',
-    `objectkey` varchar(1024) NOT NULL COMMENT 'objecyKey',
-    `url` varchar(2000) NOT NULL COMMENT 'url',
-    `name` varchar(1000) NOT NULL COMMENT 'name',
-    `weatherType` varchar(50) NOT NULL COMMENT 'weatherType',
-    `createdAt` datetime NOT NULL COMMENT 'created datetime',
-    `createdBy` varchar(50) NOT NULL COMMENT 'createor',
+CREATE TABLE onepage.location_image (
+  `locationImageId` bigInt(20) NOT NULL AUTO_INCREMENT COMMENT 'pk',
+  `locationId` bigint(20) NOT NULL COMMENT 'locationId',
+  `objectkey` varchar(1024) NOT NULL COMMENT 'objecyKey',
+  `url` varchar(2000) NOT NULL COMMENT 'url',
+  `name` varchar(1000) NOT NULL COMMENT 'name',
+  `weatherType` varchar(50) NOT NULL COMMENT 'weatherType',
+  `createdAt` datetime NOT NULL COMMENT 'created datetime',
+  `createdBy` varchar(50) NOT NULL COMMENT 'createor',
 	`modifiedAt` datetime NOT NULL COMMENT 'modified datetime',
 	`modifiedBy` varchar(50) NOT NULL COMMENT 'modifier',
 	`deleted` tinyint(1) NOT NULL COMMENT '1:deleted',
