@@ -10,7 +10,7 @@ public class LocationImageService {
 	private LocationImageRepository locationImageRepository;
 
 	public LocationImageResponseDto findByLocationIdAndWeather(Long locationId, WeatherType weather){
-		LocationImageDto locationImageDto=LocationImageDto.of(locationImageRepository.findByLocationIdAndWeatherType(locationId, weathers));
+		LocationImageDto locationImageDto=LocationImageDto.of(locationImageRepository.findByLocationIdAndWeatherType(locationId, weather));
 		return LocationImageResponseDto.of(locationImageDto);
 	}
 }

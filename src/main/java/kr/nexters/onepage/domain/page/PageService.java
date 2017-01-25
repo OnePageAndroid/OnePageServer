@@ -1,26 +1,29 @@
 package kr.nexters.onepage.domain.page;
 
-import com.google.common.collect.Lists;
-import kr.nexters.onepage.domain.common.OnePageServiceException;
-import kr.nexters.onepage.domain.location.Location;
-import kr.nexters.onepage.domain.location.LocationService;
-import kr.nexters.onepage.domain.pageImage.PageImageService;
-import kr.nexters.onepage.domain.user.User;
-import kr.nexters.onepage.domain.user.UserService;
-import kr.nexters.onepage.domain.util.LocalDateRange;
-import kr.nexters.onepage.domain.util.functional.F2;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import static kr.nexters.onepage.domain.common.NumericConstant.ZERO;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static kr.nexters.onepage.domain.common.NumericConstant.ZERO;
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.collect.Lists;
+
+import kr.nexters.onepage.domain.common.OnePageServiceException;
+import kr.nexters.onepage.domain.location.Location;
+import kr.nexters.onepage.domain.location.LocationService;
+import kr.nexters.onepage.domain.pageImage.PageImageDto;
+import kr.nexters.onepage.domain.pageImage.PageImageService;
+import kr.nexters.onepage.domain.user.User;
+import kr.nexters.onepage.domain.user.UserService;
+import kr.nexters.onepage.domain.util.LocalDateRange;
+import kr.nexters.onepage.domain.util.functional.F2;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -35,15 +38,19 @@ public class PageService {
 	private UserService userService;
 
 	@Transactional(readOnly = false)
-	public void savePage(Long locationId, String email, String content) {
+	public PageDto savePage(Long locationId, String email, String content) {
 		Location location = locationService.findById(locationId);
 		User user = userService.findByEmail(email);
+		Page page;
 		try {
-			pageRepository.save(Page.of(location, user, content));
+			page = pageRepository.save(Page.of(location, user, content));
 		} catch (SQLException e) {
 			log.error("savePage : " + e.getMessage());
 			throw new OnePageServiceException(e);
 		}
+		List<PageImageDto> pageImageDto = pageImageService.findByPageId(page.getId());
+		int pageNum = pageRepository.findByLocationIdAndId(locationId, page.getId());
+		return PageDto.of(page, pageImageDto, pageNum);
 	}
 
 	public Page findById(Long pageId) {
