@@ -11,16 +11,17 @@ public class PageDtoBuilder {
 	private PageDtoBuilder() {
 	}
 
-	public static List<PageDto> transformPagesToDtos(List<Page> pages, Integer pageNumber, Function<Long, List<PageImageDto>> imageFunc) {
+	public static List<PageDto> transformPagesToDtos(List<Page> pages, Integer pageNumber, Integer totalSize, Function<Long, List<PageImageDto>> imageFunc) {
 		if (CollectionUtils.isEmpty(pages)) {
 			return Lists.newArrayList();
 		}
 		List<PageDto> pageDtos = Lists.newArrayList(); // TODO stream 으로 리팩
 		int idxPageNumber = pageNumber;
 		for(Page page : pages) {
-			idxPageNumber += 1;
+			idxPageNumber = (totalSize + idxPageNumber) % totalSize;
 			List<PageImageDto> imageDtos = imageFunc.apply(page.getId());
 			pageDtos.add(PageDto.of(page, imageDtos, idxPageNumber));
+			idxPageNumber += 1;
 		}
 		return pageDtos;
 	}
