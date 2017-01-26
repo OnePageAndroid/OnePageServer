@@ -1,18 +1,20 @@
 package kr.nexters.onepage.domain.location;
 
-import com.google.common.collect.Lists;
-import kr.nexters.onepage.domain.calculate.LatLngCalculator;
-import lombok.extern.slf4j.Slf4j;
+import static kr.nexters.onepage.domain.common.NumericConstant.HUNDRED;
+import static kr.nexters.onepage.domain.common.NumericConstant.TEN;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.google.common.collect.Lists;
 
-import static kr.nexters.onepage.domain.common.NumericConstant.HUNDRED;
-import static kr.nexters.onepage.domain.common.NumericConstant.TEN;
+import kr.nexters.onepage.domain.calculate.LatLngCalculator;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -58,4 +60,5 @@ public class LocationService {
 		}
 		return locations.stream().map(location -> LocationDto.of(location)).collect(Collectors.toList());
 	}
+
 }

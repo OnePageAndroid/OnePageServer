@@ -45,7 +45,7 @@ public class PageApiController {
 	}
 
 	@ApiOperation(value = "장소 기반 페이지 조회", notes = "장소 기반 페이지 조회")
-	@RequestMapping(value = "/location", method = RequestMethod.POST)
+	@RequestMapping(value = "/location", method = RequestMethod.GET)
 	public PagesResponseDto findByLocation(@RequestParam Long locationId,
 		@ApiParam(value = "현재 페이지 넘버버0부터시작)") @RequestParam Integer pageNumber,
 		@ApiParam(value = "가져올 페이지 사이즈") @RequestParam Integer perPageSize) {
@@ -108,7 +108,7 @@ public class PageApiController {
 		try{
 			pageService.remove(pageId);
 		} catch(Exception e){
-			log.error("page image remove : " + e.getMessage());
+			log.error("pagex image remove : " + e.getMessage());
 			return ResponseDto.ofFail(e.getMessage());
 		}
 		return ResponseDto.ofSuccess("page 삭제 성공");

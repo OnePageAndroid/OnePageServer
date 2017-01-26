@@ -113,4 +113,5 @@ public class PageService {
 	public int countByLocationIdAndRange(Long locationId, LocalDateRange range) {
 		return (int) pageRepository.countByLocationIdAndRange(locationId, range);
 	}
+
 }
