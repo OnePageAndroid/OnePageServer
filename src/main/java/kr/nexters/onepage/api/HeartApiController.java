@@ -28,7 +28,6 @@ public class HeartApiController {
 	public ResponseDto saveOrRemove(@RequestParam Long pageId, @RequestParam String email) {
 	Preconditions.checkNotNull(pageId, "pageId parameter가 존재하지 않음");
 	Preconditions.checkNotNull(email , "email parameter가 존재하지 않음");
-
 		try {
 			heartService.saveOrRemoveHeart(pageId, email);
 		} catch (Exception e) {
@@ -62,4 +61,5 @@ public class HeartApiController {
 			return 0L;
 		}
 	}
+
 }

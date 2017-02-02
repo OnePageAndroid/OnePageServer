@@ -1,11 +1,11 @@
 package kr.nexters.onepage.domain.page;
 
+import java.util.List;
+
 import kr.nexters.onepage.domain.pageImage.PageImageDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 
 @Getter

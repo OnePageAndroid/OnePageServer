@@ -1,10 +1,12 @@
 package kr.nexters.onepage.domain.heart;
 
+import org.springframework.data.jpa.repository.support.QueryDslRepositorySupport;
+
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;
+
 import kr.nexters.onepage.domain.page.QPage;
 import kr.nexters.onepage.domain.user.QUser;
-import org.springframework.data.jpa.repository.support.QueryDslRepositorySupport;
 
 public class HeartRepositoryImpl extends QueryDslRepositorySupport implements HeartRepositoryCustom {
 	QHeart qHeart = QHeart.heart;

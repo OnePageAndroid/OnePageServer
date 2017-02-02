@@ -113,4 +113,21 @@ public class PageApiController {
 		}
 		return ResponseDto.ofSuccess("page 삭제 성공");
 	}
+
+	@ApiOperation(value = "유저별 북마크 페이지 조회", notes = "우저별 북마크 페이지 조회")
+	@RequestMapping(value="/heart", method=RequestMethod.GET)
+	public PagesResponseDto heart(@RequestParam String email,
+			@ApiParam(value = "현재 페이지 넘버버0부터시작") @RequestParam Integer pageNumber,
+			@ApiParam(value = "가져올 페이지 사이즈") @RequestParam Integer perPageSize){
+		Preconditions.checkNotNull(email, "email parameter가 존재하지 않음");
+		Preconditions.checkNotNull(pageNumber, "pageNumber가 존재하지 않음");
+		Preconditions.checkNotNull(perPageSize, "perPageSize가 존재하지 않음");
+		try{
+			return pageService.findCircleByEmailAndHeart(email, pageNumber, perPageSize);
+		} catch(Exception e){
+			log.error("user heart page : " + e.getMessage());
+			return PagesResponseDto.empty();
+		}
+	}
+
 }

@@ -3,6 +3,7 @@ package kr.nexters.onepage.domain.page;
 import static kr.nexters.onepage.domain.common.NumericConstant.ZERO;
 
 import java.sql.SQLException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -12,13 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.common.collect.Lists;
-
 import kr.nexters.onepage.domain.common.OnePageServiceException;
 import kr.nexters.onepage.domain.location.Location;
 import kr.nexters.onepage.domain.location.LocationService;
 import kr.nexters.onepage.domain.pageImage.PageImageDto;
 import kr.nexters.onepage.domain.pageImage.PageImageService;
+import kr.nexters.onepage.domain.support.Created;
 import kr.nexters.onepage.domain.user.User;
 import kr.nexters.onepage.domain.user.UserService;
 import kr.nexters.onepage.domain.util.LocalDateRange;
@@ -82,13 +82,14 @@ public class PageService {
 	private PagesResponseDto findCommonCircleBy(Integer pageNumber, Integer perPageSize, Integer totalSize, F2<Integer, Integer, List<Page>> callback) {
 		// 1. 0 미만일 경우. 2. totalSize 초과할 경우. -> 페이지 범위 내로 변경.
 		pageNumber = (totalSize + pageNumber) % totalSize;
-		List<Page> pages = callback.apply(pageNumber, perPageSize);
+		List<Page> pages = callback.apply(pageNumber, perPageSize).stream().collect(Collectors.toSet()).stream().sorted(
+			Comparator.comparing(Created::getCreatedAt)).collect(Collectors.toList());
 		// 조회한 페이지 사이즈가 per 페이지 사이즈보다 작으면 0페이지부터 조회하여 더함.
 		if (CollectionUtils.isNotEmpty(pages) && pages.size() < perPageSize) {
 			pages.addAll(callback.apply(ZERO, perPageSize - pages.size()));
 		}
 		return PagesResponseDto.of(
-			PageDtoBuilder.transformPagesToDtos(Lists.newArrayList(pages.stream().collect(Collectors.toSet())), pageNumber, (id) -> pageImageService.findByPageId(id)),
+			PageDtoBuilder.transformPagesToDtos(pages, pageNumber, totalSize, (id) -> pageImageService.findByPageId(id)),
 			pageNumber,
 			perPageSize,
 			totalSize);
@@ -114,4 +115,13 @@ public class PageService {
 		return (int) pageRepository.countByLocationIdAndRange(locationId, range);
 	}
 
+	public PagesResponseDto findCircleByEmailAndHeart(String email, Integer pageNumber, Integer perPageSize){
+		F2<Integer, Integer, List<Page>> callback = (num, size) -> pageRepository.findByHeartAndPageable(email, pageNumber, perPageSize);
+		return findCommonCircleBy(pageNumber, perPageSize, totalCountByEmailAndHeart(email), callback);
+	}
+
+	public int totalCountByEmailAndHeart(String email){
+		System.out.println(pageRepository.totalCountByEmailAndHeart(email));
+		return pageRepository.totalCountByEmailAndHeart(email);
+	}
 }
