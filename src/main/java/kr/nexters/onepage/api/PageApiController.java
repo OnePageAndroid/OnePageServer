@@ -1,17 +1,6 @@
 package kr.nexters.onepage.api;
 
-import static kr.nexters.onepage.domain.common.NumericConstant.ZERO;
-
-import java.time.LocalDate;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.google.common.base.Preconditions;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -21,6 +10,15 @@ import kr.nexters.onepage.domain.page.PageService;
 import kr.nexters.onepage.domain.page.PagesResponseDto;
 import kr.nexters.onepage.domain.util.LocalDateRange;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDate;
+
+import static kr.nexters.onepage.domain.common.NumericConstant.ZERO;
 
 @Slf4j
 @Api(value = "페이지 API", description = "페이지 API", basePath = "/api/v1/page")
@@ -125,7 +123,7 @@ public class PageApiController {
 		try{
 			return pageService.findCircleByEmailAndHeart(email, pageNumber, perPageSize);
 		} catch(Exception e){
-			log.error("user heart page : " + e.getMessage());
+			log.error("user heart page : " + e.getMessage(), e);
 			return PagesResponseDto.empty();
 		}
 	}

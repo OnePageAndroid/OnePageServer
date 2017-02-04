@@ -1,18 +1,5 @@
 package kr.nexters.onepage.domain.page;
 
-import static kr.nexters.onepage.domain.common.NumericConstant.ZERO;
-
-import java.sql.SQLException;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import kr.nexters.onepage.domain.common.OnePageServiceException;
 import kr.nexters.onepage.domain.location.Location;
 import kr.nexters.onepage.domain.location.LocationService;
@@ -24,6 +11,18 @@ import kr.nexters.onepage.domain.user.UserService;
 import kr.nexters.onepage.domain.util.LocalDateRange;
 import kr.nexters.onepage.domain.util.functional.F2;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.SQLException;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import static kr.nexters.onepage.domain.common.NumericConstant.ZERO;
 
 @Slf4j
 @Service
@@ -80,6 +79,9 @@ public class PageService {
 	 * @return
 	 */
 	private PagesResponseDto findCommonCircleBy(Integer pageNumber, Integer perPageSize, Integer totalSize, F2<Integer, Integer, List<Page>> callback) {
+		if(totalSize == ZERO) {
+			return PagesResponseDto.empty();
+		}
 		// 1. 0 미만일 경우. 2. totalSize 초과할 경우. -> 페이지 범위 내로 변경.
 		pageNumber = (totalSize + pageNumber) % totalSize;
 		List<Page> pages = callback.apply(pageNumber, perPageSize).stream().collect(Collectors.toSet()).stream().sorted(
@@ -121,7 +123,6 @@ public class PageService {
 	}
 
 	public int totalCountByEmailAndHeart(String email){
-		System.out.println(pageRepository.totalCountByEmailAndHeart(email));
-		return pageRepository.totalCountByEmailAndHeart(email);
+		return pageRepository.countByEmailAndHeart(email);
 	}
 }

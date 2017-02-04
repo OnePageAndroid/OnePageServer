@@ -1,9 +1,9 @@
 package kr.nexters.onepage.domain.page;
 
+import kr.nexters.onepage.domain.util.LocalDateRange;
+
 import java.time.LocalDate;
 import java.util.List;
-
-import kr.nexters.onepage.domain.util.LocalDateRange;
 
 public interface PageRepositoryCustom {
 	List<Page> findByLocationIdAndPageable(Long locationId, int offset, int perSize);
@@ -14,9 +14,9 @@ public interface PageRepositoryCustom {
 
 	long countByLocationIdAndRange(Long locationId, LocalDateRange range);
 
-	int countByLocationIdAndDay(Long locationId, LocalDate today);
+	long countByLocationIdAndDay(Long locationId, LocalDate today);
 
 	List<Page> findCircleByEmailAndHeart(String email, int pageNumber, int perPageSize);
 
-	int totalCountByEmailAndHeart(String email);
+	int countByEmailAndHeart(String email);
 }
