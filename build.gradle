@@ -86,6 +86,9 @@ dependencies {
 
 	compile group: 'com.cloudinary', name: 'cloudinary', version: '1.0.13'
 
+	//google places api
+	compile 'com.google.maps:google-maps-services:0.1.17'
+	
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
