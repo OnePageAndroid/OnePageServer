@@ -1,12 +1,24 @@
 package kr.nexters.onepage.domain.locationImage;
 
-import kr.nexters.onepage.domain.location.Location;
-import kr.nexters.onepage.domain.support.Modified;
-import lombok.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.annotations.Where;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import kr.nexters.onepage.domain.location.Location;
+import kr.nexters.onepage.domain.support.Modified;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -39,14 +51,18 @@ public class LocationImage extends Modified {
 	@NotNull
 	private String name;
 
+	@Column(name = "englishName")
+	@NotNull
+	private String englishName;
+
 	@Column(name = "weatherType")
 	@NotNull
-	private WeatherType weatherType;
+	private DayType weatherType;
 
 	@Column(name = "deleted")
 	private boolean deleted;
 
-	public static LocationImage of(Long id, Location location, String objectkey, String url, WeatherType weatherType){
+	public static LocationImage of(Long id, Location location, String objectkey, String url, DayType weatherType){
 		return LocationImage.builder()
 				.id(id)
 				.location(location)

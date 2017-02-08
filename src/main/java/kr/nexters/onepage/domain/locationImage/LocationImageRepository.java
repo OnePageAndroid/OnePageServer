@@ -7,5 +7,5 @@ import kr.nexters.onepage.domain.common.OnePageRepository;
 @Repository
 public interface LocationImageRepository extends OnePageRepository<LocationImage, Long>{
 
-	LocationImage findByLocationIdAndWeatherType(Long locationId, WeatherType weatherType);
+	LocationImage findByLocationIdAndWeatherType(Long locationId, DayType weatherType);
 }

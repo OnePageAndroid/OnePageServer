@@ -33,6 +33,7 @@ public class GoogleLocation {
 			in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
 
 			JSONArray bodyArray = (JSONArray) object.get("results");
+			System.out.println("results" + bodyArray);
 			JSONObject data = (JSONObject) bodyArray.get(1);
 			JSONObject a1 = (JSONObject)data.get("geometry");
 			JSONObject s2 = (JSONObject)a1.get("location");
@@ -52,6 +53,7 @@ public class GoogleLocation {
 		}
 		return Location.of(Double.valueOf(lat), Double.valueOf(lng), name, address);
 	}
+
 	private static String makeUrl1(double latitude, double longitude, String place) {
 		StringBuilder urlString = new StringBuilder(
 				"https://maps.googleapis.com/maps/api/place/search/json?");
