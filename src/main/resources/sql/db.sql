@@ -93,5 +93,5 @@ CREATE TABLE onepage.location_image (
 	`deleted` tinyint(1) NOT NULL COMMENT '1:deleted',
     PRIMARY KEY(`locationImageId`),
     KEY `onepage_locationImage_idx01` (`locationId`),
-    KEY `onepage_locationImage_idx02` (`locationId`,`weatherType`)
+    KEY `onepage_locationImage_idx02` (`locationId`,`dayType`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='locationImage';
