@@ -15,7 +15,7 @@ public class GoogleLocation {
 
 	private final static String API_KEY = "AIzaSyCrrl1KZfJQ-jUJuUMwLjP2oLRrGArLz7w";
 
-	public static Location find(Double latitude, Double longitude) {
+	public static Location makeLocation(Double latitude, Double longitude) {
 		String url = makeUrl1(latitude, longitude, "");
 		BufferedReader in = null;
 		String lng = null;

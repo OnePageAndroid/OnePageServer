@@ -65,22 +65,11 @@ public class LocationApiController {
 	@RequestMapping(value = "/search/coordinates", method = RequestMethod.GET)
 	public LocationsResponseDto searchLatLng(@RequestParam Double latitude, @RequestParam Double longitude, @RequestParam(required = false, defaultValue = "1000") Double meter) {
 		try {
+			locationService.saveGoogleLocation(latitude, longitude);
 			return LocationsResponseDto.of(locationService.findByLatAndLngAndMeter(latitude, longitude, meter));
 		} catch (Exception e) {
 			log.error("location search name : " + e.getMessage(), e);
 			return LocationsResponseDto.empty();
 		}
 	}
-
-	@ApiOperation(value = "Google API이용", notes = "Google API이용")
-	@RequestMapping(value = "/search/google", method = RequestMethod.GET)
-	public LocationsResponseDto searchGoogle(@RequestParam Double latitude, @RequestParam Double longitude){
-		 try{
-			 return LocationsResponseDto.of(locationService.findNewLocation(latitude,longitude));
-		 }catch(Exception e){
-			 log.error("location search fail: " + e.getMessage(),e);
-			 return LocationsResponseDto.empty();
-		 }
-	}
-
 }
