@@ -12,12 +12,14 @@ public class LocationImageResponseDto {
 	private Long locationId;
 	private String url;
 	private String name;
-	//TODO english name
+	private String englishName;
+
 	public static LocationImageResponseDto of(LocationImageDto locationImage){
 		return LocationImageResponseDto.builder()
 				.locationId(locationImage.getLocationId())
 				.url(locationImage.getUrl())
 				.name(locationImage.getName())
+				.englishName(locationImage.getEnglishName())
 				.build();
 	}
 
@@ -26,6 +28,7 @@ public class LocationImageResponseDto {
 				.locationId(null)
 				.url(null)
 				.name(null)
+				.englishname(null)
 				.build();
 	}
 }

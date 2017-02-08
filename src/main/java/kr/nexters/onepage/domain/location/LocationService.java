@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static kr.nexters.onepage.domain.common.NumericConstant.TEN;
+import kr.nexters.onepage.domain.calculate.LatLngCalculator;
+import kr.nexters.onepage.domain.util.GoogleLocation;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -62,4 +65,14 @@ public class LocationService {
 		return locations.stream().map(location -> LocationDto.of(location)).collect(Collectors.toList());
 	}
 
+	@Transactional(readOnly = false)
+	public void findGoogle(Double latitude, Double longitude){
+		Location location = GoogleLocation.find(latitude,longitude);
+		locationRepository.save(location);
+	}
+
+	public List<LocationDto> findNewLocation(Double latitude, Double longitude){
+		findGoogle(latitude,longitude);
+		return findByLatAndLng(latitude,longitude);
+	}
 }

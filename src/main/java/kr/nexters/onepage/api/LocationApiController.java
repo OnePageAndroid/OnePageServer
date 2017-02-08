@@ -71,4 +71,16 @@ public class LocationApiController {
 			return LocationsResponseDto.empty();
 		}
 	}
+
+	@ApiOperation(value = "Google API이용", notes = "Google API이용")
+	@RequestMapping(value = "/search/google", method = RequestMethod.GET)
+	public LocationsResponseDto searchGoogle(@RequestParam Double latitude, @RequestParam Double longitude){
+		 try{
+			 return LocationsResponseDto.of(locationService.findNewLocation(latitude,longitude));
+		 }catch(Exception e){
+			 log.error("location search fail: " + e.getMessage(),e);
+			 return LocationsResponseDto.empty();
+		 }
+	}
+
 }
