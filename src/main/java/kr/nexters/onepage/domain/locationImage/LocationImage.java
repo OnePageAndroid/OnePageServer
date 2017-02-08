@@ -55,20 +55,21 @@ public class LocationImage extends Modified {
 	@NotNull
 	private String englishName;
 
-	@Column(name = "weatherType")
+	@Column(name = "dayType")
 	@NotNull
-	private DayType weatherType;
+	private DayType dayType;
 
 	@Column(name = "deleted")
 	private boolean deleted;
 
-	public static LocationImage of(Long id, Location location, String objectkey, String url, DayType weatherType){
+	public static LocationImage of(Long id, Location location, String objectkey, String url, DayType dayType){
 		return LocationImage.builder()
 				.id(id)
 				.location(location)
 				.objectkey(objectkey)
 				.url(url)
-				.weatherType(weatherType).build();
+				.dayType(dayType)
+				.build();
 	}
 
 	public void deleted(){

@@ -35,12 +35,13 @@ public class GoogleLocation {
 			JSONArray bodyArray = (JSONArray) object.get("results");
 			System.out.println("results" + bodyArray);
 			JSONObject data = (JSONObject) bodyArray.get(1);
-			JSONObject a1 = (JSONObject)data.get("geometry");
-			JSONObject s2 = (JSONObject)a1.get("location");
+			JSONObject a1 = (JSONObject) data.get("geometry");
+			JSONObject s2 = (JSONObject) a1.get("location");
 			lng = s2.get("lng").toString();
 			lat = s2.get("lat").toString();
-			name=data.get("name").toString();
-			address=data.get("vicinity").toString();
+			name = data.get("name").toString();
+			address = data.get("vicinity").toString();
+
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
