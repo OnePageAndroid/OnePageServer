@@ -26,11 +26,11 @@ public class LocationImageApiController {
 
 	@ApiOperation(value = "장소이미지 조회", notes = "특정 장소이미지 조회.")
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public LocationImageResponseDto findByLocationIdAndWeather(@RequestParam Long locationId, @RequestParam DayType weather){
+	public LocationImageResponseDto findByLocationIdAndWeather(@RequestParam Long locationId, @RequestParam DayType dayType){
 		Preconditions.checkNotNull(locationId, "장소 id없음");
-		Preconditions.checkNotNull(weather,"날씨정보 없음");
+		Preconditions.checkNotNull(dayType,"날씨정보 없음");
 		try{
-			return locationImageService.findByLocationIdAndWeather(locationId, weather);
+			return locationImageService.findByLocationIdAndWeather(locationId, dayType);
 		}catch(Exception e){
 			log.error("findByLocationIdAndWeather : " + e.getMessage(), e);
 			return LocationImageResponseDto.empty();
