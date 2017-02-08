@@ -1,24 +1,12 @@
 package kr.nexters.onepage.domain.locationImage;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.Where;
-
 import kr.nexters.onepage.domain.location.Location;
 import kr.nexters.onepage.domain.support.Modified;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.Where;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -55,20 +43,20 @@ public class LocationImage extends Modified {
 	@NotNull
 	private String englishName;
 
-	@Column(name = "weatherType")
+	@Column(name = "dayType")
 	@NotNull
-	private DayType weatherType;
+	private DayType dayType;
 
 	@Column(name = "deleted")
 	private boolean deleted;
 
-	public static LocationImage of(Long id, Location location, String objectkey, String url, DayType weatherType){
+	public static LocationImage of(Long id, Location location, String objectkey, String url, DayType dayType){
 		return LocationImage.builder()
 				.id(id)
 				.location(location)
 				.objectkey(objectkey)
 				.url(url)
-				.weatherType(weatherType).build();
+				.dayType(dayType).build();
 	}
 
 	public void deleted(){

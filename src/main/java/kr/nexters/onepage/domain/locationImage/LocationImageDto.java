@@ -16,7 +16,7 @@ public class LocationImageDto {
 	private String objectkey;
 	private String url;
 	private String name;
-	private DayType weather;
+	private DayType dayType;
 	private String englishName;
 
 	public static LocationImageDto of(LocationImage locationImage){
@@ -26,7 +26,7 @@ public class LocationImageDto {
 				.url(locationImage.getUrl())
 				.name(locationImage.getName())
 				.englishName(locationImage.getEnglishName())
-				.weather(locationImage.getWeatherType())
+				.dayType(locationImage.getDayType())
 				.build();
 	}
 
