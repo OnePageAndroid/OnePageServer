@@ -2,6 +2,7 @@ package kr.nexters.onepage.domain.location;
 
 import com.google.common.collect.Lists;
 import kr.nexters.onepage.domain.calculate.LatLngCalculator;
+import kr.nexters.onepage.domain.util.GoogleLocation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,9 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static kr.nexters.onepage.domain.common.NumericConstant.TEN;
-import kr.nexters.onepage.domain.calculate.LatLngCalculator;
-import kr.nexters.onepage.domain.util.GoogleLocation;
-import lombok.extern.slf4j.Slf4j;
+import static kr.nexters.onepage.domain.common.NumericConstant.THOUSAND;
 
 @Slf4j
 @Service
@@ -73,6 +72,6 @@ public class LocationService {
 
 	public List<LocationDto> findNewLocation(Double latitude, Double longitude){
 		findGoogle(latitude,longitude);
-		return findByLatAndLng(latitude,longitude);
+		return findByLatAndLngAndMeter(latitude,longitude, Double.valueOf(THOUSAND));
 	}
 }

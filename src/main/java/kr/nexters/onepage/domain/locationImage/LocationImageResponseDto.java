@@ -28,7 +28,7 @@ public class LocationImageResponseDto {
 				.locationId(null)
 				.url(null)
 				.name(null)
-				.englishname(null)
+				.englishName(null)
 				.build();
 	}
 }
