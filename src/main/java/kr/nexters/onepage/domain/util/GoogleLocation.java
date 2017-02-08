@@ -16,19 +16,19 @@ public class GoogleLocation {
 
 	private final static String API_KEY = "AIzaSyCrrl1KZfJQ-jUJuUMwLjP2oLRrGArLz7w";
 
-	public static Location find(Double latitude, Double longitude){
-		String url = makeUrl1(latitude,longitude,"");
+	public static Location makeLocation(Double latitude, Double longitude) {
+		String url = makeUrl1(latitude, longitude, "");
 		BufferedReader in = null;
-		String lng=null;
-		String lat=null;
-		String name=null;
-		String address=null;
-		try{
+		String lng = null;
+		String lat = null;
+		String name = null;
+		String address = null;
+		try {
 			URL obj = new URL(url);
-			HttpURLConnection connection = (HttpURLConnection)obj.openConnection();
+			HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
 
 			InputStreamReader isr = new InputStreamReader(obj.openConnection().getInputStream(), "UTF-8");
-			JSONObject object = (JSONObject)JSONValue.parse(isr);
+			JSONObject object = (JSONObject) JSONValue.parse(isr);
 
 			in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
 
@@ -42,10 +42,10 @@ public class GoogleLocation {
 			name = data.get("name").toString();
 			address = data.get("vicinity").toString();
 
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally{
-			if(in !=null)
+		} finally {
+			if (in != null)
 				try {
 					in.close();
 				} catch (IOException e) {
@@ -57,7 +57,7 @@ public class GoogleLocation {
 
 	private static String makeUrl1(double latitude, double longitude, String place) {
 		StringBuilder urlString = new StringBuilder(
-				"https://maps.googleapis.com/maps/api/place/search/json?");
+			"https://maps.googleapis.com/maps/api/place/search/json?");
 
 		if (place.equals("")) {
 			urlString.append("&location=");

@@ -1,21 +1,19 @@
 package kr.nexters.onepage.domain.location;
 
-import static kr.nexters.onepage.domain.common.NumericConstant.HUNDRED;
-import static kr.nexters.onepage.domain.common.NumericConstant.TEN;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.google.common.collect.Lists;
+import kr.nexters.onepage.domain.calculate.LatLngCalculator;
+import kr.nexters.onepage.domain.util.GoogleLocation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import com.google.common.collect.Lists;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import kr.nexters.onepage.domain.calculate.LatLngCalculator;
-import kr.nexters.onepage.domain.util.GoogleLocation;
-import lombok.extern.slf4j.Slf4j;
+import static kr.nexters.onepage.domain.common.NumericConstant.TEN;
+import static kr.nexters.onepage.domain.common.NumericConstant.THOUSAND;
 
 @Slf4j
 @Service
@@ -43,9 +41,13 @@ public class LocationService {
 		return locations.stream().map(location -> LocationDto.of(location)).collect(Collectors.toList());
 	}
 
-	public List<LocationDto> findByLatAndLng(Double latitude, Double longitude) {
-		return locationRepository.findAll().stream()
-			.filter(location -> LatLngCalculator.meterDistance(latitude, longitude, location.getLatitude(), location.getLongitude()) <= HUNDRED) // 100m 이내 장소만
+	public List<LocationDto> findByLatAndLngAndMeter(Double latitude, Double longitude, Double meter) {
+		List<Location> locations = locationRepository.findAll();
+		if(CollectionUtils.isEmpty(locations)) {
+			return Lists.newArrayList();
+		}
+		return locations.stream()
+			.filter(location -> LatLngCalculator.meterDistance(latitude, longitude, location.getLatitude(), location.getLongitude()) <= meter) // 1000m 이내 장소만
 			.map(location -> LocationDto.of(location)) // 장소 DTO 변환
 			.sorted((loc1, loc2) -> (int) Math.round( // 가장 가까운 장소 순으로 오름차순
 				LatLngCalculator.meterDistance(latitude, longitude, loc1.getLatitude(), loc1.getLongitude()) - LatLngCalculator.meterDistance(
@@ -63,13 +65,12 @@ public class LocationService {
 	}
 
 	@Transactional(readOnly = false)
-	public void findGoogle(Double latitude, Double longitude){
-		Location location = GoogleLocation.find(latitude,longitude);
+	public void saveGoogleLocation(Double latitude, Double longitude){
+		List<LocationDto> dtos = findByLatAndLngAndMeter(latitude, longitude, Double.valueOf(THOUSAND));
+		if (CollectionUtils.isEmpty(dtos)) {
+			return;
+		}
+		Location location = GoogleLocation.makeLocation(latitude, longitude);
 		locationRepository.save(location);
-	}
-
-	public List<LocationDto> findNewLocation(Double latitude, Double longitude){
-		findGoogle(latitude,longitude);
-		return findByLatAndLng(latitude,longitude);
 	}
 }
