@@ -9,7 +9,7 @@ public class LocationImageService {
 	@Autowired
 	private LocationImageRepository locationImageRepository;
 
-	public LocationImageResponseDto findByLocationIdAndWeather(Long locationId, DayType dayType) {
+	public LocationImageResponseDto findByLocationIdAndDay(Long locationId, DayType dayType) {
 		LocationImageDto locationImageDto = LocationImageDto.of(locationImageRepository.findByLocationIdAndDayType(locationId, dayType));
 		return LocationImageResponseDto.of(locationImageDto);
 	}

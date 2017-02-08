@@ -30,9 +30,9 @@ public class LocationImageApiController {
 		Preconditions.checkNotNull(locationId, "장소 id없음");
 		Preconditions.checkNotNull(dayType,"날씨정보 없음");
 		try{
-			return locationImageService.findByLocationIdAndWeather(locationId, dayType);
+			return locationImageService.findByLocationIdAndDay(locationId, dayType);
 		}catch(Exception e){
-			log.error("findByLocationIdAndWeather : " + e.getMessage(), e);
+			log.error("findByLocationIdAndDay : " + e.getMessage(), e);
 			return LocationImageResponseDto.empty();
 		}
 	}
