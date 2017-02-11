@@ -10,9 +10,9 @@ import com.google.common.base.Preconditions;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import kr.nexters.onepage.domain.locationImage.DayType;
 import kr.nexters.onepage.domain.locationImage.LocationImageResponseDto;
 import kr.nexters.onepage.domain.locationImage.LocationImageService;
-import kr.nexters.onepage.domain.locationImage.DayType;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -26,11 +26,11 @@ public class LocationImageApiController {
 
 	@ApiOperation(value = "장소이미지 조회", notes = "특정 장소이미지 조회.")
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public LocationImageResponseDto findByLocationIdAndWeather(@RequestParam Long locationId, @RequestParam DayType weather){
+	public LocationImageResponseDto findByLocationIdAndWeather(@RequestParam Long locationId, @RequestParam DayType dayType){
 		Preconditions.checkNotNull(locationId, "장소 id없음");
-		Preconditions.checkNotNull(weather,"날씨정보 없음");
+		Preconditions.checkNotNull(dayType,"날씨정보 없음");
 		try{
-			return locationImageService.findByLocationIdAndWeather(locationId, weather);
+			return locationImageService.findByLocationIdAndDayType(locationId, dayType);
 		}catch(Exception e){
 			log.error("findByLocationIdAndWeather : " + e.getMessage(), e);
 			return LocationImageResponseDto.empty();

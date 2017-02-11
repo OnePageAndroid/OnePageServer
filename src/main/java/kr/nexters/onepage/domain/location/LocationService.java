@@ -1,19 +1,21 @@
 package kr.nexters.onepage.domain.location;
 
-import com.google.common.collect.Lists;
-import kr.nexters.onepage.domain.calculate.LatLngCalculator;
-import kr.nexters.onepage.domain.util.GoogleLocation;
-import lombok.extern.slf4j.Slf4j;
+import static kr.nexters.onepage.domain.common.NumericConstant.TEN;
+import static kr.nexters.onepage.domain.common.NumericConstant.THOUSAND;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.google.common.collect.Lists;
 
-import static kr.nexters.onepage.domain.common.NumericConstant.TEN;
-import static kr.nexters.onepage.domain.common.NumericConstant.THOUSAND;
+import kr.nexters.onepage.domain.calculate.LatLngCalculator;
+import kr.nexters.onepage.domain.util.GoogleLocation;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -72,5 +74,6 @@ public class LocationService {
 		}
 		Location location = GoogleLocation.makeLocation(latitude, longitude);
 		locationRepository.save(location);
+		//return LocationsResponseDto.of(location);
 	}
 }

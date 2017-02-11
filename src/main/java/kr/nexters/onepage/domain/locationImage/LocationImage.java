@@ -2,13 +2,13 @@ package kr.nexters.onepage.domain.locationImage;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Where;
 
@@ -35,40 +35,35 @@ public class LocationImage extends Modified {
 	private Long id;
 
 	@JoinColumn(name = "locationId")
-	@NotNull
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Location location;
 
 	@Column(name = "objectkey")
-	@NotNull
 	private String objectkey;
 
 	@Column(name = "url")
-	@NotNull
 	private String url;
 
 	@Column(name = "name")
-	@NotNull
 	private String name;
 
 	@Column(name = "englishName")
-	@NotNull
 	private String englishName;
 
 	@Column(name = "dayType")
-	@NotNull
 	private DayType dayType;
 
 	@Column(name = "deleted")
 	private boolean deleted;
 
-	public static LocationImage of(Long id, Location location, String objectkey, String url, DayType dayType){
+	public static LocationImage of(Long id, Location location, String objectkey, String url, DayType dayType, String englishName){
 		return LocationImage.builder()
 				.id(id)
 				.location(location)
 				.objectkey(objectkey)
 				.url(url)
 				.dayType(dayType)
+				.englishName(englishName)
 				.build();
 	}
 

@@ -64,7 +64,7 @@ public class GoogleLocation {
 			urlString.append(Double.toString(latitude));
 			urlString.append(",");
 			urlString.append(Double.toString(longitude));
-			urlString.append("&rankBy=100");
+			urlString.append("&rankBy=1000");
 			urlString.append("&sensor=false&key=" + API_KEY);
 			urlString.append("&language=ko");
 		} else {
@@ -72,7 +72,7 @@ public class GoogleLocation {
 			urlString.append(Double.toString(latitude));
 			urlString.append(",");
 			urlString.append(Double.toString(longitude));
-			urlString.append("&rankBy=100");
+			urlString.append("&rankBy=1000");
 			urlString.append("&types=" + place);
 			urlString.append("&sensor=false&key=" + API_KEY);
 			urlString.append("&language=ko");
