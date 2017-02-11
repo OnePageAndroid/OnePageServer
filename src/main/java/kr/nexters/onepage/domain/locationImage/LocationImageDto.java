@@ -31,7 +31,7 @@ public class LocationImageDto {
 				.url(locationImage.getUrl())
 				.name(locationImage.getName())
 				.englishName(locationImage.getEnglishName())
-				.dayType(DayType.valueOf(locationImage.getDayType()))
+				.dayType(locationImage.getDayType())
 				.build();
 	}
 

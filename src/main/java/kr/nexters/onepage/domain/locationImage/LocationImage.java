@@ -33,7 +33,8 @@ public class LocationImage extends Modified {
 	@Column
 	private String englishName;
 	@Column
-	private String dayType;
+	@Enumerated
+	private DayType dayType;
 	@Column
 	private boolean deleted;
 
@@ -43,7 +44,7 @@ public class LocationImage extends Modified {
 				.location(location)
 				.objectKey(objectKey)
 				.url(url)
-				.dayType(dayType.name()).build();
+				.dayType(dayType).build();
 	}
 
 	public void deleted() {
