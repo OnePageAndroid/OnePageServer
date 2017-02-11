@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 @Builder
@@ -20,14 +22,21 @@ public class LocationImageDto {
 	private String englishName;
 
 	public static LocationImageDto of(LocationImage locationImage){
+		if(Objects.isNull(locationImage)) {
+			return LocationImageDto.empty();
+		}
 		return LocationImageDto.builder()
 				.locationId(locationImage.getLocation().getId())
-				.objectkey(locationImage.getObjectkey())
+				.objectkey(locationImage.getObjectKey())
 				.url(locationImage.getUrl())
 				.name(locationImage.getName())
 				.englishName(locationImage.getEnglishName())
-				.dayType(locationImage.getDayType())
+				.dayType(DayType.valueOf(locationImage.getDayType()))
 				.build();
 	}
 
+	private static LocationImageDto empty() {
+		return LocationImageDto.builder()
+			.build();
+	}
 }

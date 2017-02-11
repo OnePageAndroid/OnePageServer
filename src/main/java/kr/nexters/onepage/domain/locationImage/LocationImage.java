@@ -6,7 +6,6 @@ import lombok.*;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -21,45 +20,33 @@ public class LocationImage extends Modified {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "locationImageId")
 	private Long id;
-
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "locationId")
-	@NotNull
-	@ManyToOne
+	@Where(clause = "deleted = 0")
 	private Location location;
-
-	@Column(name = "objectkey")
-	@NotNull
-	private String objectkey;
-
-	@Column(name = "url")
-	@NotNull
+	@Column
+	private String objectKey;
+	@Column
 	private String url;
-
-	@Column(name = "name")
-	@NotNull
+	@Column
 	private String name;
-
-	@Column(name = "englishName")
-	@NotNull
+	@Column
 	private String englishName;
-
-	@Column(name = "dayType")
-	@NotNull
-	private DayType dayType;
-
-	@Column(name = "deleted")
+	@Column
+	private String dayType;
+	@Column
 	private boolean deleted;
 
-	public static LocationImage of(Long id, Location location, String objectkey, String url, DayType dayType){
+	public static LocationImage of(Long id, Location location, String objectKey, String url, DayType dayType){
 		return LocationImage.builder()
 				.id(id)
 				.location(location)
-				.objectkey(objectkey)
+				.objectKey(objectKey)
 				.url(url)
-				.dayType(dayType).build();
+				.dayType(dayType.name()).build();
 	}
 
-	public void deleted(){
-		this.deleted=true;
+	public void deleted() {
+		this.deleted = true;
 	}
 }

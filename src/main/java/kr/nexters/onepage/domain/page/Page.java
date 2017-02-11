@@ -7,7 +7,6 @@ import lombok.*;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.sql.SQLException;
 
 @Getter
@@ -26,15 +25,12 @@ public class Page extends Modified {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "locationId")
     @Where(clause = "deleted = 0")
-    @NotNull
     private Location location;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     @Where(clause = "deleted = 0")
-    @NotNull
     private User user;
     @Column
-    @NotNull
     private String content;
     @Column
     private boolean deleted;
