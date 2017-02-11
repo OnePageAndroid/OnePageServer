@@ -33,41 +33,33 @@ public class LocationImage extends Modified {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "locationImageId")
 	private Long id;
-
-	@JoinColumn(name = "locationId")
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "locationId")
+	@Where(clause = "deleted = 0")
 	private Location location;
-
-	@Column(name = "objectkey")
-	private String objectkey;
-
-	@Column(name = "url")
+	@Column
+	private String objectKey;
+	@Column
 	private String url;
-
-	@Column(name = "name")
+	@Column
 	private String name;
-
-	@Column(name = "englishName")
+	@Column
 	private String englishName;
-
-	@Column(name = "dayType")
-	private DayType dayType;
-
-	@Column(name = "deleted")
+	@Column
+	private String dayType;
+	@Column
 	private boolean deleted;
 
-	public static LocationImage of(Long id, Location location, String objectkey, String url, DayType dayType, String englishName){
+	public static LocationImage of(Long id, Location location, String objectKey, String url, DayType dayType){
 		return LocationImage.builder()
 				.id(id)
 				.location(location)
-				.objectkey(objectkey)
+				.objectKey(objectKey)
 				.url(url)
-				.dayType(dayType)
-				.englishName(englishName)
-				.build();
+				.dayType(dayType.name()).build();
 	}
 
-	public void deleted(){
-		this.deleted=true;
+	public void deleted() {
+		this.deleted = true;
 	}
 }

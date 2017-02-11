@@ -1,9 +1,11 @@
 package kr.nexters.onepage.domain.locationImage;
 
-import java.util.List;
 
 import org.springframework.data.jpa.repository.support.QueryDslRepositorySupport;
 import org.springframework.stereotype.Repository;
+
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.JPQLQuery;
 
 import kr.nexters.onepage.domain.location.QLocation;
 
@@ -13,15 +15,15 @@ public class LocationImageRepositoryImpl extends QueryDslRepositorySupport imple
 	private QLocation qLocation = QLocation.location;
 
 	public LocationImageRepositoryImpl() {
-		super(LocationImage.class);
+		super(QLocationImage.class);
 	}
 
 	@Override
-	public List<LocationImage> findDayAndLocationId(Long locationId, DayType dayType){
-		return from(qLocationImage)
-				.join(qLocationImage.location,qLocation)
-				.where(qLocationImage.location.id.eq(locationId))
-				.where(qLocationImage.dayType.eq(dayType))
-				.fetch();
+	public LocationImage findByLocationIdAndDayType(Long locationId, DayType dayType) {
+		JPQLQuery<LocationImage> query = from(qLocationImage).innerJoin(qLocationImage.location, qLocation);
+		BooleanBuilder whereClause = new BooleanBuilder();
+		whereClause.and(qLocationImage.location.id.eq(locationId));
+		whereClause.and(qLocationImage.dayType.eq(dayType.name()));
+		return query.where(whereClause).fetchFirst();
 	}
 }

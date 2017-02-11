@@ -81,7 +81,7 @@ DROP TABLE IF EXISTS onepage.location_image;
 CREATE TABLE onepage.location_image (
   `locationImageId` bigInt(20) NOT NULL AUTO_INCREMENT COMMENT 'pk',
   `locationId` bigint(20) NOT NULL COMMENT 'locationId',
-  `objectkey` varchar(1024) NOT NULL COMMENT 'objecyKey',
+  `objectKey` varchar(1024) NOT NULL COMMENT 'objecyKey',
   `url` varchar(2000) NOT NULL COMMENT 'url',
   `name` varchar(1000) NOT NULL COMMENT 'name',
   `englishName` varchar(1000) NOT NULL COMMENT 'englishName',
@@ -93,5 +93,5 @@ CREATE TABLE onepage.location_image (
 	`deleted` tinyint(1) NOT NULL COMMENT '1:deleted',
     PRIMARY KEY(`locationImageId`),
     KEY `onepage_locationImage_idx01` (`locationId`),
-    KEY `onepage_locationImage_idx02` (`locationId`,`weatherType`)
+    KEY `onepage_locationImage_idx02` (`locationId`,`dayType`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='locationImage';
