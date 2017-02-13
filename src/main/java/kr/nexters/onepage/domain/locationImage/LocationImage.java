@@ -48,7 +48,7 @@ public class LocationImage extends Modified {
 	@Column
 	private String englishName;
 	@Column
-	@Enumerated(EnumType.STRING)
+	@Enumerated(value = EnumType.STRING)
 	private DayType dayType;
 	@Column
 	private boolean deleted;
