@@ -1,7 +1,6 @@
 package kr.nexters.onepage.domain.location;
 
 import static kr.nexters.onepage.domain.common.NumericConstant.TEN;
-import static kr.nexters.onepage.domain.common.NumericConstant.THOUSAND;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,7 +13,7 @@ import org.springframework.util.CollectionUtils;
 import com.google.common.collect.Lists;
 
 import kr.nexters.onepage.domain.calculate.LatLngCalculator;
-import kr.nexters.onepage.domain.util.GoogleLocation;
+import kr.nexters.onepage.domain.util.DaumAPI;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -67,13 +66,16 @@ public class LocationService {
 	}
 
 	@Transactional(readOnly = false)
-	public void saveGoogleLocation(Double latitude, Double longitude){
-		List<LocationDto> dtos = findByLatAndLngAndMeter(latitude, longitude, Double.valueOf(THOUSAND));
-		if (CollectionUtils.isEmpty(dtos)) {
-			return;
-		}
-		Location location = GoogleLocation.makeLocation(latitude, longitude);
+	public void saveDaumLocation(Double latitude, Double longitude){
+		Location location = DaumAPI.makeLocation(latitude, longitude);
 		locationRepository.save(location);
-		//return LocationsResponseDto.of(location);
 	}
+
+	public List<LocationDto> searchLatLng(Double latitude, Double longitude, Double meter){
+		List<LocationDto> list = findByLatAndLngAndMeter(latitude,longitude,meter);
+		if(CollectionUtils.isEmpty(list))
+			saveDaumLocation(latitude,longitude);
+		return findByLatAndLngAndMeter(latitude,longitude,meter);
+	}
+
 }

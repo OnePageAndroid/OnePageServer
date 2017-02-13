@@ -2,6 +2,8 @@ package kr.nexters.onepage.domain.locationImage;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -46,7 +48,8 @@ public class LocationImage extends Modified {
 	@Column
 	private String englishName;
 	@Column
-	private String dayType;
+	@Enumerated(EnumType.STRING)
+	private DayType dayType;
 	@Column
 	private boolean deleted;
 
@@ -56,7 +59,7 @@ public class LocationImage extends Modified {
 				.location(location)
 				.objectKey(objectKey)
 				.url(url)
-				.dayType(dayType.name()).build();
+				.dayType(dayType).build();
 	}
 
 	public void deleted() {

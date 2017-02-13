@@ -10,4 +10,5 @@ import kr.nexters.onepage.domain.common.OnePageRepository;
 public interface LocationRepository extends OnePageRepository<Location, Long>, LocationRepositoryCustom {
 	List<Location> findByName(String name);
 	List<Location> findByNameContaining(String name);
+	Location findById(Long locationId);
 }

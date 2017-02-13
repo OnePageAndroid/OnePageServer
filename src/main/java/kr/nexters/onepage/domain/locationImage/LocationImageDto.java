@@ -23,11 +23,11 @@ public class LocationImageDto {
 		}
 		return LocationImageDto.builder()
 				.locationId(locationImage.getLocation().getId())
-				.objectkey(locationImage.getObjectkey())
+				.objectkey(locationImage.getObjectKey())
 				.url(locationImage.getUrl())
 				.name(locationImage.getName())
 				.englishName(locationImage.getEnglishName())
-				.dayType(DayType.valueOf(locationImage.getDayType()))
+				.dayType(locationImage.getDayType())
 				.build();
 	}
 

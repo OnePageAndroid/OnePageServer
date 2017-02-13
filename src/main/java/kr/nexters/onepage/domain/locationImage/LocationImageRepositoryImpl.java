@@ -23,7 +23,7 @@ public class LocationImageRepositoryImpl extends QueryDslRepositorySupport imple
 		JPQLQuery<LocationImage> query = from(qLocationImage).innerJoin(qLocationImage.location, qLocation);
 		BooleanBuilder whereClause = new BooleanBuilder();
 		whereClause.and(qLocationImage.location.id.eq(locationId));
-		whereClause.and(qLocationImage.dayType.eq(dayType.name()));
+		whereClause.and(qLocationImage.dayType.eq(dayType));
 		return query.where(whereClause).fetchFirst();
 	}
 }

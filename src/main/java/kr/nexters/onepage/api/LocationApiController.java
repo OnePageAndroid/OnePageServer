@@ -65,23 +65,13 @@ public class LocationApiController {
 
 	@ApiOperation(value = "좌표로 근처 장소정보 얻어오기 - 단위 : 미터(디폴트 1km)", notes = "좌표로 장소정보 얻어오기")
 	@RequestMapping(value = "/search/coordinates", method = RequestMethod.GET)
-	public LocationsResponseDto searchLatLng(@RequestParam Double latitude, @RequestParam Double longitude, @RequestParam(required = false, defaultValue = "1000") Double meter) {
+	public LocationsResponseDto searchLatLng(@RequestParam Double latitude, @RequestParam Double longitude, @RequestParam(required = false, defaultValue = "3000") Double meter) {
 		try {
-			return LocationsResponseDto.of(locationService.findByLatAndLngAndMeter(latitude, longitude, meter));
+			return LocationsResponseDto.of(locationService.searchLatLng(latitude, longitude, meter));
 		} catch (Exception e) {
 			log.error("location search name : " + e.getMessage(), e);
 			return LocationsResponseDto.empty();
 		}
 	}
-/*
-	@RequestMapping(value = "/search/google", method = RequestMethod.GET)
-	public Location searchGoogle(@RequestParam Double latitude, @RequestParam Double longitude){
-		try{
-			return locationService.saveGoogleLocation(latitude, longitude);
-		} catch (Exception e) {
-			log.error("google fail :" + e.getMessage(), e);
-			return null;
-		}
-	}
-	*/
+
 }

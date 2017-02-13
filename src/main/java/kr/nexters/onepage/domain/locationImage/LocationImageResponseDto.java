@@ -31,4 +31,13 @@ public class LocationImageResponseDto {
 				.englishName(null)
 				.build();
 	}
+
+	public static LocationImageResponseDto of(Long locationId, String url, String name){
+		return LocationImageResponseDto.builder()
+				.locationId(locationId)
+				.url(url)
+				.name(name)
+				.englishName(name)
+				.build();
+	}
 }
