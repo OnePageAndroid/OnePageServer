@@ -38,7 +38,7 @@ public class HeartApiController {
 	}
 
 	@ApiOperation(value = "좋아요 상태", notes = "좋아요 상태")
-	@RequestMapping(value = "/save", method = RequestMethod.GET)
+	@RequestMapping(value = "/status", method = RequestMethod.GET)
 	public boolean status(@RequestParam Long pageId, @RequestParam String email) {
 		Preconditions.checkNotNull(pageId, "pageId parameter가 존재하지 않음");
 		Preconditions.checkNotNull(email, "email paramter가 존재하지 않음");

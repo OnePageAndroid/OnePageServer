@@ -56,16 +56,6 @@ public class PageRepositoryImpl extends QueryDslRepositorySupport implements Pag
 	}
 
 	@Override
-	public List<Page> findCircleByEmailAndHeart(String email, int pageNumber, int perPageSize){
-		JPQLQuery<Page> query = from(qPage).innerJoin(qPage,qHeart.page).innerJoin(qPage.user,qUser).fetchJoin();
-
-		BooleanBuilder whereClause = new BooleanBuilder();
-		whereClause.and(qPage.user.email.eq(email));
-		whereClause.and(qPage.id.eq(qHeart.user.id));
-		return (List<Page>) query.where(whereClause).offset(pageNumber).limit(perPageSize).fetchAll();
-	}
-
-	@Override
 	public List<Page> findByHeartAndPageable(String email, int offset, int perSize) {
 		JPQLQuery<Page> query = from(qPage);
 		JPQLQuery<Long> subQuery = JPAExpressions.select(qHeart.page.id)

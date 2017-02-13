@@ -16,7 +16,5 @@ public interface PageRepositoryCustom {
 
 	long countByLocationIdAndDay(Long locationId, LocalDate today);
 
-	List<Page> findCircleByEmailAndHeart(String email, int pageNumber, int perPageSize);
-
 	int countByEmailAndHeart(String email);
 }
