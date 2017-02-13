@@ -1,17 +1,19 @@
 package kr.nexters.onepage.api;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.google.common.base.Preconditions;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import kr.nexters.onepage.api.common.ResponseDto;
 import kr.nexters.onepage.domain.location.LocationService;
 import kr.nexters.onepage.domain.location.LocationsResponseDto;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @Api(value = "장소 API", description = "장소 API", basePath = "/api/v1/location")
@@ -63,13 +65,13 @@ public class LocationApiController {
 
 	@ApiOperation(value = "좌표로 근처 장소정보 얻어오기 - 단위 : 미터(디폴트 1km)", notes = "좌표로 장소정보 얻어오기")
 	@RequestMapping(value = "/search/coordinates", method = RequestMethod.GET)
-	public LocationsResponseDto searchLatLng(@RequestParam Double latitude, @RequestParam Double longitude, @RequestParam(required = false, defaultValue = "1000") Double meter) {
+	public LocationsResponseDto searchLatLng(@RequestParam Double latitude, @RequestParam Double longitude, @RequestParam(required = false, defaultValue = "3000") Double meter) {
 		try {
-			locationService.saveGoogleLocation(latitude, longitude);
-			return LocationsResponseDto.of(locationService.findByLatAndLngAndMeter(latitude, longitude, meter));
+			return LocationsResponseDto.of(locationService.searchLatLng(latitude, longitude, meter));
 		} catch (Exception e) {
 			log.error("location search name : " + e.getMessage(), e);
 			return LocationsResponseDto.empty();
 		}
 	}
+
 }

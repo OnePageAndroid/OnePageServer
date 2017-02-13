@@ -10,9 +10,9 @@ import com.google.common.base.Preconditions;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import kr.nexters.onepage.domain.locationImage.DayType;
 import kr.nexters.onepage.domain.locationImage.LocationImageResponseDto;
 import kr.nexters.onepage.domain.locationImage.LocationImageService;
-import kr.nexters.onepage.domain.locationImage.DayType;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

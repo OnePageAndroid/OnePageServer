@@ -1,10 +1,15 @@
 package kr.nexters.onepage.domain.locationImage;
 
+
+import org.springframework.data.jpa.repository.support.QueryDslRepositorySupport;
+import org.springframework.stereotype.Repository;
+
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;
-import kr.nexters.onepage.domain.location.QLocation;
-import org.springframework.data.jpa.repository.support.QueryDslRepositorySupport;
 
+import kr.nexters.onepage.domain.location.QLocation;
+
+@Repository
 public class LocationImageRepositoryImpl extends QueryDslRepositorySupport implements LocationImageRepositoryCustom {
 	private QLocationImage qLocationImage = QLocationImage.locationImage;
 	private QLocation qLocation = QLocation.location;

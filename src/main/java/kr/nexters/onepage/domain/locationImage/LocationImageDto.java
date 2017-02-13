@@ -1,18 +1,14 @@
 package kr.nexters.onepage.domain.locationImage;
 
-import lombok.AllArgsConstructor;
+import java.util.Objects;
+
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Objects;
 
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class LocationImageDto {
 	private Long locationId;
 	private String objectkey;
