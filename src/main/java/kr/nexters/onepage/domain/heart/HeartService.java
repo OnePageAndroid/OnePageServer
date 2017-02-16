@@ -23,6 +23,7 @@ public class HeartService {
 	public void saveOrRemoveHeart(Long pageId, String email) {
 		Heart heart = Heart.of(pageService.findById(pageId), userService.findByEmail(email));
 		if(existsByPageIdAndEmail(pageId, email)) {
+			heart = heartRepository.findByPageIdAndEmail(pageId, email);
 			heart.deleted();
 			return;
 		}
