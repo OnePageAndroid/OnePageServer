@@ -25,6 +25,7 @@ public class HeartService {
 		if(existsByPageIdAndEmail(pageId, email)) {
 			heart = heartRepository.findByPageIdAndEmail(pageId, email);
 			heart.deleted();
+			heartRepository.save(heart);
 			return;
 		}
 		heartRepository.save(heart);
