@@ -12,6 +12,7 @@ public class LocationDto {
 	private Double latitude;
 	private Double longitude;
 	private String name;
+	private String engName;
 	private String address;
 
 	public static LocationDto of(Location location) {
@@ -20,6 +21,7 @@ public class LocationDto {
 			.latitude(location.getLatitude())
 			.longitude(location.getLongitude())
 			.name(location.getName())
+			.engName(location.getEngName())
 			.address(location.getAddress())
 			.build();
 	}
