@@ -70,6 +70,15 @@ public class PageService {
 		return findCommonCircleBy(pageNumber, perPageSize, totalCountByEmail(email), callback);
 	}
 
+	public PagesResponseDto findCircleByEmailAndHeart(String email, Integer pageNumber, Integer perPageSize) {
+		F2<Integer, Integer, List<Page>> callback = (num, size) -> pageRepository.findByHeartAndPageable(email, num, size);
+		return findCommonCircleBy(pageNumber, perPageSize, totalCountByEmailAndHeart(email), callback);
+	}
+
+	public int totalCountByEmailAndHeart(String email) {
+		return pageRepository.countByEmailAndHeart(email);
+	}
+
 	/**
 	 * example
 	 * @param pageNumber
@@ -86,8 +95,8 @@ public class PageService {
 			Comparator.comparing(Created::getCreatedAt)).collect(Collectors.toList());
 
 		// 조회한 페이지 사이즈가 per 페이지 사이즈보다 작으면 0페이지부터 조회하여 더함.
-		if (CollectionUtils.isNotEmpty(pages) && perPageSize % totalSize - pages.size() > 0) {
-			pages.addAll(callback.apply(ZERO, (perPageSize % totalSize - pages.size())));
+		if (CollectionUtils.isNotEmpty(pages) && (perPageSize % (totalSize - pages.size() + 1)) > 0) {
+			pages.addAll(callback.apply(ZERO, (perPageSize % (totalSize - pages.size() + 1))));
 		}
 		return PagesResponseDto.of(
 			PageDtoBuilder.transformPagesToDtos(pages, pageNumber, totalSize, (id) -> pageImageService.findByPageId(id)),
@@ -114,14 +123,5 @@ public class PageService {
 
 	public int countByLocationIdAndRange(Long locationId, LocalDateRange range) {
 		return (int) pageRepository.countByLocationIdAndRange(locationId, range);
-	}
-
-	public PagesResponseDto findCircleByEmailAndHeart(String email, Integer pageNumber, Integer perPageSize) {
-		F2<Integer, Integer, List<Page>> callback = (num, size) -> pageRepository.findByHeartAndPageable(email, pageNumber, perPageSize);
-		return findCommonCircleBy(pageNumber, perPageSize, totalCountByEmailAndHeart(email), callback);
-	}
-
-	public int totalCountByEmailAndHeart(String email) {
-		return pageRepository.countByEmailAndHeart(email);
 	}
 }
