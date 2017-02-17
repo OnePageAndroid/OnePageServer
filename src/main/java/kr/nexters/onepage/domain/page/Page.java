@@ -14,6 +14,7 @@ import java.sql.SQLException;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 @Entity
 @Table(catalog = "onepage", name = "page")
 @Where(clause = "deleted = 0")

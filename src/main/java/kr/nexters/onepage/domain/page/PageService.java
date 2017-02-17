@@ -54,7 +54,7 @@ public class PageService {
 
 	public Page findById(Long pageId) {
 		Page page = pageRepository.findOne(pageId);
-		if(Objects.isNull(page)) {
+		if (Objects.isNull(page)) {
 			throw new OnePageServiceException("페이지가 존재하지 않습니다.");
 		}
 		return page;
@@ -78,14 +78,16 @@ public class PageService {
 	 * @param callback
 	 * @return
 	 */
-	private PagesResponseDto findCommonCircleBy(Integer pageNumber, Integer perPageSize, Integer totalSize, F2<Integer, Integer, List<Page>> callback) {
+	private PagesResponseDto findCommonCircleBy(Integer pageNumber, Integer perPageSize, Integer totalSize,
+		F2<Integer, Integer, List<Page>> callback) {
 		// 1. 0 미만일 경우. 2. totalSize 초과할 경우. -> 페이지 범위 내로 변경.
 		pageNumber = (totalSize + pageNumber) % totalSize;
 		List<Page> pages = callback.apply(pageNumber, perPageSize).stream().collect(Collectors.toSet()).stream().sorted(
 			Comparator.comparing(Created::getCreatedAt)).collect(Collectors.toList());
+
 		// 조회한 페이지 사이즈가 per 페이지 사이즈보다 작으면 0페이지부터 조회하여 더함.
-		if (CollectionUtils.isNotEmpty(pages) && pages.size() < perPageSize) {
-			pages.addAll(callback.apply(ZERO, perPageSize - pages.size()));
+		if (CollectionUtils.isNotEmpty(pages) && perPageSize % totalSize - pages.size() > 0) {
+			pages.addAll(callback.apply(ZERO, (perPageSize % totalSize - pages.size())));
 		}
 		return PagesResponseDto.of(
 			PageDtoBuilder.transformPagesToDtos(pages, pageNumber, totalSize, (id) -> pageImageService.findByPageId(id)),
@@ -104,7 +106,7 @@ public class PageService {
 	}
 
 	@Transactional(readOnly = false)
-	public void remove(Long pageId){
+	public void remove(Long pageId) {
 		Page page = pageRepository.findOne(pageId);
 		page.deleted();
 		pageImageService.deleted(pageId);
@@ -114,12 +116,12 @@ public class PageService {
 		return (int) pageRepository.countByLocationIdAndRange(locationId, range);
 	}
 
-	public PagesResponseDto findCircleByEmailAndHeart(String email, Integer pageNumber, Integer perPageSize){
+	public PagesResponseDto findCircleByEmailAndHeart(String email, Integer pageNumber, Integer perPageSize) {
 		F2<Integer, Integer, List<Page>> callback = (num, size) -> pageRepository.findByHeartAndPageable(email, pageNumber, perPageSize);
 		return findCommonCircleBy(pageNumber, perPageSize, totalCountByEmailAndHeart(email), callback);
 	}
 
-	public int totalCountByEmailAndHeart(String email){
+	public int totalCountByEmailAndHeart(String email) {
 		return pageRepository.countByEmailAndHeart(email);
 	}
 }
