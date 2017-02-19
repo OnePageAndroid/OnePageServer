@@ -1,14 +1,11 @@
 package kr.nexters.onepage.domain.pageImage;
 
-import java.util.List;
-
+import kr.nexters.onepage.domain.common.OnePageRepository;
 import org.springframework.stereotype.Repository;
 
-import kr.nexters.onepage.domain.common.OnePageRepository;
+import java.util.List;
 
 @Repository
 public interface PageImageRepository extends OnePageRepository<PageImage, Long> {
 	List<PageImage> findByPageId(Long pageId);
-
-	void deleteByPageId(Long pageId);
 }

@@ -1,12 +1,11 @@
 package kr.nexters.onepage.domain.page;
 
-import java.util.List;
-
 import com.google.common.collect.Lists;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,6 +13,7 @@ import lombok.Setter;
 public class PagesResponseDto {
 	private List<PageDto> pages;
 	private int pageNumber;
+	private int pageIndex;
 	private int perPageSize;
 	private int resultCount;
 	private int totalSize;
@@ -21,7 +21,8 @@ public class PagesResponseDto {
 	public static PagesResponseDto of(List<PageDto> pageDtos, Integer pageNumber, Integer perPageSize, Integer totalSize) {
 		return PagesResponseDto.builder()
 			.pages(pageDtos)
-			.pageNumber(pageNumber)
+			.pageNumber(totalSize - pageNumber + 1)
+			.pageIndex(pageNumber)
 			.perPageSize(perPageSize)
 			.resultCount(pageDtos.size())
 			.totalSize(totalSize)
@@ -32,6 +33,7 @@ public class PagesResponseDto {
 		return PagesResponseDto.builder()
 			.pages(Lists.newArrayList())
 			.pageNumber(0)
+			.pageIndex(0)
 			.perPageSize(0)
 			.resultCount(0)
 			.totalSize(0)

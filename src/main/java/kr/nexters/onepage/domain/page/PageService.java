@@ -60,19 +60,19 @@ public class PageService {
 		return page;
 	}
 
-	public PagesResponseDto findCircleByLocationId(Long locationId, Integer pageNumber, Integer perPageSize) {
+	public PagesResponseDto findCircleByLocationId(Long locationId, Integer pageIndex, Integer perPageSize) {
 		F2<Integer, Integer, List<Page>> callback = (num, size) -> pageRepository.findByLocationIdAndPageable(locationId, num, size);
-		return findCommonCircleBy(pageNumber, perPageSize, totalCountByLocationId(locationId), callback);
+		return findCommonCircleBy(pageIndex, perPageSize, totalCountByLocationId(locationId), callback);
 	}
 
-	public PagesResponseDto findCircleByEmail(String email, Integer pageNumber, Integer perPageSize) {
+	public PagesResponseDto findCircleByEmail(String email, Integer pageIndex, Integer perPageSize) {
 		F2<Integer, Integer, List<Page>> callback = (num, size) -> pageRepository.findByEmailAndPageable(email, num, size);
-		return findCommonCircleBy(pageNumber, perPageSize, totalCountByEmail(email), callback);
+		return findCommonCircleBy(pageIndex, perPageSize, totalCountByEmail(email), callback);
 	}
 
-	public PagesResponseDto findCircleByEmailAndHeart(String email, Integer pageNumber, Integer perPageSize) {
+	public PagesResponseDto findCircleByEmailAndHeart(String email, Integer pageIndex, Integer perPageSize) {
 		F2<Integer, Integer, List<Page>> callback = (num, size) -> pageRepository.findByHeartAndPageable(email, num, size);
-		return findCommonCircleBy(pageNumber, perPageSize, totalCountByEmailAndHeart(email), callback);
+		return findCommonCircleBy(pageIndex, perPageSize, totalCountByEmailAndHeart(email), callback);
 	}
 
 	public int totalCountByEmailAndHeart(String email) {
@@ -81,17 +81,17 @@ public class PageService {
 
 	/**
 	 * example
-	 * @param pageNumber
+	 * @param pageIndex
 	 * @param perPageSize
 	 * @param totalSize
 	 * @param callback
 	 * @return
 	 */
-	private PagesResponseDto findCommonCircleBy(Integer pageNumber, Integer perPageSize, Integer totalSize,
+	private PagesResponseDto findCommonCircleBy(Integer pageIndex, Integer perPageSize, Integer totalSize,
 		F2<Integer, Integer, List<Page>> callback) {
 		// 1. 0 미만일 경우. 2. totalSize 초과할 경우. -> 페이지 범위 내로 변경.
-		pageNumber = (totalSize + pageNumber) % totalSize;
-		List<Page> pages = callback.apply(pageNumber, perPageSize).stream().collect(Collectors.toSet()).stream().sorted(
+		pageIndex = (totalSize + pageIndex) % totalSize;
+		List<Page> pages = callback.apply(pageIndex, perPageSize).stream().collect(Collectors.toSet()).stream().sorted(
 			Comparator.comparing(Created::getCreatedAt)).collect(Collectors.toList());
 
 		// 조회한 페이지 사이즈가 per 페이지 사이즈보다 작으면 0페이지부터 조회하여 더함.
@@ -99,8 +99,8 @@ public class PageService {
 			pages.addAll(callback.apply(ZERO, (perPageSize % (totalSize - pages.size() + 1))));
 		}
 		return PagesResponseDto.of(
-			PageDtoBuilder.transformPagesToDtos(pages, pageNumber, totalSize, (id) -> pageImageService.findByPageId(id)),
-			pageNumber,
+			PageDtoBuilder.transformPagesToDtos(pages, pageIndex, totalSize, (id) -> pageImageService.findByPageId(id)),
+			pageIndex,
 			perPageSize,
 			totalSize);
 	}
@@ -115,10 +115,15 @@ public class PageService {
 	}
 
 	@Transactional(readOnly = false)
-	public void remove(Long pageId) {
+	public void removeById(Long pageId) {
+		removePage(pageId);
+		pageImageService.removeByPageId(pageId);
+	}
+
+	private void removePage(Long pageId) {
 		Page page = pageRepository.findOne(pageId);
 		page.deleted();
-		pageImageService.deleted(pageId);
+		pageRepository.save(page);
 	}
 
 	public int countByLocationIdAndRange(Long locationId, LocalDateRange range) {

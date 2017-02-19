@@ -2,7 +2,6 @@ package kr.nexters.onepage.domain.page;
 
 import kr.nexters.onepage.domain.util.LocalDateRange;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface PageRepositoryCustom {
@@ -13,8 +12,6 @@ public interface PageRepositoryCustom {
 	List<Page> findByHeartAndPageable(String email, int offset, int perSize);
 
 	long countByLocationIdAndRange(Long locationId, LocalDateRange range);
-
-	long countByLocationIdAndDay(Long locationId, LocalDate today);
 
 	int countByEmailAndHeart(String email);
 }
