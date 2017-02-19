@@ -1,21 +1,21 @@
 package kr.nexters.onepage.domain.locationImage;
 
-import java.util.Objects;
+import lombok.*;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Objects;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class LocationImageDto {
 	private Long locationId;
 	private String objectkey;
 	private String url;
 	private String name;
-	private DayType dayType;
 	private String englishName;
+	private DayType dayType;
 
 	public static LocationImageDto of(LocationImage locationImage){
 		if(Objects.isNull(locationImage)) {

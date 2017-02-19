@@ -1,9 +1,7 @@
 package kr.nexters.onepage.domain.page;
 
 import kr.nexters.onepage.domain.pageImage.PageImageDto;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,6 +9,8 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class PageDto {
 	private Long pageId;
 	private String locationName;

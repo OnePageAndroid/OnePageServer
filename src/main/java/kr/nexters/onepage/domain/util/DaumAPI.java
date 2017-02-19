@@ -54,7 +54,7 @@ public class DaumAPI {
 					e.printStackTrace();
 				}
 		}
-		return Location.of(Double.valueOf(lat), Double.valueOf(lng), name, name, address);
+		return Location.of(Double.valueOf(lat), Double.valueOf(lng), name, NaverAPI.convertKorToEng(name), address);
 	}
 
 	private static String makeUrl(double latitude, double longitude){

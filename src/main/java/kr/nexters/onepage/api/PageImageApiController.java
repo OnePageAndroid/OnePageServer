@@ -25,8 +25,6 @@ public class PageImageApiController {
 	@ApiOperation(value = "이미지 저장", notes = "이미지 저장")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public ResponseDto save(@RequestParam Long pageId, @RequestParam MultipartFile multipartFile) {
-		Preconditions.checkNotNull(pageId, "pageId Parameter가 넘어오지 않음");
-		Preconditions.checkNotNull(multipartFile, "multipartFile Parameter가 넘어오지 않음");
 		try {
 			pageImageService.savePageImage(pageId, multipartFile);
 		} catch (Exception e) {

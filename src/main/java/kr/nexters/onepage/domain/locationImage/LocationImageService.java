@@ -19,12 +19,13 @@ public class LocationImageService {
 	@Transactional(readOnly = true)
 	public LocationImageResponseDto findByLocationIdAndDay(Long locationId, DayType dayType) {
 		LocationImageDto locationImageDto = LocationImageDto.of(locationImageRepository.findByLocationIdAndDayType(locationId, dayType));
-		if(locationImageRepository.findByLocationIdAndDayType(locationId, dayType)!=null)
+		if (locationImageRepository.findByLocationIdAndDayType(locationId, dayType) != null) {
 			return LocationImageResponseDto.of(locationImageDto);
+		}
 		return findByDaumLocation(locationId);
 	}
 
-	public LocationImageResponseDto findByDaumLocation(Long locationId){
+	public LocationImageResponseDto findByDaumLocation(Long locationId) {
 		Location location = locationRepository.findById(locationId);
 		return DaumAPI.getImageUrl(location);
 	}
