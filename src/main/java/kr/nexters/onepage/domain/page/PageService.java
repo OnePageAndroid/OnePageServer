@@ -85,6 +85,9 @@ public class PageService {
 	 */
 	private PagesResponseDto findCommonCircleBy(Integer pageIndex, Integer perPageSize, Integer totalSize,
 		F2<Integer, Integer, List<Page>> callback) {
+		if (totalSize == 0) {
+			return PagesResponseDto.empty();
+		}
 		// 1. 0 미만일 경우. 2. totalSize 초과할 경우. -> 페이지 범위 내로 변경.
 		pageIndex = (totalSize + pageIndex) % totalSize;
 		List<Page> pages = callback.apply(pageIndex, perPageSize);
