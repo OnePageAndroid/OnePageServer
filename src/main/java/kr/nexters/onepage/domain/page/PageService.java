@@ -5,7 +5,6 @@ import kr.nexters.onepage.domain.location.Location;
 import kr.nexters.onepage.domain.location.LocationService;
 import kr.nexters.onepage.domain.pageImage.PageImageDto;
 import kr.nexters.onepage.domain.pageImage.PageImageService;
-import kr.nexters.onepage.domain.support.Created;
 import kr.nexters.onepage.domain.user.User;
 import kr.nexters.onepage.domain.user.UserService;
 import kr.nexters.onepage.domain.util.LocalDateRange;
@@ -17,10 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static kr.nexters.onepage.domain.common.NumericConstant.ZERO;
 
@@ -48,8 +45,7 @@ public class PageService {
 			throw new OnePageServiceException(e);
 		}
 		List<PageImageDto> pageImageDto = pageImageService.findByPageId(page.getId());
-		int pageNum = pageRepository.countByLocationIdAndId(locationId, page.getId());
-		return PageDto.of(page, pageImageDto, pageNum);
+		return PageDto.of(page, pageImageDto, 0, 0);
 	}
 
 	public Page findById(Long pageId) {
@@ -91,8 +87,7 @@ public class PageService {
 		F2<Integer, Integer, List<Page>> callback) {
 		// 1. 0 미만일 경우. 2. totalSize 초과할 경우. -> 페이지 범위 내로 변경.
 		pageIndex = (totalSize + pageIndex) % totalSize;
-		List<Page> pages = callback.apply(pageIndex, perPageSize).stream().collect(Collectors.toSet()).stream().sorted(
-			Comparator.comparing(Created::getCreatedAt)).collect(Collectors.toList());
+		List<Page> pages = callback.apply(pageIndex, perPageSize);
 
 		// 조회한 페이지 사이즈가 per 페이지 사이즈보다 작으면 0페이지부터 조회하여 더함.
 		if (CollectionUtils.isNotEmpty(pages) && (perPageSize % (totalSize - pages.size() + 1)) > 0) {

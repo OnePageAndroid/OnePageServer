@@ -12,7 +12,6 @@ import java.util.List;
 @Builder
 public class PagesResponseDto {
 	private List<PageDto> pages;
-	private int pageNumber;
 	private int pageIndex;
 	private int perPageSize;
 	private int resultCount;
@@ -21,7 +20,6 @@ public class PagesResponseDto {
 	public static PagesResponseDto of(List<PageDto> pageDtos, Integer pageNumber, Integer perPageSize, Integer totalSize) {
 		return PagesResponseDto.builder()
 			.pages(pageDtos)
-			.pageNumber(totalSize - pageNumber + 1)
 			.pageIndex(pageNumber)
 			.perPageSize(perPageSize)
 			.resultCount(pageDtos.size())
@@ -32,7 +30,6 @@ public class PagesResponseDto {
 	public static PagesResponseDto empty() {
 		return PagesResponseDto.builder()
 			.pages(Lists.newArrayList())
-			.pageNumber(0)
 			.pageIndex(0)
 			.perPageSize(0)
 			.resultCount(0)
