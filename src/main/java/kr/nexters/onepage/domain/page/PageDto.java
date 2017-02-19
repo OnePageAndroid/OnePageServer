@@ -14,6 +14,7 @@ import java.util.List;
 public class PageDto {
 	private Long pageId;
 	private String locationName;
+	private String locationEngName;
 	private String locationAddress;
 	private String email;
 	private String content;
@@ -26,6 +27,7 @@ public class PageDto {
 		return PageDto.builder()
 			.pageId(page.getId())
 			.locationName(page.getLocation().getName())
+			.locationEngName(page.getLocation().getEngName())
 			.locationAddress(page.getLocation().getAddress())
 			.email(page.getUser().getEmail())
 			.content(page.getContent())

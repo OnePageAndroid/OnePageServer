@@ -90,8 +90,9 @@ public class PageService {
 		List<Page> pages = callback.apply(pageIndex, perPageSize);
 
 		// 조회한 페이지 사이즈가 per 페이지 사이즈보다 작으면 0페이지부터 조회하여 더함.
-		if (CollectionUtils.isNotEmpty(pages) && (perPageSize % (totalSize - pages.size() + 1)) > 0) {
-			pages.addAll(callback.apply(ZERO, (perPageSize % (totalSize - pages.size() + 1))));
+		if (CollectionUtils.isNotEmpty(pages) && (perPageSize - pages.size() > 0)
+			&& ((perPageSize - pages.size()) % (totalSize - pages.size() + 1)) > 0) {
+			pages.addAll(callback.apply(ZERO, ((perPageSize - pages.size()) % (totalSize - pages.size() + 1))));
 		}
 		return PagesResponseDto.of(
 			PageDtoBuilder.transformPagesToDtos(pages, pageIndex, totalSize, (id) -> pageImageService.findByPageId(id)),
