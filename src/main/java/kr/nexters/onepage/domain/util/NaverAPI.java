@@ -1,5 +1,7 @@
 package kr.nexters.onepage.domain.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
@@ -7,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+@Slf4j
 public class NaverAPI {
 	public static String convertKorToEng(String korName) {
 		String clientId = "Y0j1Our0NJo0iZ7ya1ZR";//애플리케이션 클라이언트 아이디값";
@@ -41,7 +44,8 @@ public class NaverAPI {
 			br.close();
 			return response.toString();
 		} catch (Exception e) {
-			System.out.println(e);
+			log.error("convertKorToEng : " + e.getMessage(), e);
 		}
+		return "";
 	}
 }
