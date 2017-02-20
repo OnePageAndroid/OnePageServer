@@ -5,11 +5,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.common.base.Preconditions;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import kr.nexters.onepage.api.common.ResponseDto;
 import kr.nexters.onepage.domain.locationImage.DayType;
 import kr.nexters.onepage.domain.locationImage.LocationImageResponseDto;
 import kr.nexters.onepage.domain.locationImage.LocationImageService;
@@ -35,5 +37,22 @@ public class LocationImageApiController {
 			log.error("findByLocationIdAndDay : " + e.getMessage(), e);
 			return LocationImageResponseDto.empty();
 		}
+	}
+
+	@ApiOperation(value = "장소 이미지 저장", notes = "장소 이미지 저장")
+	@RequestMapping(value = "save", method = RequestMethod.POST)
+	public ResponseDto locationImageSave(@RequestParam Long locationId, @RequestParam MultipartFile multipartFile, @RequestParam String name, @RequestParam String englishName, @RequestParam DayType dayType){
+		Preconditions.checkNotNull(locationId,"장소 id없음");
+		Preconditions.checkNotNull(multipartFile, "file 없음");
+		Preconditions.checkNotNull(name, "이름 없음");
+		Preconditions.checkNotNull(englishName, "영어 이름 없음");
+		Preconditions.checkNotNull(dayType, "dayType 없음");
+		try{
+			locationImageService.locationImageSave(locationId, multipartFile, name, englishName, dayType);
+		}catch(Exception e){
+			log.error("locationImageSave fail : " + e.getMessage(), e);
+			return ResponseDto.ofFail(e.getMessage());
+		}
+		return ResponseDto.ofSuccess("이미지 저장 성공");
 	}
 }

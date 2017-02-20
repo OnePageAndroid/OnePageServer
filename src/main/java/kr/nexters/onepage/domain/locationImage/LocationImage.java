@@ -1,5 +1,7 @@
 package kr.nexters.onepage.domain.locationImage;
 
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -64,5 +66,16 @@ public class LocationImage extends Modified {
 
 	public void deleted() {
 		this.deleted = true;
+	}
+
+	public static LocationImage of(Location location, Map<String, String> uploadInfo, DayType dayType, String name, String englishName){
+		return LocationImage.builder()
+				.location(location)
+				.objectKey(uploadInfo.get("public_id"))
+	            .url(uploadInfo.get("url"))
+				.name(name)
+				.dayType(dayType)
+				.englishName(englishName)
+				.build();
 	}
 }

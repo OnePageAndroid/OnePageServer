@@ -63,7 +63,7 @@ public class LocationApiController {
 		}
 	}
 
-	@ApiOperation(value = "좌표로 근처 장소정보 얻어오기 - 단위 : 미터(디폴트 1km)", notes = "좌표로 장소정보 얻어오기")
+	@ApiOperation(value = "좌표로 근처 장소정보 얻어오기 - 단위 : 미터(디폴트 3km)", notes = "좌표로 장소정보 얻어오기")
 	@RequestMapping(value = "/search/coordinates", method = RequestMethod.GET)
 	public LocationsResponseDto searchLatLng(@RequestParam Double latitude, @RequestParam Double longitude, @RequestParam(required = false, defaultValue = "3000") Double meter) {
 		try {
