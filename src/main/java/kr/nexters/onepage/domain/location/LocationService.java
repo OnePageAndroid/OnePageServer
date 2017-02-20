@@ -3,6 +3,7 @@ package kr.nexters.onepage.domain.location;
 import com.google.common.collect.Lists;
 import kr.nexters.onepage.domain.calculate.LatLngCalculator;
 import kr.nexters.onepage.domain.util.DaumAPI;
+import kr.nexters.onepage.domain.util.NaverAPI;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -77,4 +78,14 @@ public class LocationService {
 		return findByLatAndLngAndMeter(latitude, longitude, meter);
 	}
 
+	public void translateMigration() {
+		List<Location> locations = locationRepository.findAll();
+		if(CollectionUtils.isEmpty(locations)) {
+			return;
+		}
+		for(Location location : locations) {
+			location.setEngName(NaverAPI.convertKorToEng(location.getName()));
+		}
+		locationRepository.save(locations);
+	}
 }

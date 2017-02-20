@@ -1,32 +1,27 @@
 package kr.nexters.onepage.domain.locationImage;
 
+import kr.nexters.onepage.domain.location.Location;
+import kr.nexters.onepage.domain.location.LocationService;
+import kr.nexters.onepage.domain.util.DaumAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import kr.nexters.onepage.domain.location.Location;
-import kr.nexters.onepage.domain.location.LocationRepository;
-import kr.nexters.onepage.domain.util.DaumAPI;
 
 @Service
 public class LocationImageService {
 	@Autowired
 	private LocationImageRepository locationImageRepository;
-
 	@Autowired
-	private LocationRepository locationRepository;
+	private LocationService locationService;
 
 	@Transactional(readOnly = true)
-	public LocationImageResponseDto findByLocationIdAndDay(Long locationId, DayType dayType) {
-		LocationImageDto locationImageDto = LocationImageDto.of(locationImageRepository.findByLocationIdAndDayType(locationId, dayType));
-		if (locationImageRepository.findByLocationIdAndDayType(locationId, dayType) != null) {
-			return LocationImageResponseDto.of(locationImageDto);
+	public LocationImageDto findByLocationIdAndDay(Long locationId, DayType dayType) {
+		Location location = locationService.findById(locationId);
+		LocationImage locationImage = locationImageRepository.findByLocationIdAndDayType(locationId, dayType);
+		LocationImageDto locationImageDto = LocationImageDto.of(locationImage, location);
+		if (locationImage != null) {
+			return locationImageDto;
 		}
-		return findByDaumLocation(locationId);
-	}
-
-	public LocationImageResponseDto findByDaumLocation(Long locationId) {
-		Location location = locationRepository.findById(locationId);
-		return DaumAPI.getImageUrl(location);
+		return DaumAPI.getImageUrl(location, dayType);
 	}
 }

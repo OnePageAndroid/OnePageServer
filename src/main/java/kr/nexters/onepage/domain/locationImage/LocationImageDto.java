@@ -1,5 +1,6 @@
 package kr.nexters.onepage.domain.locationImage;
 
+import kr.nexters.onepage.domain.location.Location;
 import lombok.*;
 
 import java.util.Objects;
@@ -17,7 +18,7 @@ public class LocationImageDto {
 	private String englishName;
 	private DayType dayType;
 
-	public static LocationImageDto of(LocationImage locationImage){
+	public static LocationImageDto of(LocationImage locationImage, Location location){
 		if(Objects.isNull(locationImage)) {
 			return LocationImageDto.empty();
 		}
@@ -26,13 +27,27 @@ public class LocationImageDto {
 				.objectkey(locationImage.getObjectKey())
 				.url(locationImage.getUrl())
 				.name(locationImage.getName())
-				.englishName(locationImage.getEnglishName())
+				.englishName(location.getEngName())
 				.dayType(locationImage.getDayType())
 				.build();
 	}
 
 	private static LocationImageDto empty() {
 		return LocationImageDto.builder()
+			.build();
+	}
+
+	public static LocationImageDto of(Location location, String imageUrl, DayType dayType) {
+		if (Objects.isNull(location)) {
+			return LocationImageDto.empty();
+		}
+		return LocationImageDto.builder()
+			.locationId(location.getId())
+			.objectkey(null)
+			.url(imageUrl)
+			.name(location.getName())
+			.englishName(location.getEngName())
+			.dayType(dayType)
 			.build();
 	}
 }
