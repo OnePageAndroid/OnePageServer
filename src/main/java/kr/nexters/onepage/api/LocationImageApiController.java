@@ -1,19 +1,17 @@
 package kr.nexters.onepage.api;
 
+import com.google.common.base.Preconditions;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import kr.nexters.onepage.domain.locationImage.DayType;
+import kr.nexters.onepage.domain.locationImage.LocationImageDto;
+import kr.nexters.onepage.domain.locationImage.LocationImageService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.google.common.base.Preconditions;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import kr.nexters.onepage.domain.locationImage.DayType;
-import kr.nexters.onepage.domain.locationImage.LocationImageResponseDto;
-import kr.nexters.onepage.domain.locationImage.LocationImageService;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Api(value = "장소이미지 API", description = "장소이미지 API", basePath = "/api/v1/locationImage")
@@ -26,14 +24,14 @@ public class LocationImageApiController {
 
 	@ApiOperation(value = "장소이미지 조회", notes = "특정 장소이미지 조회.")
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public LocationImageResponseDto findByLocationIdAndDay(@RequestParam Long locationId, @RequestParam DayType dayType){
+	public LocationImageDto findByLocationIdAndDay(@RequestParam Long locationId, @RequestParam DayType dayType){
 		Preconditions.checkNotNull(locationId, "장소 id없음");
 		Preconditions.checkNotNull(dayType,"날씨정보 없음");
 		try{
 			return locationImageService.findByLocationIdAndDay(locationId, dayType);
 		}catch(Exception e){
 			log.error("findByLocationIdAndDay : " + e.getMessage(), e);
-			return LocationImageResponseDto.empty();
+			return LocationImageDto.empty();
 		}
 	}
 }

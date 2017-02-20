@@ -32,11 +32,6 @@ public class LocationImageDto {
 				.build();
 	}
 
-	private static LocationImageDto empty() {
-		return LocationImageDto.builder()
-			.build();
-	}
-
 	public static LocationImageDto of(Location location, String imageUrl, DayType dayType) {
 		if (Objects.isNull(location)) {
 			return LocationImageDto.empty();
@@ -48,6 +43,11 @@ public class LocationImageDto {
 			.name(location.getName())
 			.englishName(location.getEngName())
 			.dayType(dayType)
+			.build();
+	}
+
+	public static LocationImageDto empty() {
+		return LocationImageDto.builder()
 			.build();
 	}
 }
