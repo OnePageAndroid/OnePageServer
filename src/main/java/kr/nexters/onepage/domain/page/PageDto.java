@@ -14,22 +14,26 @@ import java.util.List;
 public class PageDto {
 	private Long pageId;
 	private String locationName;
+	private String locationEngName;
 	private String locationAddress;
 	private String email;
 	private String content;
 	private List<PageImageDto> images;
 	private int pageNum;
+	private int pageIndex;
 	private LocalDateTime createdAt;
 
-	public static PageDto of(Page page, List<PageImageDto> imageDtos, int pageNum) {
+	public static PageDto of(Page page, List<PageImageDto> imageDtos, int pageIndex, int totalSize) {
 		return PageDto.builder()
 			.pageId(page.getId())
 			.locationName(page.getLocation().getName())
+			.locationEngName(page.getLocation().getEngName())
 			.locationAddress(page.getLocation().getAddress())
 			.email(page.getUser().getEmail())
 			.content(page.getContent())
 			.images(imageDtos)
-			.pageNum(pageNum)
+			.pageNum(totalSize - pageIndex)
+			.pageIndex(pageIndex)
 			.createdAt(page.getCreatedAt())
 			.build();
 	}

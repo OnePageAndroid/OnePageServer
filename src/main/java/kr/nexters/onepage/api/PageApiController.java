@@ -45,13 +45,13 @@ public class PageApiController {
 	@ApiOperation(value = "장소 기반 페이지 조회", notes = "장소 기반 페이지 조회")
 	@RequestMapping(value = "/location", method = RequestMethod.GET)
 	public PagesResponseDto findByLocation(@RequestParam Long locationId,
-		@ApiParam(value = "현재 페이지 넘버버0부터시작)") @RequestParam Integer pageNumber,
+		@ApiParam(value = "현재 페이지 넘버버0부터시작)") @RequestParam Integer pageIndex,
 		@ApiParam(value = "가져올 페이지 사이즈") @RequestParam Integer perPageSize) {
 		Preconditions.checkNotNull(locationId, "locationId parameter가 존재하지 않음");
-		Preconditions.checkNotNull(pageNumber, "pageNumber parameter가 존재하지 않음");
+		Preconditions.checkNotNull(pageIndex, "pageNumber parameter가 존재하지 않음");
 		Preconditions.checkNotNull(perPageSize, "perPageSize parameter가 존재하지 않음");
 		try {
-			return pageService.findCircleByLocationId(locationId, pageNumber, perPageSize);
+			return pageService.findCircleByLocationId(locationId, pageIndex, perPageSize);
 		} catch (Exception e) {
 			log.error("findByLocation : " + e.getMessage());
 			return PagesResponseDto.empty();
@@ -61,16 +61,32 @@ public class PageApiController {
 	@ApiOperation(value = "유저 기반 페이지 조회", notes = "유저 기반 페이지 조회")
 	@RequestMapping(value = "/user", method = RequestMethod.GET)
 	public PagesResponseDto findByUser(@RequestParam String email,
-		@ApiParam(value = "현재 페이지 넘버버0부터시작)") @RequestParam Integer pageNumber,
+		@ApiParam(value = "현재 페이지 넘버버0부터시작)") @RequestParam Integer pageIndex,
 		@ApiParam(value = "가져올 페이지 사이즈") @RequestParam Integer perPageSize) {
 		Preconditions.checkNotNull(email, "email paramter가 존재하지 않음");
-		Preconditions.checkNotNull(pageNumber, "pageNumber parameter가 존재하지 않음");
+		Preconditions.checkNotNull(pageIndex, "pageNumber parameter가 존재하지 않음");
 		Preconditions.checkNotNull(perPageSize, "perPageSize parameter가 존재하지 않음");
 
 		try {
-			return pageService.findCircleByEmail(email, pageNumber, perPageSize);
+			return pageService.findCircleByEmail(email, pageIndex, perPageSize);
 		} catch (Exception e) {
 			log.error("findByUser : " + e.getMessage());
+			return PagesResponseDto.empty();
+		}
+	}
+
+	@ApiOperation(value = "유저별 북마크 페이지 조회", notes = "우저별 북마크 페이지 조회")
+	@RequestMapping(value="/heart", method=RequestMethod.GET)
+	public PagesResponseDto heart(@RequestParam String email,
+		@ApiParam(value = "현재 페이지 넘버버0부터시작") @RequestParam Integer pageIndex,
+		@ApiParam(value = "가져올 페이지 사이즈") @RequestParam Integer perPageSize){
+		Preconditions.checkNotNull(email, "email parameter가 존재하지 않음");
+		Preconditions.checkNotNull(pageIndex, "pageNumber가 존재하지 않음");
+		Preconditions.checkNotNull(perPageSize, "perPageSize가 존재하지 않음");
+		try{
+			return pageService.findCircleByEmailAndHeart(email, pageIndex, perPageSize);
+		} catch(Exception e){
+			log.error("user heart page : " + e.getMessage(), e);
 			return PagesResponseDto.empty();
 		}
 	}
@@ -81,7 +97,7 @@ public class PageApiController {
 		try{
 			return pageService.totalCountByLocationId(locationId);
 		} catch(Exception e){
-			log.error("page image remove : " + e.getMessage());
+			log.error("page image removeById : " + e.getMessage(), e);
 			return ZERO;
 		}
 	}
@@ -94,7 +110,7 @@ public class PageApiController {
 		try {
 			return pageService.countByLocationIdAndRange(locationId, LocalDateRange.of(startDate, endDate));
 		} catch (Exception e) {
-			log.error("page image remove : " + e.getMessage());
+			log.error("page image removeById : " + e.getMessage(), e);
 			return ZERO;
 		}
 	}
@@ -104,28 +120,12 @@ public class PageApiController {
 	public ResponseDto remove(@RequestParam Long pageId){
 		Preconditions.checkNotNull(pageId, "pageId paramter가 존재하지 않음");
 		try{
-			pageService.remove(pageId);
+			pageService.removeById(pageId);
 		} catch(Exception e){
-			log.error("pagex image remove : " + e.getMessage());
+			log.error("pagex image removeById : " + e.getMessage(), e);
 			return ResponseDto.ofFail(e.getMessage());
 		}
 		return ResponseDto.ofSuccess("page 삭제 성공");
-	}
-
-	@ApiOperation(value = "유저별 북마크 페이지 조회", notes = "우저별 북마크 페이지 조회")
-	@RequestMapping(value="/heart", method=RequestMethod.GET)
-	public PagesResponseDto heart(@RequestParam String email,
-			@ApiParam(value = "현재 페이지 넘버버0부터시작") @RequestParam Integer pageNumber,
-			@ApiParam(value = "가져올 페이지 사이즈") @RequestParam Integer perPageSize){
-		Preconditions.checkNotNull(email, "email parameter가 존재하지 않음");
-		Preconditions.checkNotNull(pageNumber, "pageNumber가 존재하지 않음");
-		Preconditions.checkNotNull(perPageSize, "perPageSize가 존재하지 않음");
-		try{
-			return pageService.findCircleByEmailAndHeart(email, pageNumber, perPageSize);
-		} catch(Exception e){
-			log.error("user heart page : " + e.getMessage(), e);
-			return PagesResponseDto.empty();
-		}
 	}
 
 }

@@ -1,21 +1,10 @@
 package kr.nexters.onepage.domain.location;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
+import kr.nexters.onepage.domain.support.Created;
+import lombok.*;
 import org.hibernate.annotations.Where;
 
-import kr.nexters.onepage.domain.support.Created;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -31,16 +20,14 @@ public class Location extends Created {
 	@Column(name = "locationId")
 	private Long id;
 	@Column
-	@NotNull
 	private Double latitude;
 	@Column
-	@NotNull
 	private Double longitude;
 	@Column
-	@NotNull
 	private String name;
 	@Column
-	@NotNull
+	private String engName;
+	@Column
 	private String address;
 	@Column
 	private boolean deleted;
@@ -50,14 +37,16 @@ public class Location extends Created {
 			.latitude(locationDto.getLatitude())
 			.longitude(locationDto.getLongitude())
 			.name(locationDto.getName())
+			.engName(locationDto.getEngName())
 			.address(locationDto.getAddress()).build();
 	}
 
-	public static Location of(Double latitude, Double longitude, String name, String address) {
+	public static Location of(Double latitude, Double longitude, String name, String engName, String address) {
 		return Location.builder()
 			.latitude(latitude)
 			.longitude(longitude)
 			.name(name)
+			.engName(engName)
 			.address(address).build();
 	}
 }

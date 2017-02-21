@@ -1,25 +1,23 @@
 package kr.nexters.onepage.domain.pageImage;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
+import com.cloudinary.Cloudinary;
+import com.google.common.collect.Lists;
+import kr.nexters.onepage.domain.common.OnePageServiceException;
+import kr.nexters.onepage.domain.location.LocationService;
+import kr.nexters.onepage.domain.page.Page;
+import kr.nexters.onepage.domain.page.PageService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.cloudinary.Cloudinary;
-import com.google.common.collect.Lists;
-
-import kr.nexters.onepage.domain.common.OnePageServiceException;
-import kr.nexters.onepage.domain.location.LocationService;
-import kr.nexters.onepage.domain.page.Page;
-import kr.nexters.onepage.domain.page.PageService;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -66,20 +64,18 @@ public class PageImageService {
 	@Transactional(readOnly = false)
 	public void removeByPageId(Long pageId) {
 		try {
-			pageImageRepository.delete(pageId);
 			List<PageImage> pageImages = pageImageRepository.findByPageId(pageId);
-			for (PageImage p : pageImages)
-				cloudinary.uploader().destroy(p.getObjectKey(), new HashMap());
+			for (PageImage pageImage : pageImages) {
+				removePageImage(pageImage);
+			}
 		} catch (Exception e) {
-			log.error("savePageImage : " + e.getMessage());
-			throw new OnePageServiceException(e);
+			log.error("savePageImage : " + e.getMessage(), e);
 		}
 	}
 
-	@Transactional(readOnly = false)
-	public void deleted(Long pageId) {
-		PageImage pageImage = pageImageRepository.findOne(pageId);
+	private void removePageImage(PageImage pageImage) throws IOException {
 		pageImage.deleted();
+		pageImageRepository.save(pageImage);
+		cloudinary.uploader().destroy(pageImage.getObjectKey(), new HashMap());
 	}
-
 }

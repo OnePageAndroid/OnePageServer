@@ -34,15 +34,15 @@ public class DaumAPI {
 			JSONObject object = (JSONObject) JSONValue.parse(isr);
 
 			in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
-			System.out.println("object : " + object);
 			JSONObject channel = (JSONObject)object.get("channel");
-			System.out.println(channel);
 			JSONArray item = (JSONArray)channel.get("item");
-			System.out.println(item);
 			JSONObject array = (JSONObject)item.get(0);
-			System.out.println(array);
 			address = array.get("newAddress").toString();
 			name = array.get("title").toString();
+			String temp = name.substring(name.length()-2,name.length());
+			if(temp.equals("구청") || temp.equals("시청"))
+				name=name.substring(0,name.length()-1);
+			System.out.println("name : " + name);
 			lat = array.get("latitude").toString();
 			lng = array.get("longitude").toString();
 		} catch (Exception e) {
@@ -55,7 +55,7 @@ public class DaumAPI {
 					e.printStackTrace();
 				}
 		}
-		return Location.of(Double.valueOf(lat), Double.valueOf(lng), name, address);
+		return Location.of(Double.valueOf(lat), Double.valueOf(lng), name, name, address);
 	}
 
 	private static String makeUrl(double latitude, double longitude){

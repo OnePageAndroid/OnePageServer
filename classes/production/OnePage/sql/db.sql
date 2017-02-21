@@ -6,6 +6,7 @@ CREATE TABLE onepage.location (
   `latitude` double NOT NULL COMMENT 'latitude',
   `longitude` double NOT NULL COMMENT 'longitude',
   `name` varchar(500) NOT NULL COMMENT 'location name',
+  `engName` varchar(500) NULL COMMENT 'eng location name',
   `address` varchar(1000) NOT NULL COMMENT 'address',
   `createdAt` datetime NOT NULL COMMENT 'created datetime',
   `createdBy` varchar(50) NOT NULL COMMENT 'creator',
@@ -13,6 +14,9 @@ CREATE TABLE onepage.location (
   PRIMARY KEY (`locationId`),
   KEY `onelocation_idx01` (`latitude`, `longitude`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='location';
+
+-- ALTER TABLE `onepage`.`location` ADD COLUMN `engName` varchar(500) NULL COMMENT 'eng location name' AFTER `name`;
+
 
 DROP TABLE IF EXISTS onepage.user;
 

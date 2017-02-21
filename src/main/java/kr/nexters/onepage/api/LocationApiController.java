@@ -26,13 +26,13 @@ public class LocationApiController {
 	@ApiOperation(value = "장소 저장하기", notes = "특정 장소 저장.")
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public ResponseDto save(@RequestParam Double latitude, @RequestParam Double longitude,
-		@RequestParam String name, @RequestParam String address) {
+		@RequestParam String name, @RequestParam String engName, @RequestParam String address) {
 		Preconditions.checkNotNull(latitude, "latitude Parameter가 존재하지 않음");
 		Preconditions.checkNotNull(longitude, "longitude Parameter가 존재하지 않음");
 		Preconditions.checkNotNull(name, "name Parameter가 존재하지 않음");
 		Preconditions.checkNotNull(address, "address Parameter가 존재하지 않음");
 		try {
-			locationService.saveLocation(latitude, longitude, name, address);
+			locationService.saveLocation(latitude, longitude, name, engName, address);
 		} catch (Exception e) {
 			log.error("location save : " + e.getMessage(), e);
 			return ResponseDto.ofFail(e.getMessage());
@@ -65,7 +65,8 @@ public class LocationApiController {
 
 	@ApiOperation(value = "좌표로 근처 장소정보 얻어오기 - 단위 : 미터(디폴트 3km)", notes = "좌표로 장소정보 얻어오기")
 	@RequestMapping(value = "/search/coordinates", method = RequestMethod.GET)
-	public LocationsResponseDto searchLatLng(@RequestParam Double latitude, @RequestParam Double longitude, @RequestParam(required = false, defaultValue = "3000") Double meter) {
+	public LocationsResponseDto searchLatLng(@RequestParam Double latitude, @RequestParam Double longitude,
+		@RequestParam(required = false, defaultValue = "3000") Double meter) {
 		try {
 			return LocationsResponseDto.of(locationService.searchLatLng(latitude, longitude, meter));
 		} catch (Exception e) {
