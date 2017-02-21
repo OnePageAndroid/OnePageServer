@@ -17,10 +17,10 @@ public class PagesResponseDto {
 	private int resultCount;
 	private int totalSize;
 
-	public static PagesResponseDto of(List<PageDto> pageDtos, Integer pageNumber, Integer perPageSize, Integer totalSize) {
+	public static PagesResponseDto of(List<PageDto> pageDtos, Integer pageIndex, Integer perPageSize, Integer totalSize) {
 		return PagesResponseDto.builder()
 			.pages(pageDtos)
-			.pageIndex(pageNumber)
+			.pageIndex(pageIndex)
 			.perPageSize(perPageSize)
 			.resultCount(pageDtos.size())
 			.totalSize(totalSize)

@@ -1,5 +1,15 @@
 package kr.nexters.onepage.domain.util;
 
+<<<<<<< HEAD
+=======
+import kr.nexters.onepage.domain.location.Location;
+import kr.nexters.onepage.domain.locationImage.DayType;
+import kr.nexters.onepage.domain.locationImage.LocationImageDto;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+
+>>>>>>> 4cc04f7fe5019aee8fc794ce53d59937e9b165f7
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -55,10 +65,10 @@ public class DaumAPI {
 					e.printStackTrace();
 				}
 		}
-		return Location.of(Double.valueOf(lat), Double.valueOf(lng), name, name, address);
+		return Location.of(Double.valueOf(lat), Double.valueOf(lng), name, NaverAPI.convertKorToEng(name), address);
 	}
 
-	private static String makeUrl(double latitude, double longitude){
+	private static String makeUrl(double latitude, double longitude) {
 		StringBuilder urlString = new StringBuilder(
 			"https://apis.daum.net/local/v1/search/keyword.json?");
 		urlString.append("apikey=" + API_KEY);
@@ -69,7 +79,7 @@ public class DaumAPI {
 		urlString.append("&radius=3000");
 		urlString.append("&sort=0");
 		urlString.append("&query=");
-		String encodeResult=null;
+		String encodeResult = null;
 		try {
 			encodeResult = URLEncoder.encode("구청", "UTF-8");
 		} catch (UnsupportedEncodingException e) {
@@ -81,11 +91,11 @@ public class DaumAPI {
 		return urlString.toString();
 	}
 
-	public static LocationImageResponseDto getImageUrl(Location location){
-		String url = makeUrl(location.getLatitude(),location.getLongitude());
+	public static LocationImageDto getImageUrl(Location location, DayType dayType) {
+		String url = makeUrl(location.getLatitude(), location.getLongitude());
 		BufferedReader in = null;
 		String imageUrl = null;
-		String name= null;
+		String name = null;
 		try {
 			URL obj = new URL(url);
 			HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
@@ -95,11 +105,11 @@ public class DaumAPI {
 
 			in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
 			System.out.println("object : " + object);
-			JSONObject channel = (JSONObject)object.get("channel");
+			JSONObject channel = (JSONObject) object.get("channel");
 			System.out.println(channel);
-			JSONArray item = (JSONArray)channel.get("item");
+			JSONArray item = (JSONArray) channel.get("item");
 			System.out.println(item);
-			JSONObject array = (JSONObject)item.get(0);
+			JSONObject array = (JSONObject) item.get(0);
 			System.out.println(array);
 			name = array.get("title").toString();
 			imageUrl = array.get("imageUrl").toString();
@@ -113,6 +123,6 @@ public class DaumAPI {
 					e.printStackTrace();
 				}
 		}
-		return LocationImageResponseDto.of(location.getId(), imageUrl, name);
+		return LocationImageDto.of(location, imageUrl, dayType);
 	}
 }

@@ -48,7 +48,7 @@ public class PageApiController {
 		@ApiParam(value = "현재 페이지 넘버버0부터시작)") @RequestParam Integer pageIndex,
 		@ApiParam(value = "가져올 페이지 사이즈") @RequestParam Integer perPageSize) {
 		Preconditions.checkNotNull(locationId, "locationId parameter가 존재하지 않음");
-		Preconditions.checkNotNull(pageIndex, "pageNumber parameter가 존재하지 않음");
+		Preconditions.checkNotNull(pageIndex, "pageIndex parameter가 존재하지 않음");
 		Preconditions.checkNotNull(perPageSize, "perPageSize parameter가 존재하지 않음");
 		try {
 			return pageService.findCircleByLocationId(locationId, pageIndex, perPageSize);
@@ -64,7 +64,7 @@ public class PageApiController {
 		@ApiParam(value = "현재 페이지 넘버버0부터시작)") @RequestParam Integer pageIndex,
 		@ApiParam(value = "가져올 페이지 사이즈") @RequestParam Integer perPageSize) {
 		Preconditions.checkNotNull(email, "email paramter가 존재하지 않음");
-		Preconditions.checkNotNull(pageIndex, "pageNumber parameter가 존재하지 않음");
+		Preconditions.checkNotNull(pageIndex, "pageIndex parameter가 존재하지 않음");
 		Preconditions.checkNotNull(perPageSize, "perPageSize parameter가 존재하지 않음");
 
 		try {
@@ -81,7 +81,7 @@ public class PageApiController {
 		@ApiParam(value = "현재 페이지 넘버버0부터시작") @RequestParam Integer pageIndex,
 		@ApiParam(value = "가져올 페이지 사이즈") @RequestParam Integer perPageSize){
 		Preconditions.checkNotNull(email, "email parameter가 존재하지 않음");
-		Preconditions.checkNotNull(pageIndex, "pageNumber가 존재하지 않음");
+		Preconditions.checkNotNull(pageIndex, "pageIndex 존재하지 않음");
 		Preconditions.checkNotNull(perPageSize, "perPageSize가 존재하지 않음");
 		try{
 			return pageService.findCircleByEmailAndHeart(email, pageIndex, perPageSize);

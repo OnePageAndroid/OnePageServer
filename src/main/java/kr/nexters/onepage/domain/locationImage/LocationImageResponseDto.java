@@ -1,14 +1,13 @@
 package kr.nexters.onepage.domain.locationImage;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class LocationImageResponseDto {
-
 	private Long locationId;
 	private String url;
 	private String name;
@@ -19,7 +18,6 @@ public class LocationImageResponseDto {
 				.locationId(locationImage.getLocationId())
 				.url(locationImage.getUrl())
 				.name(locationImage.getName())
-				.englishName(locationImage.getEnglishName())
 				.build();
 	}
 
@@ -32,12 +30,12 @@ public class LocationImageResponseDto {
 				.build();
 	}
 
-	public static LocationImageResponseDto of(Long locationId, String url, String name){
+	public static LocationImageResponseDto of(Long locationId, String url, String name, String englishName){
 		return LocationImageResponseDto.builder()
 				.locationId(locationId)
 				.url(url)
 				.name(name)
-				.englishName(name)
+				.englishName(englishName)
 				.build();
 	}
 }

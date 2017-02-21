@@ -1,13 +1,12 @@
 package kr.nexters.onepage.domain.pageImage;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class PageImageDto {
 	private Long pageId;
 	private Long locationId;

@@ -13,7 +13,7 @@ import com.cloudinary.Cloudinary;
 
 import kr.nexters.onepage.domain.common.OnePageServiceException;
 import kr.nexters.onepage.domain.location.Location;
-import kr.nexters.onepage.domain.location.LocationRepository;
+import kr.nexters.onepage.domain.location.LocationService;
 import kr.nexters.onepage.domain.util.DaumAPI;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,29 +22,26 @@ import lombok.extern.slf4j.Slf4j;
 public class LocationImageService {
 	@Autowired
 	private LocationImageRepository locationImageRepository;
-
 	@Autowired
-	private LocationRepository locationRepository;
+	private LocationService locationService;
 
 	@Autowired
 	private Cloudinary cloudinary;
 
 	@Transactional(readOnly = true)
-	public LocationImageResponseDto findByLocationIdAndDay(Long locationId, DayType dayType) {
-		LocationImageDto locationImageDto = LocationImageDto.of(locationImageRepository.findByLocationIdAndDayType(locationId, dayType));
-		if(locationImageRepository.findByLocationIdAndDayType(locationId, dayType)!=null)
-			return LocationImageResponseDto.of(locationImageDto);
-		return findByDaumLocation(locationId);
-	}
-
-	public LocationImageResponseDto findByDaumLocation(Long locationId){
-		Location location = locationRepository.findById(locationId);
-		return DaumAPI.getImageUrl(location);
+	public LocationImageDto findByLocationIdAndDay(Long locationId, DayType dayType) {
+		Location location = locationService.findById(locationId);
+		LocationImage locationImage = locationImageRepository.findByLocationIdAndDayType(locationId, dayType);
+		LocationImageDto locationImageDto = LocationImageDto.of(locationImage, location);
+		if (locationImage != null) {
+			return locationImageDto;
+		}
+		return DaumAPI.getImageUrl(location, dayType);
 	}
 
 	@Transactional (readOnly = false)
 	public void locationImageSave(Long locationId, MultipartFile multipartFile, String name, String englishName, DayType dayType){
-		Location location = locationRepository.findById(locationId);
+		Location location = locationService.findById(locationId);
 		Map<String, String> uploadInfo = upload(multipartFile);
 		locationImageRepository.save(LocationImage.of(location, uploadInfo, dayType, name, englishName));
 	}
@@ -64,3 +61,4 @@ public class LocationImageService {
 		}
 	}
 }
+

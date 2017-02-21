@@ -1,23 +1,24 @@
 package kr.nexters.onepage.domain.locationImage;
 
-import java.util.Objects;
+import kr.nexters.onepage.domain.location.Location;
+import lombok.*;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Objects;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class LocationImageDto {
 	private Long locationId;
 	private String objectkey;
 	private String url;
 	private String name;
-	private DayType dayType;
 	private String englishName;
+	private DayType dayType;
 
-	public static LocationImageDto of(LocationImage locationImage){
+	public static LocationImageDto of(LocationImage locationImage, Location location){
 		if(Objects.isNull(locationImage)) {
 			return LocationImageDto.empty();
 		}
@@ -26,12 +27,26 @@ public class LocationImageDto {
 				.objectkey(locationImage.getObjectKey())
 				.url(locationImage.getUrl())
 				.name(locationImage.getName())
-				.englishName(locationImage.getEnglishName())
+				.englishName(location.getEngName())
 				.dayType(locationImage.getDayType())
 				.build();
 	}
 
-	private static LocationImageDto empty() {
+	public static LocationImageDto of(Location location, String imageUrl, DayType dayType) {
+		if (Objects.isNull(location)) {
+			return LocationImageDto.empty();
+		}
+		return LocationImageDto.builder()
+			.locationId(location.getId())
+			.objectkey(null)
+			.url(imageUrl)
+			.name(location.getName())
+			.englishName(location.getEngName())
+			.dayType(dayType)
+			.build();
+	}
+
+	public static LocationImageDto empty() {
 		return LocationImageDto.builder()
 			.build();
 	}
