@@ -1,7 +1,5 @@
 package kr.nexters.onepage.domain.util;
 
-<<<<<<< HEAD
-=======
 import kr.nexters.onepage.domain.location.Location;
 import kr.nexters.onepage.domain.locationImage.DayType;
 import kr.nexters.onepage.domain.locationImage.LocationImageDto;
@@ -9,7 +7,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
->>>>>>> 4cc04f7fe5019aee8fc794ce53d59937e9b165f7
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,13 +14,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
-
-import kr.nexters.onepage.domain.location.Location;
-import kr.nexters.onepage.domain.locationImage.LocationImageResponseDto;
 
 public class DaumAPI {
 
@@ -83,7 +73,6 @@ public class DaumAPI {
 		try {
 			encodeResult = URLEncoder.encode("구청", "UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		urlString.append(encodeResult);
