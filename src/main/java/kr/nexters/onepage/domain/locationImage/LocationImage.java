@@ -1,11 +1,28 @@
 package kr.nexters.onepage.domain.locationImage;
 
-import kr.nexters.onepage.domain.location.Location;
-import kr.nexters.onepage.domain.support.Modified;
-import lombok.*;
+import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import org.hibernate.annotations.Where;
 
-import javax.persistence.*;
+import kr.nexters.onepage.domain.location.Location;
+import kr.nexters.onepage.domain.support.Modified;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -49,5 +66,16 @@ public class LocationImage extends Modified {
 
 	public void deleted() {
 		this.deleted = true;
+	}
+
+	public static LocationImage of(Location location, Map<String, String> uploadInfo, DayType dayType, String name, String englishName){
+		return LocationImage.builder()
+				.location(location)
+				.objectKey(uploadInfo.get("public_id"))
+	            .url(uploadInfo.get("url"))
+				.name(name)
+				.dayType(dayType)
+				.englishName(englishName)
+				.build();
 	}
 }

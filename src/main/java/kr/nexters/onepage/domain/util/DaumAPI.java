@@ -1,5 +1,7 @@
 package kr.nexters.onepage.domain.util;
 
+<<<<<<< HEAD
+=======
 import kr.nexters.onepage.domain.location.Location;
 import kr.nexters.onepage.domain.locationImage.DayType;
 import kr.nexters.onepage.domain.locationImage.LocationImageDto;
@@ -7,6 +9,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+>>>>>>> 4cc04f7fe5019aee8fc794ce53d59937e9b165f7
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,6 +17,13 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+
+import kr.nexters.onepage.domain.location.Location;
+import kr.nexters.onepage.domain.locationImage.LocationImageResponseDto;
 
 public class DaumAPI {
 
@@ -34,15 +44,15 @@ public class DaumAPI {
 			JSONObject object = (JSONObject) JSONValue.parse(isr);
 
 			in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
-			System.out.println("object : " + object);
-			JSONObject channel = (JSONObject) object.get("channel");
-			System.out.println(channel);
-			JSONArray item = (JSONArray) channel.get("item");
-			System.out.println(item);
-			JSONObject array = (JSONObject) item.get(0);
-			System.out.println(array);
+			JSONObject channel = (JSONObject)object.get("channel");
+			JSONArray item = (JSONArray)channel.get("item");
+			JSONObject array = (JSONObject)item.get(0);
 			address = array.get("newAddress").toString();
 			name = array.get("title").toString();
+			String temp = name.substring(name.length()-2,name.length());
+			if(temp.equals("구청") || temp.equals("시청"))
+				name=name.substring(0,name.length()-1);
+			System.out.println("name : " + name);
 			lat = array.get("latitude").toString();
 			lng = array.get("longitude").toString();
 		} catch (Exception e) {
