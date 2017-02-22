@@ -88,6 +88,14 @@ public class PageService {
 		if (totalSize == 0) {
 			return PagesResponseDto.empty();
 		}
+		if(totalSize <= 3) {
+			List<Page> pages = callback.apply(0, perPageSize);
+			return PagesResponseDto.of(
+				PageDtoBuilder.transformPagesToDtos(pages, totalSize - 1, totalSize, (id) -> pageImageService.findByPageId(id)),
+				pageIndex,
+				perPageSize,
+				totalSize);
+		}
 		// 1. 0 미만일 경우. 2. totalSize 초과할 경우. -> 페이지 범위 내로 변경.
 		pageIndex = (totalSize + pageIndex) % totalSize;
 		List<Page> pages = callback.apply(pageIndex, perPageSize);
