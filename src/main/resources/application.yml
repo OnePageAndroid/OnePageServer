@@ -14,6 +14,11 @@ spring:
         strategy: org.hibernate.cfg.EJB3NamingStrategy
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  http:
+    multipart:
+      max-file-size: 1000MB
+      max-request-size: 1000MB
+      enabled: true
 server:
   port: 8080
 cloudinary:

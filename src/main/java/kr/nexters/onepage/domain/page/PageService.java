@@ -88,14 +88,26 @@ public class PageService {
 		if (totalSize == 0) {
 			return PagesResponseDto.empty();
 		}
+		if(totalSize <= 3) {
+			List<Page> pages = callback.apply(0, totalSize);
+			return PagesResponseDto.of(
+				PageDtoBuilder.transformPagesToDtos(pages, totalSize - 1, totalSize, (id) -> pageImageService.findByPageId(id)),
+				pageIndex,
+				perPageSize,
+				totalSize);
+		}
+		Integer limitSize = perPageSize;
+		if(limitSize > totalSize) {
+			limitSize = totalSize;
+		}
 		// 1. 0 미만일 경우. 2. totalSize 초과할 경우. -> 페이지 범위 내로 변경.
 		pageIndex = (totalSize + pageIndex) % totalSize;
 		List<Page> pages = callback.apply(pageIndex, perPageSize);
 
 		// 조회한 페이지 사이즈가 per 페이지 사이즈보다 작으면 0페이지부터 조회하여 더함.
-		if (CollectionUtils.isNotEmpty(pages) && (perPageSize - pages.size() > 0)
-			&& ((perPageSize - pages.size()) % (totalSize - pages.size() + 1)) > 0) {
-			pages.addAll(callback.apply(ZERO, ((perPageSize - pages.size()) % (totalSize - pages.size() + 1))));
+		if (CollectionUtils.isNotEmpty(pages) && (limitSize - pages.size() > 0)
+			&& ((limitSize - pages.size()) % (totalSize - pages.size() + 1)) > 0) {
+			pages.addAll(callback.apply(ZERO, ((limitSize - pages.size()) % (totalSize - pages.size() + 1))));
 		}
 		return PagesResponseDto.of(
 			PageDtoBuilder.transformPagesToDtos(pages, pageIndex, totalSize, (id) -> pageImageService.findByPageId(id)),
