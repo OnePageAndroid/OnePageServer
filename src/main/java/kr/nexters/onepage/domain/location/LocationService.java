@@ -1,19 +1,21 @@
 package kr.nexters.onepage.domain.location;
 
-import com.google.common.collect.Lists;
-import kr.nexters.onepage.domain.calculate.LatLngCalculator;
-import kr.nexters.onepage.domain.util.DaumAPI;
-import kr.nexters.onepage.domain.util.NaverAPI;
-import lombok.extern.slf4j.Slf4j;
+import static kr.nexters.onepage.domain.common.NumericConstant.TEN;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.google.common.collect.Lists;
 
-import static kr.nexters.onepage.domain.common.NumericConstant.TEN;
+import kr.nexters.onepage.domain.calculate.LatLngCalculator;
+import kr.nexters.onepage.domain.util.DaumAPI;
+import kr.nexters.onepage.domain.util.NaverAPI;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -73,9 +75,15 @@ public class LocationService {
 
 	public List<LocationDto> searchLatLng(Double latitude, Double longitude, Double meter) {
 		List<LocationDto> list = findByLatAndLngAndMeter(latitude, longitude, meter);
-		if (CollectionUtils.isEmpty(list))
-			saveDaumLocation(latitude, longitude);
-		return findByLatAndLngAndMeter(latitude, longitude, meter);
+		if (CollectionUtils.isEmpty(list)){
+			List<LocationDto> list2 = findByLatAndLngAndMeter(latitude, longitude, 10000.0);
+			if(CollectionUtils.isEmpty(list2)){
+				saveDaumLocation(latitude, longitude);
+				return findByLatAndLngAndMeter(latitude, longitude, 10000.0);
+			}
+			return list2;
+		}
+		return list;
 	}
 
 	public void translateMigration() {

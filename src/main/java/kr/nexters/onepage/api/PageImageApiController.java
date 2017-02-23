@@ -1,18 +1,24 @@
 package kr.nexters.onepage.api;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import kr.nexters.onepage.api.common.ResponseDto;
 import kr.nexters.onepage.domain.pageImage.PageImageDto;
 import kr.nexters.onepage.domain.pageImage.PageImageService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @Slf4j
 @Api(value = "페이지별 이미지 API", description = "페이지별 이미지 API", basePath = "/api/v1/page/image")
@@ -56,6 +62,6 @@ public class PageImageApiController {
 			log.error("page image removeById : " + e.getMessage(), e);
 			return ResponseDto.ofFail(e.getMessage());
 		}
-		return ResponseDto.ofSuccess("하트 삭제 성공");
+		return ResponseDto.ofSuccess("page Image 삭제 성공");
 	}
 }

@@ -1,15 +1,16 @@
 package kr.nexters.onepage.domain.util;
 
-import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class NaverAPI {
@@ -48,7 +49,10 @@ public class NaverAPI {
 			JSONObject parse = (JSONObject) JSONValue.parse(response.toString());
 			JSONObject message = (JSONObject) parse.get("message");
 			JSONObject result = (JSONObject) message.get("result");
-			return (String) result.get("translatedText");
+			String engName = (String)result.get("translatedText");
+			if(engName.substring(engName.length()).equals(",") || engName.substring(engName.length()).equals("."))
+				engName= engName.substring(0, engName.length()-1);
+			return engName;
 		} catch (Exception e) {
 			log.error("convertKorToEng : " + e.getMessage(), e);
 		}

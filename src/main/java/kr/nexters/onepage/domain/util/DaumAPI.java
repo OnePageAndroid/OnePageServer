@@ -1,15 +1,5 @@
 package kr.nexters.onepage.domain.util;
 
-<<<<<<< HEAD
-=======
-import kr.nexters.onepage.domain.location.Location;
-import kr.nexters.onepage.domain.locationImage.DayType;
-import kr.nexters.onepage.domain.locationImage.LocationImageDto;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
-
->>>>>>> 4cc04f7fe5019aee8fc794ce53d59937e9b165f7
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -23,7 +13,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import kr.nexters.onepage.domain.location.Location;
-import kr.nexters.onepage.domain.locationImage.LocationImageResponseDto;
+import kr.nexters.onepage.domain.locationImage.DayType;
+import kr.nexters.onepage.domain.locationImage.LocationImageDto;
 
 public class DaumAPI {
 
@@ -76,7 +67,7 @@ public class DaumAPI {
 		urlString.append(Double.toString(latitude));
 		urlString.append(",");
 		urlString.append(Double.toString(longitude));
-		urlString.append("&radius=3000");
+		urlString.append("&radius=10000");
 		urlString.append("&sort=0");
 		urlString.append("&query=");
 		String encodeResult = null;
