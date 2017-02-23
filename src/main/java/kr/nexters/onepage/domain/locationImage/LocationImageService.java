@@ -14,7 +14,6 @@ import com.cloudinary.Cloudinary;
 import kr.nexters.onepage.domain.common.OnePageServiceException;
 import kr.nexters.onepage.domain.location.Location;
 import kr.nexters.onepage.domain.location.LocationService;
-import kr.nexters.onepage.domain.util.DaumAPI;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -36,7 +35,7 @@ public class LocationImageService {
 		if (locationImage != null) {
 			return locationImageDto;
 		}
-		return DaumAPI.getImageUrl(location, dayType);
+		return defualImage(location, dayType);
 	}
 
 	@Transactional (readOnly = false)
@@ -59,6 +58,12 @@ public class LocationImageService {
 			log.error("saveLocationImage : " + e.getMessage());
 			throw new OnePageServiceException(e);
 		}
+	}
+
+	private LocationImageDto defualImage(Location location, DayType dayType){
+		if("MORNING".equals(dayType.toString()))
+			return LocationImageDto.of(location,"http://res.cloudinary.com/one-person/image/upload/v1487822238/gzhuxr1h6ltewrclzzt1.png",dayType);
+		return LocationImageDto.of(location,"http://res.cloudinary.com/one-person/image/upload/v1487822271/xhy0ckphqer7oyccqguk.png",dayType);
 	}
 }
 

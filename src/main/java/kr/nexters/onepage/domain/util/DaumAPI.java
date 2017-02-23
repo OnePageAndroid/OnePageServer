@@ -1,15 +1,6 @@
 package kr.nexters.onepage.domain.util;
 
-<<<<<<< HEAD
-=======
-import kr.nexters.onepage.domain.location.Location;
-import kr.nexters.onepage.domain.locationImage.DayType;
-import kr.nexters.onepage.domain.locationImage.LocationImageDto;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 
->>>>>>> f5fae8346423280cd3159267e9cca40f9f2232d1
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -124,5 +115,64 @@ public class DaumAPI {
 				}
 		}
 		return LocationImageDto.of(location, imageUrl, dayType);
+	}
+
+	public static String Test(Double latitude, Double longitude){
+		StringBuilder urlString  = new StringBuilder("https://apis.daum.net/local/v1/search/keyword.json?");
+		urlString.append("apikey=" + API_KEY);
+		urlString.append("&location=");
+		urlString.append(Double.toString(latitude));
+		urlString.append(",");
+		urlString.append(Double.toString(longitude));
+		urlString.append("&radius=3000");
+		urlString.append("&sort=0");
+		urlString.append("&query=");
+		String encodeResult = null;
+		try {
+			encodeResult = URLEncoder.encode("마포구", "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		System.out.println(encodeResult);
+		urlString.append(encodeResult);
+
+		BufferedReader in = null;
+		String url = urlString.toString();
+		String lng = null;
+		String lat = null;
+		String name = null;
+		String address = null;
+		JSONObject channel=null;
+		System.out.println("url" + url);
+		try {
+			URL obj = new URL(url);
+			HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+
+			InputStreamReader isr = new InputStreamReader(obj.openConnection().getInputStream(), "UTF-8");
+			JSONObject object = (JSONObject) JSONValue.parse(isr);
+
+			in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
+			channel = (JSONObject)object.get("channel");
+			JSONArray item = (JSONArray)channel.get("item");
+			JSONObject array = (JSONObject)item.get(0);
+			address = array.get("newAddress").toString();
+			name = array.get("title").toString();
+			String temp = name.substring(name.length()-2,name.length());
+			if(temp.equals("구청") || temp.equals("시청"))
+				name=name.substring(0,name.length()-1);
+			System.out.println("name : " + name);
+			lat = array.get("latitude").toString();
+			lng = array.get("longitude").toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (in != null)
+				try {
+					in.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+		}
+		return channel.toString();
 	}
 }

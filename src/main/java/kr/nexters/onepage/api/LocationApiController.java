@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import kr.nexters.onepage.api.common.ResponseDto;
 import kr.nexters.onepage.domain.location.LocationService;
 import kr.nexters.onepage.domain.location.LocationsResponseDto;
+import kr.nexters.onepage.domain.util.DaumAPI;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -73,6 +74,11 @@ public class LocationApiController {
 			log.error("location search name : " + e.getMessage(), e);
 			return LocationsResponseDto.empty();
 		}
+	}
+
+	@RequestMapping(value = "test", method = RequestMethod.GET)
+	public String test(@RequestParam Double latitude, @RequestParam Double logitude){
+		return DaumAPI.Test(latitude, logitude);
 	}
 
 }
