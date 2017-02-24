@@ -102,7 +102,7 @@ public class PageService {
 			limitSize = totalSize;
 		}
 		// 1. 0 미만일 경우. 2. totalSize 초과할 경우. -> 페이지 범위 내로 변경.
-		pageIndex = (totalSize + pageIndex) % totalSize;
+		pageIndex = (totalSize + pageIndex % totalSize) % totalSize;
 		List<Page> pages = callback.apply(pageIndex, perPageSize);
 
 		// 조회한 페이지 사이즈가 per 페이지 사이즈보다 작으면 0페이지부터 조회하여 더함.

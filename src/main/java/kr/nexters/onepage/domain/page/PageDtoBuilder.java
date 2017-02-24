@@ -18,7 +18,7 @@ public class PageDtoBuilder {
 		List<PageDto> pageDtos = Lists.newArrayList(); // TODO stream 으로 리팩
 		int pageIndex = currentPageIndex;
 		for(Page page : pages) {
-			pageIndex = (totalSize + pageIndex) % totalSize;
+			pageIndex = (totalSize + pageIndex % totalSize) % totalSize;
 			List<PageImageDto> imageDtos = imageFunc.apply(page.getId());
 			pageDtos.add(PageDto.of(page, imageDtos, pageIndex, totalSize));
 			pageIndex += 1;
