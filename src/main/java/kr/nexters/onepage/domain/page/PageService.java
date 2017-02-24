@@ -1,5 +1,6 @@
 package kr.nexters.onepage.domain.page;
 
+import kr.nexters.onepage.domain.common.NumericConstant;
 import kr.nexters.onepage.domain.common.OnePageServiceException;
 import kr.nexters.onepage.domain.location.Location;
 import kr.nexters.onepage.domain.location.LocationService;
@@ -91,7 +92,7 @@ public class PageService {
 		if(totalSize <= 3) {
 			List<Page> pages = callback.apply(0, totalSize);
 			return PagesResponseDto.of(
-				PageDtoBuilder.transformPagesToDtos(pages, totalSize - 1, totalSize, (id) -> pageImageService.findByPageId(id)),
+				PageDtoBuilder.transformPagesToDtos(pages, NumericConstant.ZERO, totalSize, (id) -> pageImageService.findByPageId(id)),
 				pageIndex,
 				perPageSize,
 				totalSize);
