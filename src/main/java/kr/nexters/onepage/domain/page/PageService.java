@@ -89,7 +89,7 @@ public class PageService {
 		if (totalSize == 0) {
 			return PagesResponseDto.empty();
 		}
-		if(totalSize <= 3) {
+		if(totalSize <= 4) {
 			List<Page> pages = callback.apply(0, totalSize);
 			return PagesResponseDto.of(
 				PageDtoBuilder.transformPagesToDtos(pages, NumericConstant.ZERO, totalSize, (id) -> pageImageService.findByPageId(id)),
